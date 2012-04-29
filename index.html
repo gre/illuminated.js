@@ -1,0 +1,276 @@
+<!DOCTYPE HTML>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <title>Illuminated.js - 2D lights and shadows rendering engine with HTML5 Canvas</title>
+    <link rel="stylesheet" href="demo-style.css" />
+    <script type="text/javascript" src="requestAnimFrame.js"></script>
+    <script src="src/illuminated.js" type="text/javascript"></script>
+    <script src="Stats.js" type="text/javascript"></script>
+  </head>
+  <body>
+    <a href="http://github.com/gre/illuminated.js"><img style="position: absolute; top: 0; right: 0; border: 0;" src="https://a248.e.akamai.net/camo.github.com/7afbc8b248c68eb468279e8c17986ad46549fb71/687474703a2f2f73332e616d617a6f6e6177732e636f6d2f6769746875622f726962626f6e732f666f726b6d655f72696768745f6461726b626c75655f3132313632312e706e67" alt="Fork me on GitHub"></a>
+    <div id="wrapper">
+      <header>
+        <h1>Illuminated.js <span style="color: red">(v0.1)</span></h1>
+        <h2>2D lights and shadows rendering engine with HTML5 Canvas</h2>
+      </header>
+      <section id="demo">
+        <canvas id="viewport" width="700" height="400"></canvas>
+        <h2>The Scene Editor</h2>
+        <ul>
+          <li><strong>Move</strong> the mouse on the canvas.</li>
+          <li><strong>Click</strong> on it to create polygons.</li>
+          <li>Press <strong>L</strong> to drop a light.</li>
+          <li>Press <strong>R</strong> to randomize the light.</li>
+        </ul>
+      </section>
+      <section>
+        <h2>Lights are rendered with shadows sampling in real-time!</h2>
+        <h3>Work in progress:</h3>
+        <ul>
+          <li>A simple API, easy to use, easy to customize, easy to embed in your projects</li>
+          <li>A Scene Editor for creating and sharing scenes, test and stress the engine.</li>
+          <li>A tutorial to explain every part of the rendering engine</li>
+        </ul>
+      </section>
+      <footer>
+        <em>
+        2012 - greweb.fr
+        </em>
+        <!--<a href="http://blog.greweb.fr/?p=">Read the article</a>-->
+      </footer>
+    </div>
+    <script type="text/javascript">(function(){
+
+      // mrdoob's stats
+      var stats = new Stats();
+      stats.getDomElement().style.position = 'absolute';
+      stats.getDomElement().style.left = '0px';
+      stats.getDomElement().style.top = '0px';
+      document.body.appendChild( stats.getDomElement() );
+
+
+      function map (array, f) { var t = []; for(var i=0;i<array.length;++i) t.push(f(array[i])); return t; }
+
+      var Lamp = illuminated.Lamp
+      , Vec2 = illuminated.Vec2
+      , PolygonObject = illuminated.PolygonObject
+      , Lighting = illuminated.Lighting
+      , DarkMask = illuminated.DarkMask
+      ;
+
+      var buildPoly;
+      var DIST_CLOSE = 10;
+      var mousep;
+
+      var canvas = document.getElementById("viewport");
+      var ctx = canvas.getContext("2d");
+      var dirty = true;
+
+      var lightings = [];
+      var objects = [];
+      var lights = [];
+      var darkmask = new DarkMask(lights, 'rgba(0,0,0,0.9)');
+
+      // objects
+      var movingTL = new Vec2(100, 100), movingBR = new Vec2(150, 150);
+      var movingSquare = new illuminated.RectangleObject(movingTL, movingBR);
+      addObject(movingSquare);
+      
+      addObject(new illuminated.TriangleObject(new Vec2(500, 300), new Vec2(550, 300), new Vec2(500, 350)));
+      addObject(new illuminated.DiscObject(new Vec2(300, 200), 50));
+
+      // lights
+      var light;
+      light = new illuminated.Hemi(
+          new Vec2(200, 350),
+          300,
+          getRandomLightColor(),
+          3,
+          10,
+          (1/2)*Math.PI,
+          0.9+0.1*Math.random()
+      );
+      addLight(light);
+
+      light = getRandomLight();
+      light.position = new Vec2(550, 350);
+      addLight(light);
+
+      addLight(light=getRandomLight());
+
+      function removeLastLight() {
+        lights.splice(lightings.length-1, 1);
+        lightings.splice(lightings.length-1, 1);
+        dirty = true;
+      }
+      function addLight (light) {
+        lights.push(light);
+        lightings.push(new Lighting(light, objects, 0.2));
+        dirty = true;
+      }
+
+      function addObject (obj) {
+        objects.push(obj);
+        dirty = true;
+      }
+
+      function getRandomLightColor () {
+        var r = Math.round(230+25*Math.random());
+        var g = Math.round(180+30*Math.random());
+        var b = Math.round(130+20*Math.random());
+        var a = 0.7+0.2*Math.random();
+        return 'rgba('+[r,g,b,a]+')';
+      }
+
+      function getRandomLight () {
+      var size = 2+Math.round(Math.random()*1);
+      var samples = 3*size;
+        return new illuminated.Lamp(
+          mousep || new Vec2(0, 0),
+          Math.round(200+100*Math.random()),
+          getRandomLightColor(),
+          size,
+          samples
+        );
+      }
+
+
+      var movingSquareTime = +new Date();
+      function getMovingSquareDelta () {
+        var t = +new Date() - movingSquareTime;
+        return new Vec2(0, Math.floor(75*(1+Math.sin(t/800))));
+      }
+
+      var lastmovedelta;
+      function updateMovingSquarePosition () {
+        var delta = getMovingSquareDelta();
+        if (lastmovedelta && lastmovedelta.x==delta.x && lastmovedelta.y==delta.y) {
+          return;
+        }
+        var tl = movingTL.add(delta);
+        var br = movingBR.add(delta);
+        movingSquare.constructor(tl, br);
+        lastmovedelta = delta;
+        dirty = true;
+      }
+
+      function update () {
+        updateMovingSquarePosition();
+        stats && stats.update();
+      }
+
+      var metal = new Image();
+      metal.src = "galvanized-plate.jpg";
+
+      function render () {
+        ctx.save();
+        ctx.fillStyle = "#888";
+        ctx.fillRect(0,0,canvas.width,canvas.height);
+        
+        // DEBUG render
+        ctx.strokeStyle="#677";
+        ctx.lineWidth = 1;
+        for (var o=0; o<objects.length; ++o) {
+          ctx.save();
+          var obj = objects[o];
+          ctx.beginPath();
+          obj.path(ctx);
+          ctx.clip();
+          var topleft = obj.bounds().topleft;
+          ctx.drawImage(metal, topleft.x, topleft.y);
+          ctx.restore();
+          ctx.beginPath();
+          obj.path(ctx);
+          ctx.stroke();
+        }
+
+        ctx.globalCompositeOperation = "lighter";
+        for (var l=0; l<lightings.length; ++l) {
+          dirty && lightings[l].compute(ctx.canvas.width, ctx.canvas.height);
+          lightings[l].render(ctx);
+        }
+
+        ctx.globalCompositeOperation = "source-over";
+
+        ctx.strokeStyle="rgba(200,0,0,0.9)";
+        if (buildPoly) {
+          ctx.beginPath();
+          ctx.moveTo(buildPoly[0].x, buildPoly[0].y);
+          for (var i=1; i<buildPoly.length; ++i) {
+            var p = buildPoly[i];
+            ctx.lineTo(p.x, p.y);
+          }
+          ctx.lineTo(mousep.x, mousep.y);
+          ctx.stroke();
+          if (buildPoly[0].dist2(mousep) < DIST_CLOSE*DIST_CLOSE) {
+            ctx.fillStyle = "rgba(200,0,0,0.5)";
+            ctx.beginPath();
+            ctx.arc(buildPoly[0].x, buildPoly[0].y, DIST_CLOSE-2, 0, Math.PI*2);
+            ctx.fill();
+          }
+        }
+
+        dirty && darkmask.compute(ctx.canvas.width, ctx.canvas.height);
+        darkmask.render(ctx);
+
+        ctx.restore();
+
+        dirty = false;
+      }
+
+      requestAnimFrame(function loop(){
+        requestAnimFrame(loop, canvas);
+        update();
+        render();
+      }, canvas);
+
+      function positionWithE (e) {
+        var rect = canvas.getBoundingClientRect();          
+        return new Vec2( 
+          e.pageX - rect.left - window.scrollX,
+          e.pageY - rect.top - window.scrollY
+        );
+      }
+
+      window.addEventListener("mousemove", function (e) {
+        mousep = light.position = positionWithE(e);
+        dirty = true;
+      });
+
+      canvas.addEventListener("click", function (e) {
+        var p = positionWithE(e);
+        if (!buildPoly) {
+          buildPoly = [ p ];
+        }
+        else {
+          if (buildPoly[0].dist2(p) < DIST_CLOSE*DIST_CLOSE) {
+            addObject(new PolygonObject(buildPoly));
+            buildPoly = null;
+          }
+          else {
+            buildPoly.push(p);
+          }
+        }
+      });
+
+      window.addEventListener("keypress", function (e) {
+        if (buildPoly) 
+          buildPoly = null;
+        switch(String.fromCharCode(e.charCode).toUpperCase()) {
+          case "L": 
+            addLight(light=getRandomLight());
+          break;
+
+          case "R":
+            removeLastLight();
+            addLight(light=getRandomLight());
+          break;
+        }
+      });
+
+
+}());</script>
+  </body>
+</html>
