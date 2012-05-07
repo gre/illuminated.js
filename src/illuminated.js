@@ -5,7 +5,17 @@
    * @arg position
    * @arg distance: the radius max distance the light emit color
    */
-  cp.Light = function (position, distance) { this.position = position; this.distance = distance }
+  cp.Light = function (position, distance, diffuse) { this.position = position; this.distance = distance; this.diffuse = diffuse || 0.8; }
+  
+  cp.Light.fromJson = function (js) {
+    if (cp[js.instance]) return cp[js.instance].fromJson(js);
+    else return new cp.Light(cp.Vec2.fromJson(js.position), js.distance, js.diffuse);
+  }
+  cp.Light.prototype.toJson = function () {
+    return { position: this.position.toJson(), distance: this.distance, diffuse: this.diffuse };
+  }
+
+  
   /**
    * Render the light
    */
@@ -60,12 +70,17 @@
   /**
    * OpaqueObject: interface of an opaque object
    */
-  cp.OpaqueObject = function () {}
+  cp.OpaqueObject = function (diffuse) { this.diffuse = diffuse }
   cp.OpaqueObject.prototype.cast = function (ctx, origin, bounds) { }
   cp.OpaqueObject.prototype.path = function (ctx) { }
   cp.OpaqueObject.prototype.bounds = function () { return { topleft: new cp.Vec2(), bottomright: new cp.Vec2() } }
   cp.OpaqueObject.prototype.contains = function (point) { return false }
 
+  cp.OpaqueObject.fromJson = function (js) {
+    if (cp[js.instance])
+      return cp[js.instance].fromJson(js);
+  }
+  cp.OpaqueObject.prototype.toJson = function (js) {}
 
   // LIGHTS
 
@@ -75,19 +90,33 @@
    * @arg radius: the radius size of the light
    * @arg samples: the number of light points which will be used for shadow projection (points are placed on the radius circle)
    */
-  cp.Lamp = function (position, distance, color, radius, samples) {
-    this.position = position;
-    this.distance = position;
+  cp.Lamp = function (position, distance, diffuse, color, radius, samples, angle, roughness) {
+    this.position = position || new cp.Vec2();
+    this.distance = distance || 100;
+    this.diffuse = diffuse || 0.8;
     this.color = color || 'rgba(250,230,200,0.5)';
     this.distance = distance || 100;
     this.radius = radius || 0;
     this.samples = samples || 1;
+    this.angle = angle || 0;
+    this.roughness = roughness || 0;
   }
 
   inherit(cp.Lamp, cp.Light);
 
+  cp.Lamp.fromJson = function (js) {
+    return new cp.Lamp(cp.Vec2.fromJson(js.position), js.distance, js.diffuse, js.color, js.radius, js.samples, js.angle, js.roughness);
+  }
+  cp.Lamp.prototype.toJson = function () {
+    return { instance: "Lamp", position: this.position.toJson(), distance: this.distance, diffuse: this.diffuse, color: this.color, distance: this.distance, radius: this.radius, samples: this.samples, angle: this.angle, roughness: this.roughness };
+  }
+
   cp.Lamp.prototype._getHashCache = function () {
-    return [this.color, this.distance].toString();
+    return [this.color, this.distance, this.diffuse, this.angle, this.roughness].toString();
+  }
+
+  cp.Lamp.prototype.center = function () {
+    return new cp.Vec2( (1-Math.cos(this.angle)*this.roughness)*this.distance, (1+Math.sin(this.angle)*this.roughness)*this.distance );
   }
 
   cp.Lamp.prototype._getGradientCache = function (center) {
@@ -100,8 +129,8 @@
     var D = d*2;
     var cache = createCanvasAnd2dContext(D, D);
     var g = cache.ctx.createRadialGradient(center.x, center.y, 0, d, d, d);
-    g.addColorStop( 0, this.color );
-    g.addColorStop( 1, 'rgba(0,0,0,0)' );
+    g.addColorStop( Math.min(1,this.radius/this.distance), this.color );
+    g.addColorStop( 1, cp.getRGBA(this.color, 0) );
     cache.ctx.fillStyle = g;
     cache.ctx.fillRect(0, 0, cache.w, cache.h);
     return this.gradientCache = cache;
@@ -122,26 +151,6 @@
       f( this.position.add(delta) );
     }
   }
-
-  /**
-   * Hemi : an oriented lamp
-   * @arg angle: the angle where the hemi point
-   * @arg roughness: the roughness of the hemi
-   */
-  cp.Hemi = function (position, distance, color, radius, samples, angle, roughness) {
-    this.__super.constructor.apply(this, arguments);
-    this.angle = angle || 0;
-    this.roughness = roughness || 0.8;
-  }
-  inherit(cp.Hemi, cp.Lamp);
-
-  cp.Hemi.prototype._getHashCache = function () {
-    return [this.color, this.distance, this.angle, this.roughness].toString();
-  }
-  cp.Hemi.prototype.center = function () {
-    return new cp.Vec2( (1-Math.cos(this.angle)*this.roughness)*this.distance, (1+Math.sin(this.angle)*this.roughness)*this.distance );
-  }
-
 
   /**
    * Spot
@@ -219,6 +228,12 @@
     this.radius = radius;
   }
   inherit(cp.DiscObject, cp.OpaqueObject);
+  cp.DiscObject.fromJson = function (js) {
+    return new cp.DiscObject(cp.Vec2.fromJson(js.center), js.radius);
+  }
+  cp.DiscObject.prototype.toJson = function (js) {
+    return { instance: "DiscObject", center: this.center.toJson(), radius: js.radius };
+  }
 
   cp.DiscObject.prototype.cast = function (ctx, origin, bounds) {
     // FIXME: the current method is wrong... TODO must see http://en.wikipedia.org/wiki/Tangent_lines_to_circles
@@ -275,6 +290,13 @@
     this.points = points;
   }
   inherit(cp.PolygonObject, cp.OpaqueObject);
+  
+  cp.PolygonObject.fromJson = function (js) {
+    return new cp.PolygonObject( map(js.points, function(p){ return cp.Vec2.fromJson(p) }) );
+  }
+  cp.PolygonObject.prototype.toJson = function () {
+    return { instance: "PolygonObject", points: map(this.points, function(p){ return p.toJson() }) };
+  }
 
   cp.PolygonObject.prototype.bounds = function () {
     var topleft = this.points[0].copy();
@@ -350,8 +372,7 @@
     var a = this.points[this.points.length-1], b;
     for (var p=0; p<this.points.length; ++p, a=b) {
       b = this.points[p];
-      if (bounds.topleft.x < a.x && a.x < bounds.bottomright.x
-       && bounds.topleft.y < a.y && a.y < bounds.bottomright.y) {
+      if (a.inBound(bounds.topleft, bounds.bottomright)) {
          var originToA = a.sub(origin);
          var originToB = b.sub(origin);
          var aToB = b.sub(a);
@@ -392,10 +413,9 @@
    * @arg light: a Light object which project light in the scene
    * @arg objects: all opaque objects which stop the light and create shadows
    */
-  cp.Lighting = function (light, objects, diffuse) {
+  cp.Lighting = function (light, objects) {
     this.light = light;
     this.objects = objects || [];
-    this.diffuse = diffuse || 0;
 
     this.cache = null;
   }
@@ -420,8 +440,10 @@
       });
     });
     // Draw objects diffuse - the intensity of the light penetration in objects
-    ctx.fillStyle = "rgba(0,0,0,"+(1-this.diffuse)+")";
     objects.forEach(function(object) {
+      var diffuse = object.diffuse===undefined ? 0.8 : object.diffuse;
+      diffuse *= light.diffuse;
+      ctx.fillStyle = "rgba(0,0,0,"+(1-diffuse)+")";
       ctx.beginPath();
       object.path(ctx);
       ctx.fill();
@@ -469,6 +491,7 @@
       this.cache = createCanvasAnd2dContext(w,h);
     var ctx = this.cache.ctx;
     ctx.save();
+    ctx.clearRect(0, 0, w, h);
     ctx.fillStyle = this.color;
     ctx.fillRect(0, 0, w, h);
     ctx.globalCompositeOperation = "destination-out";
@@ -487,6 +510,12 @@
   cp.Vec2 = function (x, y) {
     this.x = x||0;
     this.y = y||0;
+  }
+  cp.Vec2.fromJson = function(js){
+    return new cp.Vec2(js.x, js.y);
+  }
+  cp.Vec2.prototype.toJson = function () {
+    return { x: this.x, y: this.y };
   }
 
   cp.Vec2.prototype.copy = function () {
@@ -519,6 +548,13 @@
   cp.Vec2.prototype.length2 = function (v) {
     return this.x*this.x + this.y*this.y;
   }
+  cp.Vec2.prototype.toString = function () {
+    return this.x+","+this.y;
+  }
+  cp.Vec2.prototype.inBound = function (topleft, bottomright) {
+    return (topleft.x < this.x && this.x < bottomright.x
+         && topleft.y < this.y && this.y < bottomright.y);
+  }
 
   // UTILS & CONSTANTS
 
@@ -546,6 +582,46 @@
     }
   }
   cp.path = path;
+
+  var getRGBA = cp.getRGBA = (function(){
+    var canvas = document.createElement("canvas");
+    canvas.width = canvas.height = 1;
+    var ctx = canvas.getContext("2d");
+    return function (color, alpha) {
+      ctx.clearRect(0,0,1,1);
+      ctx.fillStyle = color;
+      ctx.fillRect(0,0,1,1);
+      var d = ctx.getImageData(0,0,1,1).data;
+      return 'rgba('+[ d[0], d[1], d[2], alpha ]+')';
+    }
+  }());
+
+  var extractColorAndAlpha = cp.extractColorAndAlpha = (function(){
+    var canvas = document.createElement("canvas");
+    canvas.width = canvas.height = 1;
+    var ctx = canvas.getContext("2d");
+
+    function toHex (value) { 
+      var s = value.toString(16); 
+      if(s.length==1) s = "0"+s;
+      return s;
+    }
+
+    return function (color) {
+      ctx.clearRect(0,0,1,1);
+      ctx.fillStyle = color;
+      ctx.fillRect(0,0,1,1);
+      var d = ctx.getImageData(0,0,1,1).data;
+      return {
+        color: "#"+toHex(d[0])+toHex(d[1])+toHex(d[2]),
+        alpha: Math.round(1000*d[3]/255)/1000
+      };
+    }
+  }());
+
+  function map(arr,f) {
+    var t=[]; for(var i=0;i<arr.length;++i) t[i]=f(arr[i]); return t;
+  }
 
   function emptyFn() {};
   function inherit (cls, base) { // from Box2d
