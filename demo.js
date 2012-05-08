@@ -11,14 +11,24 @@ var Lamp = illuminated.Lamp
 , DarkMask = illuminated.DarkMask
 ;
 
+var dirty = true;
+
 var DIST_CLOSE = 10;
 
-var SELECTED_STROKE = "#112";
+var SELECTED_STROKE_FROM = "#115";
+var SELECTED_STROKE_TO = "#511";
 var HOVER_STROKE = "#667";
 var OBJECT_STROKE = "#778";
+var SELECTED_STROKE;
+setInterval((function(i){
+  return function(){
+    SELECTED_STROKE = (++i)%2 ? SELECTED_STROKE_FROM: SELECTED_STROKE_TO;
+    dirty = true;
+  }
+}(0)), 300);
 
 var scene;
-var mousep;
+var mousep = new Vec2();
 
 var mousedown, oldmousedown;
 var mousedownItemNew;
@@ -30,14 +40,15 @@ var canvasHashFocus = true;
 var buildPoly;
 var items = [];
 var currentSelect = 0;
+var currentToolSelected;
 
-var dirty = true;
 var canvas = document.getElementById("viewport");
 var ctx = canvas.getContext("2d");
 
 var $lightorientation = $('canvas.light-orientation');
 var $lightcontrols=$(".lightcontrols");
 var $objectcontrols=$(".objectcontrols");
+var $circlecontrols=$(".circlecontrols");
 var $maskcolor = $('input[name=maskcolor]');
 var $maskalpha = $('input[name=maskalpha]');
 var $lightcolor = $('input[name=lightcolor]');
@@ -47,11 +58,11 @@ var $lightsize = $('input[name=lightsize]');
 var $lightsamples = $('input[name=lightsamples]');
 var $lightdistance = $('input[name=lightdistance]');
 var $objectdiffuse = $('input[name=objectdiffuse]');
+var $discradius = $('input[name=discradius]');
 var $toolbox = $('#toolbox');
 var $tools = $toolbox.find("a img");
-var $share = $('#shareurl');
 var $social = $('#social');
-var BASE_URL = $share.val();
+var BASE_URL = "http://demo.greweb.fr/illuminated.js";
 
 function init () {
   var obj = {};
@@ -82,9 +93,22 @@ function init () {
       scene.setOption("angle", o.angle);
       scene.setOption("roughness", o.roughness);
     }
-  }).hemiOrientationPicker();
+  }).hemiOrientationPicker($('.light-color'));
 }
 
+function createInstanceFor (cl) {
+  switch (cl) {
+    case "Lamp":
+      return getRandomLight();
+    case "DiscObject":
+      return new DiscObject(new Vec2(), Math.round(30+10*Math.random()));
+    case "RectangleObject":
+      var dx = 30+Math.round(Math.random()*20);
+      var dy = 20+Math.round(Math.random()*10);
+      var d = new Vec2(dx, dy);
+      return new RectangleObject(new Vec2().sub(d), new Vec2().add(d));
+  }
+}
 
 function bind () {
   var ext = illuminated.extractColorAndAlpha(scene.getMaskColor());
@@ -107,21 +131,30 @@ function bind () {
     scene.setOption($(this).attr("data-bind-option"), parseFloat($(this).val()));
   });
 
+  $('.actions button.duplicate').click(function(){
+    duplicateSelection();
+  });
   $('.actions button.delete').click(function(){
     removeSelection();
   });
-
-  $share.on("click focus", function(e){
-    e.preventDefault();
-    $share.select();
+  $('.actions button.prev').click(function(){
+    prevSelection();
+  });
+  $('.actions button.next').click(function(){
+    nextSelection();
   });
 
+  var title = $("title").text();
   scene.onChange(function () {
     var hash = JSON.stringify(scene.toJson());
     var url = BASE_URL+"/#"+hash;
     $social.attr('addthis:url', url);
-    $share.attr("value", url);
-    //location.hash=hash;
+    if (window["history"]) {
+      history.replaceState({}, title, "#"+hash);
+    }
+    else {
+      location.hash = hash;
+    }
     dirty = true;
   });
   scene.triggerChange();
@@ -144,13 +177,14 @@ function bind () {
     }
     if (target.is("#toolbox a img")) {
       e.preventDefault();
-      $tools.removeClass("selected");
-      target.addClass("selected");
       var cl = target.attr("data-class");
-      var item = new (illuminated[cl])();
-      moveItemDelta = p.inv();
-      mousedownItem = item;
-      mousedownItemNew = true;
+      selectTool(cl, target);
+      var item = createInstanceFor(cl);
+      if (item) {
+        moveItemDelta = p.inv();
+        mousedownItem = item;
+        mousedownItemNew = true;
+      }
     }
     
     if (inBound) {
@@ -162,8 +196,10 @@ function bind () {
         setSelection(item);
       }
       else {
-        e.preventDefault();
-        addPolygonPoint(p);
+        if(currentToolSelected=="PolygonObject") {
+          e.preventDefault();
+          addPolygonPoint(p);
+        }
       }
     }
     dirty = true;
@@ -186,7 +222,7 @@ function bind () {
             scene.addObject(mousedownItem);
             setSelection(mousedownItem);
           }
-          $tools.removeClass("selected");
+          selectTool(null);
         }
         e.preventDefault();
         var diff = p.sub(mousedown);
@@ -207,7 +243,7 @@ function bind () {
     if (inBound) {
       var item = getItemAt(p);
       if (!item) {
-        if(positionChanged) {
+        if(positionChanged && buildPoly && currentToolSelected=="PolygonObject") {
           e.preventDefault();
           addPolygonPoint(p);
         }
@@ -223,24 +259,17 @@ function bind () {
 
   window.addEventListener("keydown", function (e) {
     if (!canvasHashFocus) return;
-    if (buildPoly) 
-      buildPoly = null;
-    switch(String.fromCharCode(e.charCode).toUpperCase()) {
-      case "L": 
+    switch(String.fromCharCode(e.which).toUpperCase()) {
+      case "D":
       e.preventDefault();
-      scene.addLight(light=getRandomLight());
-      break;
-
-      case "R":
-      e.preventDefault();
-      removeLastLight();
-      scene.addLight(light=getRandomLight());
+      duplicateSelection();
       break;
     }
 
     switch(e.keyCode) {
       case 27:
         e.preventDefault();
+        buildPoly = null;
         setSelection(null);
       break;
       case 8: case 46: // DELETE
@@ -280,8 +309,8 @@ function getRandomLight () {
   var size = 2+Math.round(Math.random()*1);
   var samples = 3*size;
   return new illuminated.Lamp(
-    mousep || new Vec2(0, 0),
-    Math.round(200+100*Math.random()),
+    new Vec2(),
+    Math.round(120+60*Math.random()),
     0.8,
     getRandomLightColor(),
     size,
@@ -305,14 +334,19 @@ function syncControls (item) {
     $lightcolor.val(ext.color);
     $lightalpha.val(ext.alpha);
     $lightdiffuse.val(item.diffuse);
-    $lightsize.val(item.size);
+    $lightsize.val(item.radius);
     $lightsamples.val(item.samples);
     $lightdistance.val(item.distance);
   }
   else if (item instanceof OpaqueObject) {
     $lightcontrols.hide();
     $objectcontrols.show();
-    $objectdiffuse.val(item.diffuse===undefined ? 0.8 : item.diffuse);
+    $objectdiffuse.val(item.diffuse===undefined ? 0.8 : item.diffuse); //FIXME
+    $circlecontrols.hide();
+    if (item instanceof DiscObject) {
+      $circlecontrols.show();
+      $discradius.val(item.radius);
+    }
   }
 }
 
@@ -337,12 +371,42 @@ function prevSelection () {
 }
 
 function removeSelection () {
-  noSelection();
   removeItem(items[currentSelect]);
+  noSelection();
+}
+
+function duplicateSelection () {
+  var item = items[currentSelect];
+  item = cloneItem(item);
+  console.log(item);
+  items.push(item);
+  if (item instanceof OpaqueObject)
+    scene.addObject(item);
+  else if (item instanceof Light)
+    scene.addLight(item);
+  setSelection(item);
+  moveItemDelta = new Vec2();
+  mousedownItem = item;
+  mousedown = mousep;
+}
+
+function cloneItem (o) {
+  if (o instanceof Lamp) {
+    return new Lamp(o.position.copy(), o.distance, o.diffuse, o.color, o.radius, o.samples, o.angle, o.roughness);
+  }
+  else if (o instanceof PolygonObject) {
+    var points = [];
+    for (var i=0; i<o.points.length; ++i) {
+      points.push(o.points[i].copy());
+    }
+    return new PolygonObject(points);
+  }
+  else if (o instanceof DiscObject) {
+    return new DiscObject(o.center.copy(), o.radius);
+  }
 }
 
 function removeItem (o) {
-  console.log(o);
   var i = items.indexOf(o);
   if (i!=-1) items.splice(i, 1);
   if (o instanceof Light) {
@@ -398,6 +462,7 @@ function addPolygonPoint (p) {
         items.push(o);
         setSelection(o);
       }
+      selectTool(null);
       buildPoly = null;
     }
     else {
@@ -405,6 +470,23 @@ function addPolygonPoint (p) {
     }
   }
   dirty = true;
+}
+
+function selectTool (cl, node) {
+  currentToolSelected = cl;
+  if (cl) {
+    $tools.removeClass("selected");
+    node.addClass("selected");
+    var hoverText = node.attr("data-canvas-hoverText");
+    if (hoverText) {
+      $(canvas).attr("data-hoverText", hoverText);
+    }
+  }
+  else {
+    $tools.removeClass("selected");
+    $(canvas).removeAttr("data-hoverText");
+    hoverPopup.hide();
+  }
 }
 
 

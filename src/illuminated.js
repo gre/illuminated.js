@@ -80,7 +80,7 @@
     if (cp[js.instance])
       return cp[js.instance].fromJson(js);
   }
-  cp.OpaqueObject.prototype.toJson = function (js) {}
+  cp.OpaqueObject.prototype.toJson = function () {}
 
   // LIGHTS
 
@@ -94,7 +94,7 @@
     this.position = position || new cp.Vec2();
     this.distance = distance || 100;
     this.diffuse = diffuse || 0.8;
-    this.color = color || 'rgba(250,230,200,0.5)';
+    this.color = color || 'rgba(250,220,150,0.8)';
     this.distance = distance || 100;
     this.radius = radius || 0;
     this.samples = samples || 1;
@@ -231,8 +231,8 @@
   cp.DiscObject.fromJson = function (js) {
     return new cp.DiscObject(cp.Vec2.fromJson(js.center), js.radius);
   }
-  cp.DiscObject.prototype.toJson = function (js) {
-    return { instance: "DiscObject", center: this.center.toJson(), radius: js.radius };
+  cp.DiscObject.prototype.toJson = function () {
+    return { instance: "DiscObject", center: this.center.toJson(), radius: this.radius };
   }
 
   cp.DiscObject.prototype.cast = function (ctx, origin, bounds) {
@@ -287,7 +287,7 @@
    * @arg points: array of Vec2, points of the polygon
    */
   cp.PolygonObject = function (points) {
-    this.points = points;
+    this.points = points || [];
   }
   inherit(cp.PolygonObject, cp.OpaqueObject);
   

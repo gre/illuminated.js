@@ -20,23 +20,10 @@
       </header>
 
       <hr />
-
-  <!--
-    Controls:
-      - use Tab / Shift+Tab to switch between objects and lights
-    Toolbox:
-      - [] select
-      - + move on select
-    controls:
-      - general options + option of selection + option of tool
-  -->
+      <h3>The editor: create your scene to figure out Illuminated.js features</h3>
 
       <section id="demo">
         <div id="share">
-          <label>
-            <span>Share URL</span>
-            <input name="shareurl" type="text" id="shareurl" value="http://demo.greweb.fr/illuminated" />
-          </label>
           <!-- AddThis Button BEGIN -->
           <div id="social" class="addthis_toolbox addthis_default_style"
             addthis:url=""
@@ -48,11 +35,17 @@
           </div> 
           <script type="text/javascript" src="http://s7.addthis.com/js/250/addthis_widget.js#pubid=ra-4dc65c23519c9300"></script>
           <!-- AddThis Button END -->
+        <div class="help" style="float:left;padding: 1px 3px" data-hoverText="Share your scene with social networks or simply bookmark the current URL.">?</div>
         </div>
         <canvas id="viewport" width="600" height="400"></canvas>
       </section>
 
       <section id="toolbox">
+        <div class="help" style="padding: 5px; font-size: 20px" data-hoverHtml="
+          <strong>Drag an item to the canvas area.</strong>
+          Select items by clicking on them.<br/>
+          Change the option of selected items with the toolbar.
+        ">?</div>
         <dl class="lights">
         	<dt>Lights</dt>
           <dd>
@@ -65,7 +58,7 @@
             <a href="#"><img data-hoverText="Circle" src="circle.png" alt="Circle" data-type="OpaqueObject" data-class="DiscObject"  /></a>
           </dd>
           <dd>
-            <a href="#"><img data-hoverText="Polygon" src="polygon.png" alt="Polygon" data-type="OpaqueObject" data-class="PolygonObject"  /></a>
+            <a href="#"><img data-hoverText="Polygon" src="polygon.png" alt="Polygon" data-type="OpaqueObject" data-class="PolygonObject" data-canvas-hoverText="Click on different positions of the canvas to draw a polygon." /></a>
           </dd>
           <dd>
             <a href="#"><img data-hoverText="Rectangle" src="rectangle.png" alt="Rectangle" data-type="OpaqueObject" data-class="RectangleObject" /></a>
@@ -103,6 +96,14 @@
               <span data-hoverText="The light penetration in the object.">Diffuse</span>
               <div class="input">
                 <input value="0.2" min="0.0" max="1.0" step="0.01" type="range" data-bind-option="diffuse" name="objectdiffuse" />
+              </div>
+            </label>
+            </dd>
+            <dd class="circlecontrols">
+            <label>
+              <span>Radius</span>
+              <div class="input">
+                <input value="" min="0" max="200" step="1" type="range" data-bind-option="radius" name="discradius" />
               </div>
             </label>
             </dd>
@@ -179,39 +180,25 @@
         <dl style="width: 80px">
         	<dt>Actions</dt>
           <dd class="actions">
-            <button class="delete">Delete</button>
+          <button class="delete" data-hoverHtml="Delete the current selection<br/> <em>Delete</em>">Delete</button>
+          <button class="duplicate" data-hoverHtml="Duplicate the current selection<br/> <em>D</em>">Duplic.</button>
+          <button class="prev" data-hoverHtml="Select the previous item<br/> <em>Shift-Tab</em>">Prev.</button>
+          <button class="next" data-hoverHtml="Select the next item<br/> <em>Tab</em>">Next</button>
           </dd>
         </dl>
 
       </section>
 
       <section>
-        <h2>Help us to improve Illuminated.js</h2>
-      </section>
-
-      <section>
-        <h2>The Scene Editor</h2>
-        <ul>
-          <li><strong>Move</strong> the mouse on the canvas.</li>
-          <li><strong>Click</strong> on it to create polygons.</li>
-          <li>Press <strong>L</strong> to drop a light.</li>
-          <li>Press <strong>R</strong> to randomize the light.</li>
-        </ul>
-
-        <h2>Lights are rendered with shadows sampling in real-time!</h2>
-        <h3>Work in progress:</h3>
-        <ul>
-          <li>A simple API, easy to use, easy to customize, easy to embed in your projects</li>
-          <li>A Scene Editor for creating and sharing scenes, test and stress the engine.</li>
-          <li>A tutorial to explain every part of the rendering engine</li>
-        </ul>
+        <h2>We need your help</h2>
+        <p>You found a bug, you want to improve the library, or you simply want to give feedbacks?</p>
+        <p><a href="http://github.com/gre/illuminated.js">the github project</a> / <a href="mailto:renaudeau.gaetan@gmail.com">my mail</a></p>
       </section>
 
       <footer>
-        <em>
-        2012 - greweb.fr
-        </em>
-        <!--<a href="http://blog.greweb.fr/?p=">Read the article</a>-->
+        <p><strong>For more infos please</strong></p>
+        <a href="http://blog.greweb.fr/?p=">Read the article</a>
+        <p>2012 - greweb.fr</p>
       </footer>
     </div>
 

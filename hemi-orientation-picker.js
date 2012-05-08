@@ -1,17 +1,15 @@
-jQuery.fn.hemiOrientationPicker = function(){
+jQuery.fn.hemiOrientationPicker = function($color){
   var canvas = $(this);
   canvas.attr('data-angle', 0);
   canvas.attr('data-roughness', 0);
 
   var ctx = canvas[0].getContext('2d');
 
-  var size = canvas.width();
+  var size = canvas[0].width;
   var demi = Math.round(size/2);
   var down = false;
 
   var center = { x: demi, y: demi };
-
-  var $color = $('.light-color');
 
   function getColor() {
     return $color.attr("value") || 'rgba(255,255,255,1)';

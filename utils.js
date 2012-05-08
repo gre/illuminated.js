@@ -7,6 +7,7 @@ window.hoverPopup = (function () {
   var visible = false;
 
   return {
+    node: function(){ return node },
     visible: function(){ return visible },
     text: function(text){ node.text(text); return this },
     html: function(html){ node.html(html); return this },
@@ -24,7 +25,7 @@ $('input[type=range]').each(function(){
   });
 });
 
-var followPopup = "[data-hoverText], .followPopup, canvas.light-orientation , input[type=range]";
+var followPopup = "[data-hoverText], [data-hoverHtml], .followPopup, canvas.light-orientation , input[type=range]";
 $(document).on('mousemove', function(e){
   var target = $(e.target);
   var visible = hoverPopup.visible();
@@ -33,8 +34,13 @@ $(document).on('mousemove', function(e){
     if (hoverText) {
       hoverPopup.text(hoverText);
     }
+    var hoverHtml = target.attr('data-hoverHtml');
+    if (hoverHtml) {
+      hoverPopup.html(hoverHtml);
+    }
     var x = e.clientX+8;
     var y = e.clientY+16;
+    x = Math.min(x, $(window).width()-hoverPopup.node().width() - 20);
     hoverPopup.position(x,y);
     !visible && hoverPopup.show();
   }

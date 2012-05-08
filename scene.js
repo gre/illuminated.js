@@ -137,8 +137,8 @@ Scene.prototype.removeLight = function (light) {
 Scene.prototype.removeObject = function (obj) {
   var i = this.objects.indexOf(obj);
   if (i!=-1) this.objects.splice(i, 1);
-  for (var l=0; l<self.lightings.length; ++l) {
-    self.lightings[l].compute(self.ctx.canvas.width, self.ctx.canvas.height);
+  for (var l=0; l<this.lightings.length; ++l) {
+    this.lightings[l].compute(this.ctx.canvas.width, this.ctx.canvas.height);
   }
   this.darkmask.compute(this.ctx.canvas.width, this.ctx.canvas.height);
   this.triggerChange();

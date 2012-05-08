@@ -30,7 +30,7 @@ body {
 }
 
 #demo {
-  height: 430px;
+  height: 400px;
   width: 600px;
   margin: 0;
   padding: 0;
@@ -38,7 +38,7 @@ body {
 
 #toolbox {
   width: 80px;
-  height: 430px;
+  height: 400px;
   padding: 5px;
   background: #555;
   color: #000;
@@ -87,28 +87,14 @@ body {
 }
 
 #share {
-  height: 30px;
   padding: 5px 0;
   background: #000;
   color: #fff;
-}
-#share input[type=text] {
-  width: 420px;
-  background: #fff;
-  border: #aaa 1px solid;
-}
-#share label {
-  width: 530px;
-  padding: 0 5px;
-}
-#share label span {
-  text-align: right;
-  display: inline-block;
-  width: 90px;
+  position: absolute;
 }
 #social {
+  padding-left: 5px;
   float: right;
-  padding-right: 5px;
 }
 
 #controls {
@@ -116,7 +102,7 @@ body {
   color: #000;
   width: 100%;
   padding: 10px 0;
-  min-height: 160px;
+  min-height: 180px;
   text-shadow: 0px 1px 0px rgba(255,255,255,.2);
   font-size: 12px;
   border-top: 1px #444 solid;
@@ -125,7 +111,7 @@ body {
 #controls dl {
   float: left;
   padding: 0 1% 0 2%;
-  min-height: 140px;
+  min-height: 160px;
   border-left: 1px #909090 solid;
   border-right: 1px #444444 solid;
 }
@@ -214,13 +200,22 @@ footer a:hover {
   display: none;
 }
 
+div.help {
+  background: #333;
+  color: #999;
+  font-weight: bold;
+}
+
 .hoverPopup {
   position: fixed;
   padding: 2px 6px;
   background: #333;
-  color: #EEE;
-  opacity: 0.8;
+  color: #ccc;
+  opacity: 0.9;
   border-radius: 3px;
   max-width: 200px;
   font-size: 12px;
+}
+.hoverPopup em {
+  color: #fff;
 }
