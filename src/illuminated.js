@@ -7,14 +7,6 @@
    */
   cp.Light = function (position, distance, diffuse) { this.position = position; this.distance = distance; this.diffuse = diffuse || 0.8; }
   
-  cp.Light.fromJson = function (js) {
-    if (cp[js.instance]) return cp[js.instance].fromJson(js);
-    else return new cp.Light(cp.Vec2.fromJson(js.position), js.distance, js.diffuse);
-  }
-  cp.Light.prototype.toJson = function () {
-    return { position: this.position.toJson(), distance: this.distance, diffuse: this.diffuse };
-  }
-
   
   /**
    * Render the light
@@ -76,11 +68,6 @@
   cp.OpaqueObject.prototype.bounds = function () { return { topleft: new cp.Vec2(), bottomright: new cp.Vec2() } }
   cp.OpaqueObject.prototype.contains = function (point) { return false }
 
-  cp.OpaqueObject.fromJson = function (js) {
-    if (cp[js.instance])
-      return cp[js.instance].fromJson(js);
-  }
-  cp.OpaqueObject.prototype.toJson = function () {}
 
   // LIGHTS
 
@@ -103,13 +90,6 @@
   }
 
   inherit(cp.Lamp, cp.Light);
-
-  cp.Lamp.fromJson = function (js) {
-    return new cp.Lamp(cp.Vec2.fromJson(js.position), js.distance, js.diffuse, js.color, js.radius, js.samples, js.angle, js.roughness);
-  }
-  cp.Lamp.prototype.toJson = function () {
-    return { instance: "Lamp", position: this.position.toJson(), distance: this.distance, diffuse: this.diffuse, color: this.color, distance: this.distance, radius: this.radius, samples: this.samples, angle: this.angle, roughness: this.roughness };
-  }
 
   cp.Lamp.prototype._getHashCache = function () {
     return [this.color, this.distance, this.diffuse, this.angle, this.roughness].toString();
@@ -228,12 +208,6 @@
     this.radius = radius;
   }
   inherit(cp.DiscObject, cp.OpaqueObject);
-  cp.DiscObject.fromJson = function (js) {
-    return new cp.DiscObject(cp.Vec2.fromJson(js.center), js.radius);
-  }
-  cp.DiscObject.prototype.toJson = function () {
-    return { instance: "DiscObject", center: this.center.toJson(), radius: this.radius };
-  }
 
   cp.DiscObject.prototype.cast = function (ctx, origin, bounds) {
     // FIXME: the current method is wrong... TODO must see http://en.wikipedia.org/wiki/Tangent_lines_to_circles
@@ -291,13 +265,6 @@
   }
   inherit(cp.PolygonObject, cp.OpaqueObject);
   
-  cp.PolygonObject.fromJson = function (js) {
-    return new cp.PolygonObject( map(js.points, function(p){ return cp.Vec2.fromJson(p) }) );
-  }
-  cp.PolygonObject.prototype.toJson = function () {
-    return { instance: "PolygonObject", points: map(this.points, function(p){ return p.toJson() }) };
-  }
-
   cp.PolygonObject.prototype.bounds = function () {
     var topleft = this.points[0].copy();
     var bottomright = topleft.copy();
@@ -511,9 +478,7 @@
     this.x = x||0;
     this.y = y||0;
   }
-  cp.Vec2.fromJson = function(js){
-    return new cp.Vec2(js.x, js.y);
-  }
+
   cp.Vec2.prototype.toJson = function () {
     return { x: this.x, y: this.y };
   }
@@ -618,10 +583,6 @@
       };
     }
   }());
-
-  function map(arr,f) {
-    var t=[]; for(var i=0;i<arr.length;++i) t[i]=f(arr[i]); return t;
-  }
 
   function emptyFn() {};
   function inherit (cls, base) { // from Box2d

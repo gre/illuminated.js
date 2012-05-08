@@ -17,6 +17,7 @@ var Light = illuminated.Light
 , DarkMask = illuminated.DarkMask
 ;
 
+
 function Scene (ctx, lights, objects, globals) {
   this.ctx = ctx;
   this.lights = lights||[];
