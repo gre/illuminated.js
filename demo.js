@@ -251,7 +251,7 @@ function bind () {
       }
     }
     if (!positionChanged && !item && !buildPoly) {
-      noSelection();
+      //noSelection();
     }
     if (!mousedownItemNew || oldmousedown || positionChanged) {
       mousedown = null;
