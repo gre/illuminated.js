@@ -11,6 +11,8 @@ var Lamp = illuminated.Lamp
 , DarkMask = illuminated.DarkMask
 ;
 
+var supportsColor = $("<input type='color' />")[0].type === "color";
+
 var dirty = true;
 
 var DIST_CLOSE = 10;
@@ -250,8 +252,8 @@ function bind () {
         }
       }
     }
-    if (!positionChanged && !item && !buildPoly) {
-      //noSelection();
+    if (inBound && !positionChanged && !item && !buildPoly) {
+      noSelection();
     }
     if (!mousedownItemNew || oldmousedown || positionChanged) {
       mousedown = null;
@@ -336,6 +338,9 @@ function syncControls (item) {
     });
     var ext = illuminated.extractColorAndAlpha(item.color);
     $lightcolor.val(ext.color);
+    if (!supportsColor) {
+      $lightcolor.spectrum("set", ext.color);
+    }
     $lightalpha.val(ext.alpha);
     $lightdiffuse.val(item.diffuse);
     $lightsize.val(item.radius);
