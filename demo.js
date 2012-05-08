@@ -240,14 +240,18 @@ function bind () {
     var positionChanged = mousedown && (p.dist2(mousedown) != 0);
     //scene.setOption("position", new Vec2(p.x, p.y));
     var inBound = p.inBound(new Vec2(0,0), new Vec2(canvas.width, canvas.height));
+    var item;
     if (inBound) {
-      var item = getItemAt(p);
+      item = getItemAt(p);
       if (!item) {
         if(positionChanged && buildPoly && currentToolSelected=="PolygonObject") {
           e.preventDefault();
           addPolygonPoint(p);
         }
       }
+    }
+    if (!positionChanged && !item && !buildPoly) {
+      noSelection();
     }
     if (!mousedownItemNew || oldmousedown || positionChanged) {
       mousedown = null;
