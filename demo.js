@@ -116,6 +116,9 @@ function bind () {
   var ext = illuminated.extractColorAndAlpha(scene.getMaskColor());
   $maskcolor.val(ext.color);
   $maskalpha.val(ext.alpha);
+  if (!supportsColor) {
+    $maskcolor.spectrum("set", ext.color);
+  }
 
   $maskcolor.add($maskalpha).change(function(){
     var color = $maskcolor.val();
