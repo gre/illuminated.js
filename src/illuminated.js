@@ -17,13 +17,68 @@
  */
 
 (function(cp){
+ /**
+   * Vec2 - A 2D Vector with some operations on it
+   */
+  cp.Vec2 = function (x, y) {
+    this.x = x||0;
+    this.y = y||0;
+  }
+
+  cp.Vec2.prototype.toJson = function () {
+    return { x: this.x, y: this.y };
+  }
+
+  cp.Vec2.prototype.copy = function () {
+    return new cp.Vec2(this.x, this.y);
+  }
+  cp.Vec2.prototype.dot = function (v) {
+    return v.x*this.x + v.y*this.y;
+  }
+  cp.Vec2.prototype.sub = function (v) {
+    return new cp.Vec2(this.x-v.x, this.y-v.y);
+  }
+  cp.Vec2.prototype.add = function (v) {
+    return new cp.Vec2(this.x+v.x, this.y+v.y);
+  }
+  cp.Vec2.prototype.mul = function (n) {
+    return new cp.Vec2(this.x*n, this.y*n);
+  }
+  cp.Vec2.prototype.inv = function () {
+    return this.mul(-1);
+  }
+  cp.Vec2.prototype.dist2 = function (v) {
+    var dx = this.x - v.x;
+    var dy = this.y - v.y;
+    return dx*dx + dy*dy;
+  }
+  cp.Vec2.prototype.normalize = function () {
+    var length = Math.sqrt(this.length2());
+    return new cp.Vec2(this.x/length, this.y/length);
+  }
+  cp.Vec2.prototype.length2 = function (v) {
+    return this.x*this.x + this.y*this.y;
+  }
+  cp.Vec2.prototype.toString = function () {
+    return this.x+","+this.y;
+  }
+  cp.Vec2.prototype.inBound = function (topleft, bottomright) {
+    return (topleft.x < this.x && this.x < bottomright.x
+         && topleft.y < this.y && this.y < bottomright.y);
+  }
+
 
   /**
    * Light: interface of a light
    * @arg position
    * @arg distance: the radius max distance the light emit color
    */
-  cp.Light = function (position, distance, diffuse) { this.position = position; this.distance = distance; this.diffuse = diffuse || 0.8; }
+  cp.Light = function (options) { extend(this, cp.Light.defaults, options); }
+  cp.Light.defaults = {
+    position: new cp.Vec2(),
+    distance: 100,
+    diffuse: 0.8
+  };
   
   
   /**
@@ -66,21 +121,22 @@
     var hash = ""+d;
     if (this.vismaskhash != hash) {
       this.vismaskhash = hash;
-      var c = this.vismaskcache = createCanvasAnd2dContext(2*d, 2*d);
+      var c = this._vismaskcache = createCanvasAnd2dContext(2*d, 2*d);
       var g = c.ctx.createRadialGradient(d, d, 0, d, d, d);
       g.addColorStop( 0, 'rgba(0,0,0,1)' );
       g.addColorStop( 1, 'rgba(0,0,0,0)' );
       c.ctx.fillStyle = g;
       c.ctx.fillRect(0, 0, c.w, c.h);
     }
-    return this.vismaskcache;
+    return this._vismaskcache;
   }
 
 
   /**
    * OpaqueObject: interface of an opaque object
    */
-  cp.OpaqueObject = function (diffuse) { this.diffuse = diffuse }
+  cp.OpaqueObject = function (options) { extend(this, cp.OpaqueObject.defaults, options); }
+  cp.OpaqueObject.defaults = { diffuse: 0.8 };
   cp.OpaqueObject.prototype.cast = function (ctx, origin, bounds) { }
   cp.OpaqueObject.prototype.path = function (ctx) { }
   cp.OpaqueObject.prototype.bounds = function () { return { topleft: new cp.Vec2(), bottomright: new cp.Vec2() } }
@@ -95,19 +151,16 @@
    * @arg radius: the radius size of the light
    * @arg samples: the number of light points which will be used for shadow projection (points are placed on the radius circle)
    */
-  cp.Lamp = function (position, distance, diffuse, color, radius, samples, angle, roughness) {
-    this.position = position || new cp.Vec2();
-    this.distance = distance || 100;
-    this.diffuse = diffuse || 0.8;
-    this.color = color || 'rgba(250,220,150,0.8)';
-    this.distance = distance || 100;
-    this.radius = radius || 0;
-    this.samples = samples || 1;
-    this.angle = angle || 0;
-    this.roughness = roughness || 0;
-  }
-
+  cp.Lamp = function (options) { extend(this, cp.Light.defaults, cp.Lamp.defaults, options); }
   inherit(cp.Lamp, cp.Light);
+
+  cp.Lamp.defaults = {
+    color: 'rgba(250,220,150,0.8)',
+    radius: 0,
+    samples: 1,
+    angle: 0,
+    roughness: 0
+  };
 
   cp.Lamp.prototype._getHashCache = function () {
     return [this.color, this.distance, this.diffuse, this.angle, this.roughness].toString();
@@ -119,10 +172,10 @@
 
   cp.Lamp.prototype._getGradientCache = function (center) {
     var hashcode = this._getHashCache();
-    if (this.cacheHashcode == hashcode) {
-      return this.gradientCache;
+    if (this._cacheHashcode == hashcode) {
+      return this._gcache;
     }
-    this.cacheHashcode = hashcode;
+    this._cacheHashcode = hashcode;
     var d = Math.round(this.distance);
     var D = d*2;
     var cache = createCanvasAnd2dContext(D, D);
@@ -131,7 +184,7 @@
     g.addColorStop( 1, cp.getRGBA(this.color, 0) );
     cache.ctx.fillStyle = g;
     cache.ctx.fillRect(0, 0, cache.w, cache.h);
-    return this.gradientCache = cache;
+    return this._gcache = cache;
   }
 
   cp.Lamp.prototype.render = function (ctx) {
@@ -221,11 +274,13 @@
 
   // OBJECTS
 
-  cp.DiscObject = function (center, radius) {
-    this.center = center;
-    this.radius = radius;
-  }
+  cp.DiscObject = function (options) { extend(this, cp.OpaqueObject.defaults, cp.DiscObject.defaults, options); }
   inherit(cp.DiscObject, cp.OpaqueObject);
+
+  cp.DiscObject.defaults = {
+    center: new cp.Vec2(),
+    radius: 20
+  };
 
   cp.DiscObject.prototype.cast = function (ctx, origin, bounds) {
     // FIXME: the current method is wrong... TODO must see http://en.wikipedia.org/wiki/Tangent_lines_to_circles
@@ -278,11 +333,13 @@
    * PolygonObject - Define an opaque polygon object
    * @arg points: array of Vec2, points of the polygon
    */
-  cp.PolygonObject = function (points) {
-    this.points = points || [];
-  }
+  cp.PolygonObject = function (options) { extend(this, cp.OpaqueObject.defaults, cp.PolygonObject.defaults, options); }
   inherit(cp.PolygonObject, cp.OpaqueObject);
-  
+
+  cp.PolygonObject.defaults = {
+    points: []
+  };
+
   cp.PolygonObject.prototype.bounds = function () {
     var topleft = this.points[0].copy();
     var bottomright = topleft.copy();
@@ -369,50 +426,62 @@
     }
   }
 
-  cp.TriangleObject = function (a, b, c) {
-    this.__super.constructor.call(this, [a, b, c]);
-  }
-  inherit(cp.TriangleObject, cp.PolygonObject);
 
-  cp.RectangleObject = function (topleft, bottomright) {
-    var a = topleft;
-    var b = new cp.Vec2(bottomright.x, topleft.y);
-    var c = bottomright;
-    var d = new cp.Vec2(topleft.x, bottomright.y);
-    this.__super.constructor.call(this, [a, b, c, d]);
+  cp.RectangleObject = function (options) {
+    extend(this, cp.OpaqueObject.defaults, cp.PolygonObject.defaults, cp.RectangleObject.defaults, options);
+    this.syncFromTopleftBottomright();
   }
   inherit(cp.RectangleObject, cp.PolygonObject);
+
+  cp.RectangleObject.defaults = { topleft: new cp.Vec2(), bottomright: new cp.Vec2() };
+
+  cp.RectangleObject.prototype.syncFromTopleftBottomright = function () {
+    var a = this.topleft;
+    var b = new cp.Vec2(this.bottomright.x, this.topleft.y);
+    var c = this.bottomright;
+    var d = new cp.Vec2(this.topleft.x, this.bottomright.y);
+    this.points = [a, b, c, d];
+  }
 
   cp.RectangleObject.prototype.fill = function (ctx) {
     var x = this.points[0].x, y = this.points[0].y;
     ctx.rect(x, y, this.points[2].x-x, this.points[2].y-y);
   }
   
-  cp.LineObject = function (a, b) {
-    this.__super.constructor.call(this, [a, b]);
+  cp.LineObject = function (options) {
+    extend(this, cp.OpaqueObject.defaults, cp.PolygonObject.defaults, cp.LineObject.defaults, options);
+    this.syncFromAB();
   }
   inherit(cp.LineObject, cp.PolygonObject);
+
+  cp.LineObject.defaults = { a: new cp.Vec2(), b: new cp.Vec2() };
+  cp.LineObject.prototype.syncFromAB = function () {
+    this.points = [this.a, this.b];
+  }
 
   /**
    * Lighting - Provide a lighting effect which projects shadows on opaque objects
    * @arg light: a Light object which project light in the scene
    * @arg objects: all opaque objects which stop the light and create shadows
    */
-  cp.Lighting = function (light, objects) {
-    this.light = light;
-    this.objects = objects || [];
-
-    this.cache = null;
+  cp.Lighting = function (opts) {
+    extend(this, cp.Lighting.defaults, opts);
   }
+
+  cp.Lighting.defaults = {
+    light: new cp.Light(),
+    objects: []
+  }
+
   cp.Lighting.prototype.createCache = function (w, h) {
-    this.cache = createCanvasAnd2dContext(w,h);
-    this.castcache = createCanvasAnd2dContext(w,h);
+    this._cache = createCanvasAnd2dContext(w,h);
+    this._castcache = createCanvasAnd2dContext(w,h);
   }
 
   cp.Lighting.prototype.cast = function (ctxoutput) {
     var light = this.light;
     var n = light.samples;
-    var c = this.castcache;
+    var c = this._castcache;
     var ctx = c.ctx;
     ctx.clearRect(0, 0, c.w, c.h);
     // Draw shadows for each light sample and objects
@@ -445,9 +514,9 @@
   }
 
   cp.Lighting.prototype.compute = function (w,h) {
-    if (!this.cache || this.cache.w != w || this.cache.h != h)
+    if (!this._cache || this._cache.w != w || this._cache.h != h)
       this.createCache(w, h);
-    var ctx = this.cache.ctx;
+    var ctx = this._cache.ctx;
     var light = this.light;
     ctx.save();
     ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height);
@@ -460,21 +529,25 @@
     ctx.restore();
   }
   cp.Lighting.prototype.render = function (ctx) {
-    ctx.drawImage(this.cache.canvas, 0, 0);
+    ctx.drawImage(this._cache.canvas, 0, 0);
   }
 
   /**
    * DarkMask - Provide a dark mask which is transparent in lights
    */
-  cp.DarkMask = function (lights, color) {
-    this.lights = lights || [];
-    this.color = color || 'rgba(0,0,0,0.9)';
+  cp.DarkMask = function (options) {
+    extend(this, cp.DarkMask.defaults, options);
+  }
+
+  cp.DarkMask.defaults = {
+    lights: [],
+    color: 'rgba(0,0,0,0.9)'
   }
 
   cp.DarkMask.prototype.compute = function (w,h) {
-    if (!this.cache || this.cache.w != w || this.cache.h != h)
-      this.cache = createCanvasAnd2dContext(w,h);
-    var ctx = this.cache.ctx;
+    if (!this._cache || this._cache.w != w || this._cache.h != h)
+      this._cache = createCanvasAnd2dContext(w,h);
+    var ctx = this._cache.ctx;
     ctx.save();
     ctx.clearRect(0, 0, w, h);
     ctx.fillStyle = this.color;
@@ -486,60 +559,10 @@
     ctx.restore();
   }
   cp.DarkMask.prototype.render = function (ctx) {
-    ctx.drawImage(this.cache.canvas, 0, 0);
+    ctx.drawImage(this._cache.canvas, 0, 0);
   }
 
-  /**
-   * Vec2 - A 2D Vector with some operations on it
-   */
-  cp.Vec2 = function (x, y) {
-    this.x = x||0;
-    this.y = y||0;
-  }
-
-  cp.Vec2.prototype.toJson = function () {
-    return { x: this.x, y: this.y };
-  }
-
-  cp.Vec2.prototype.copy = function () {
-    return new cp.Vec2(this.x, this.y);
-  }
-  cp.Vec2.prototype.dot = function (v) {
-    return v.x*this.x + v.y*this.y;
-  }
-  cp.Vec2.prototype.sub = function (v) {
-    return new cp.Vec2(this.x-v.x, this.y-v.y);
-  }
-  cp.Vec2.prototype.add = function (v) {
-    return new cp.Vec2(this.x+v.x, this.y+v.y);
-  }
-  cp.Vec2.prototype.mul = function (n) {
-    return new cp.Vec2(this.x*n, this.y*n);
-  }
-  cp.Vec2.prototype.inv = function () {
-    return this.mul(-1);
-  }
-  cp.Vec2.prototype.dist2 = function (v) {
-    var dx = this.x - v.x;
-    var dy = this.y - v.y;
-    return dx*dx + dy*dy;
-  }
-  cp.Vec2.prototype.normalize = function () {
-    var length = Math.sqrt(this.length2());
-    return new cp.Vec2(this.x/length, this.y/length);
-  }
-  cp.Vec2.prototype.length2 = function (v) {
-    return this.x*this.x + this.y*this.y;
-  }
-  cp.Vec2.prototype.toString = function () {
-    return this.x+","+this.y;
-  }
-  cp.Vec2.prototype.inBound = function (topleft, bottomright) {
-    return (topleft.x < this.x && this.x < bottomright.x
-         && topleft.y < this.y && this.y < bottomright.y);
-  }
-
-  // UTILS & CONSTANTS
+   // UTILS & CONSTANTS
 
   var GOLDEN_ANGLE = Math.PI * (3 - Math.sqrt(5));
   var _2PI = 2*Math.PI;
@@ -601,6 +624,18 @@
       };
     }
   }());
+
+  function extend (extending /* , arg1, arg2, ... */) {
+    for(var a=1; a<arguments.length; ++a) {
+      var source = arguments[a];
+      if (source) {
+        for (var prop in source)
+          if (source[prop] !== void 0)
+            extending[prop] = source[prop];
+      }
+    }
+  }
+  illuminated.extend = extend;
 
   function emptyFn() {};
   function inherit (cls, base) { // from Box2d

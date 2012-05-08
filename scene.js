@@ -24,11 +24,11 @@ function Scene (ctx, lights, objects, globals) {
   this.objects = objects||[];
 
   this.lightings = [];
-  this.darkmask = new DarkMask(this.lights, globals.maskcolor);
+  this.darkmask = new DarkMask({ lights: this.lights, color: globals.maskcolor });
   this.darkmask.compute(ctx.canvas.width, ctx.canvas.height);
   for (var l=0; l<this.lights.length; ++l) {
     var light = this.lights[l];
-    var lighting = new Lighting(light, this.objects);
+    var lighting = new Lighting({ light: light, objects: this.objects });
     this.lightings.push(lighting);
     lighting.compute(ctx.canvas.width, ctx.canvas.height);
     this.bindLight(light);
@@ -109,7 +109,7 @@ Scene.prototype.bindLight = function (light) {
 
 Scene.prototype.addLight = function (light) {
   this.lights.push(light);
-  var l = new Lighting(light, this.objects, 0.2);
+  var l = new Lighting({ light: light, objects: this.objects, diffuse: 0.2 });
   this.lightings.push(l);
   this.bindLight(light);
   $(light).change();
@@ -125,14 +125,12 @@ Scene.prototype.indexOfLightingForLight = function (light) {
 }
 
 Scene.prototype.removeLight = function (light) {
-  console.log(this.lights.length);
   var i = this.lights.indexOf(light);
   if (i!=-1) this.lights.splice(i, 1);
   i = this.indexOfLightingForLight(light);
   if (i!=-1) this.lightings.splice(i, 1);
   this.darkmask.compute(this.ctx.canvas.width, this.ctx.canvas.height);
   this.triggerChange();
-  console.log(this.lights.length);
 }
 
 Scene.prototype.removeObject = function (obj) {

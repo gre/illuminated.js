@@ -79,6 +79,7 @@ function init () {
     }
   }
   scene = Scene.fromJson(ctx, obj);
+  window.scene = scene;
 
   scene.lights.forEach(function(item){
     items.push(item);
@@ -103,12 +104,15 @@ function createInstanceFor (cl) {
     case "Lamp":
       return getRandomLight();
     case "DiscObject":
-      return new DiscObject(new Vec2(), Math.round(30+10*Math.random()));
+      return new DiscObject({ 
+        center: new Vec2(), 
+        radius: Math.round(30+10*Math.random())
+      });
     case "RectangleObject":
       var dx = 30+Math.round(Math.random()*20);
       var dy = 20+Math.round(Math.random()*10);
       var d = new Vec2(dx, dy);
-      return new RectangleObject(new Vec2().sub(d), new Vec2().add(d));
+      return new RectangleObject({ topleft: new Vec2().sub(d), bottomright: new Vec2().add(d) });
   }
 }
 
@@ -179,6 +183,9 @@ function bind () {
     var target = $(e.target);
     if (target.is("canvas")) {
       e.preventDefault();
+      if (inBound && !buildPoly) {
+        noSelection();
+      }
     }
     if (target.is("#toolbox a img")) {
       e.preventDefault();
@@ -255,9 +262,7 @@ function bind () {
         }
       }
     }
-    if (inBound && !positionChanged && !item && !buildPoly) {
-      noSelection();
-    }
+ 
     if (!mousedownItemNew || oldmousedown || positionChanged) {
       mousedown = null;
       mousedownItem = null;
@@ -282,8 +287,10 @@ function bind () {
         setSelection(null);
       break;
       case 8: case 46: // DELETE
-        e.preventDefault();
-        removeSelection();
+        if (currentSelect != -1) {
+          e.preventDefault();
+          removeSelection();
+        }
       break;
       case 9: // TAB
       if (!e.ctrlKey && !e.metaKey) {
@@ -317,14 +324,12 @@ function getRandomLightColor () {
 function getRandomLight () {
   var size = 2+Math.round(Math.random()*1);
   var samples = 3*size;
-  return new illuminated.Lamp(
-    new Vec2(),
-    Math.round(120+60*Math.random()),
-    0.8,
-    getRandomLightColor(),
-    size,
-    samples
-  );
+  return new Lamp({
+    distance: Math.round(120+60*Math.random()),
+    color: getRandomLightColor(),
+    radius: size,
+    samples: samples
+  });
 }
 
 function syncControls (item) {
@@ -390,7 +395,6 @@ function removeSelection () {
 function duplicateSelection () {
   var item = items[currentSelect];
   item = cloneItem(item);
-  console.log(item);
   items.push(item);
   if (item instanceof OpaqueObject)
     scene.addObject(item);
@@ -404,17 +408,13 @@ function duplicateSelection () {
 
 function cloneItem (o) {
   if (o instanceof Lamp) {
-    return new Lamp(o.position.copy(), o.distance, o.diffuse, o.color, o.radius, o.samples, o.angle, o.roughness);
+    return Lamp.fromJson(o.toJson());
   }
   else if (o instanceof PolygonObject) {
-    var points = [];
-    for (var i=0; i<o.points.length; ++i) {
-      points.push(o.points[i].copy());
-    }
-    return new PolygonObject(points);
+    return PolygonObject.fromJson(o.toJson());
   }
   else if (o instanceof DiscObject) {
-    return new DiscObject(o.center.copy(), o.radius);
+    return DiscObject.fromJson(o.toJson());
   }
 }
 
@@ -469,7 +469,7 @@ function addPolygonPoint (p) {
   else {
     if (buildPoly[0].dist2(p) < DIST_CLOSE*DIST_CLOSE) {
       if (buildPoly.length >= 2 && buildPoly[0].dist2(buildPoly[1])>=DIST_CLOSE*DIST_CLOSE) {
-        var o = new PolygonObject(buildPoly);
+        var o = new PolygonObject({ points: buildPoly });
         scene.addObject(o);
         items.push(o);
         setSelection(o);
