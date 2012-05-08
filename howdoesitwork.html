@@ -1,0 +1,201 @@
+<!DOCTYPE HTML>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Illuminated.js - How does it work?</title>
+  <script type="text/javascript" src="src/illuminated.js"></script>
+  <script type="text/javascript" src="requestAnimFrame.js"></script>
+  <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js" type="text/javascript"></script>
+  <style type="text/css">
+  table, tr, td {
+    border-collapse: collapse;
+    border: 0;
+    vertical-align: top;
+  }
+  table {
+    width: 400px;
+  }
+  canvas {
+    background: url("alpha_mask.png") repeat;
+  }
+  table tr:nth-child(2n+1) {
+    background: #eee;
+  }
+  canvas {
+    display: block;
+  }
+  </style>
+</head>
+<body>
+  <table>
+  	<tr>
+  		<td>
+        <h2>Background</h2>
+	      <canvas width="400" height="300" id="bg"></canvas>
+      </td>
+      <td>
+      </td>
+  	</tr>
+  	<tr>
+  		<td>
+        <h2>White objects</h2>
+	      <canvas width="400" height="300" id="whiteobj"></canvas>
+      </td>
+      <td>
+      </td>
+  	</tr>
+  	<tr>
+  		<td>
+        <h2>Light shadow casting</h2>
+	      <canvas width="400" height="300" id="lightcast"></canvas>
+      </td>
+      <td>
+      </td>
+  	</tr>
+  	<tr>
+  		<td>
+        <h2>Light rendering</h2>
+	      <canvas width="400" height="300" id="lightonly"></canvas>
+      </td>
+      <td>
+      </td>
+  	</tr>
+  	<tr>
+  		<td>
+        <h2>Light rendering with shadows</h2>
+        <p><code>globalCompositeOperation="destination-out"</code> is used for removing shadow parts.</p>
+	      <canvas width="400" height="300" id="light"></canvas>
+      </td>
+      <td>
+      </td>
+  	</tr>
+  	<tr>
+  		<td>
+        <h2>Dark mask</h2>
+	      <canvas width="400" height="300" id="mask"></canvas>
+      </td>
+      <td>
+      </td>
+  	</tr>
+  	<tr>
+  		<td>
+        <h2>Result</h2>
+	      <canvas width="400" height="300" id="all"></canvas>
+      </td>
+      <td>
+      </td>
+  	</tr>
+  </table>
+
+  <script type="text/javascript">(function(){
+  var Lamp = illuminated.Lamp
+  , RectangleObject = illuminated.RectangleObject
+  , DiscObject = illuminated.DiscObject
+  , Vec2 = illuminated.Vec2
+  , Lighting = illuminated.Lighting
+  , DarkMask = illuminated.DarkMask
+  ;
+
+  var canvas = document.getElementById("all");
+  var ctx = canvas.getContext("2d");
+
+  var canvaswhite = document.getElementById("whiteobj");
+  var ctxwhite = canvaswhite.getContext("2d");
+
+  var canvasbg = document.getElementById("bg");
+  var ctxbg = canvasbg.getContext("2d");
+
+  var canvaslight = document.getElementById("light");
+  var ctxlight = canvaslight.getContext("2d");
+
+  var canvaslightonly = document.getElementById("lightonly");
+  var ctxlightonly = canvaslightonly.getContext("2d");
+
+  var canvaslightcast = document.getElementById("lightcast");
+  var ctxlightcast = canvaslightcast.getContext("2d");
+
+  var canvasmask = document.getElementById("mask");
+  var ctxmask = canvasmask.getContext("2d");
+
+  var light = new Lamp({
+    color: "#fda",
+    position: new Vec2(100, 250),
+    distance: 150,
+    radius: 10,
+    samples: 50
+  });
+  var disc = new DiscObject({ center: new Vec2(100, 100), radius: 50 });
+  var rect = new RectangleObject({ topleft: new Vec2(200, 200), bottomright: new Vec2(350, 250) });
+
+  var objects = [ disc, rect ];
+
+  var lighting = new Lighting({
+    light: light,
+    objects: objects
+  });
+
+  var darkmask = new DarkMask({ lights: [light] });
+
+  var startAt = +new Date();
+  var lastd;
+
+  function render () {
+    var t = +new Date() - startAt;
+    var d = Math.round(100*Math.cos(t/1000));
+    if (d == lastd) return; // nothing has changed
+    lastd = d;
+
+    light.position = new Vec2(200-d, 150+d);
+
+    lighting.compute(canvas.width, canvas.height);
+    darkmask.compute(canvas.width, canvas.height);
+
+    ctxmask.clearRect(0, 0, canvas.width, canvas.height);
+    ctxlightcast.clearRect(0, 0, canvas.width, canvas.height);
+    ctxlight.clearRect(0, 0, canvas.width, canvas.height);
+    ctxlightonly.clearRect(0, 0, canvas.width, canvas.height);
+    ctxwhite.clearRect(0, 0, canvas.width, canvas.height);
+
+    ctx.fillStyle = "black";
+    ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+    ctxbg.fillRect(0, 0, canvas.width, canvas.height);
+
+    ctx.fillStyle = "white";
+    ctx.beginPath();
+    disc.path(ctx);
+    ctx.fill();
+    ctx.beginPath();
+    rect.path(ctx);
+    ctx.fill();
+
+    ctxwhite.fillStyle = "white";
+    ctxwhite.beginPath();
+    disc.path(ctxwhite);
+    ctxwhite.fill();
+    ctxwhite.beginPath();
+    rect.path(ctxwhite);
+    ctxwhite.fill();
+
+    ctx.globalCompositeOperation = "lighter";
+    lighting.render(ctx);
+
+    lighting.render(ctxlight);
+
+    light.render(ctxlightonly);
+
+    lighting.cast(ctxlightcast);
+
+    ctx.globalCompositeOperation = "source-over";
+    darkmask.render(ctx);
+    darkmask.render(ctxmask);
+  }
+
+  requestAnimFrame(function loop(){
+    requestAnimFrame(loop, canvas);
+    render();
+  }, canvas);
+}());</script>
+
+</body>
+</html>
