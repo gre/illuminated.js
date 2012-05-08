@@ -56,6 +56,15 @@
   	</tr>
   	<tr>
   		<td>
+        <h2>Using soft shadows with sampling</h2>
+	      <canvas width="400" height="300" id="demo1bis"></canvas>
+      </td>
+      <td>
+        <pre id="codedemo1bis"></pre>
+      </td>
+  	</tr>
+  	<tr>
+  		<td>
         <h2>Add one light</h2>
 	      <canvas width="400" height="300" id="demo2"></canvas>
       </td>
@@ -97,9 +106,7 @@
 
   var light = new Lamp({
     position: new Vec2(200, 150),
-    distance: 200,
-    radius: 10,
-    samples: 20
+    distance: 200
   });
   var disc = new DiscObject({ 
     center: new Vec2(100, 100), 
@@ -122,6 +129,47 @@
 //!STOP
 }());</script>
 
+<script type="text/javascript" data-codeTarget="#codedemo1bis">(function(){
+  var Lamp = illuminated.Lamp
+  , RectangleObject = illuminated.RectangleObject
+  , DiscObject = illuminated.DiscObject
+  , Vec2 = illuminated.Vec2
+  , Lighting = illuminated.Lighting
+  ;
+
+  var canvas = document.getElementById("demo1bis");
+  var ctx = canvas.getContext("2d");
+//!START
+// ...
+
+  var light = new Lamp({
+    position: new Vec2(200, 150),
+    distance: 200,
+    radius: 10,
+    samples: 50
+  });
+
+// ...
+//!STOP
+  var disc = new DiscObject({ 
+    center: new Vec2(100, 100), 
+    radius: 30 
+  });
+  var rect = new RectangleObject({ 
+    topleft: new Vec2(250, 200), 
+    bottomright: new Vec2(350, 250) 
+  });
+
+  var lighting = new Lighting({
+    light: light,
+    objects: [ disc, rect ]
+  });
+  lighting.compute(canvas.width, canvas.height);
+  ctx.fillStyle = "black";
+  ctx.fillRect(0, 0, canvas.width, canvas.height);
+  lighting.render(ctx);
+}());</script>
+
   <script type="text/javascript" data-codeTarget="#codedemo2">(function(){
   var Lamp = illuminated.Lamp
   , RectangleObject = illuminated.RectangleObject
@@ -136,12 +184,16 @@
 
   var light1 = new Lamp({
     position: new Vec2(100, 250),
-    distance: 200
+    distance: 200,
+    radius: 10,
+    samples: 50
   });
   var light2 = new Lamp({
     position: new Vec2(300, 50),
     color: '#CCF',
-    distance: 200
+    distance: 200,
+    radius: 10,
+    samples: 50
   });
   var disc = new DiscObject({ center: new Vec2(100, 100), radius: 30 });
   var rect = new RectangleObject({ topleft: new Vec2(250, 200), bottomright: new Vec2(350, 250) });
@@ -183,12 +235,16 @@
 
   var light1 = new Lamp({
     position: new Vec2(100, 250),
-    distance: 200
+    distance: 200,
+    radius: 10,
+    samples: 50
   });
   var light2 = new Lamp({
     position: new Vec2(300, 50),
     color: '#CCF',
-    distance: 200
+    distance: 200,
+    radius: 10,
+    samples: 50
   });
   var disc = new DiscObject({ center: new Vec2(100, 100), radius: 30 });
   var rect = new RectangleObject({ topleft: new Vec2(250, 200), bottomright: new Vec2(350, 250) });
@@ -245,12 +301,16 @@
 
   var light1 = new Lamp({
     position: new Vec2(100, 250),
-    distance: 200
+    distance: 200,
+    radius: 10,
+    samples: 50
   });
   var light2 = new Lamp({
     position: new Vec2(300, 50),
     color: '#CCF',
-    distance: 200
+    distance: 200,
+    radius: 10,
+    samples: 50
   });
   var disc = new DiscObject({ center: new Vec2(100, 100), radius: 30 });
   var rect = new RectangleObject({ topleft: new Vec2(250, 200), bottomright: new Vec2(350, 250) });
