@@ -174,7 +174,7 @@ function bind () {
     canvasHashFocus = true;
   });
 
-  window.addEventListener("mousedown", function (e) {
+  $(window).bind("mousedown", function (e) {
     mousedownItemNew = false;
     oldmousedown = mousedown;
     var p = positionWithE(e, canvas);
@@ -217,7 +217,7 @@ function bind () {
     dirty = true;
   });
 
-  window.addEventListener("mousemove", function (e) {
+  $(window).bind("mousemove", function (e) {
     var p = positionWithE(e, canvas);
     p = mousep = new Vec2(p.x, p.y);
     var inBound = p.inBound(new Vec2(0,0), new Vec2(canvas.width, canvas.height));
@@ -246,7 +246,7 @@ function bind () {
     dirty = true;
   });
 
-  window.addEventListener("mouseup", function (e) {
+  $(window).bind("mouseup", function (e) {
     var p = positionWithE(e, canvas);
     p = new Vec2(p.x, p.y);
     var positionChanged = mousedown && (p.dist2(mousedown) != 0);
@@ -271,7 +271,7 @@ function bind () {
   });
 
 
-  window.addEventListener("keydown", function (e) {
+  $(window).bind("keydown", function (e) {
     if (!canvasHashFocus) return;
     switch(String.fromCharCode(e.which).toUpperCase()) {
       case "D":
