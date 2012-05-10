@@ -2,7 +2,7 @@
 body {
   background: #eee;
   color: #000;
-  font-family: sans-serif;
+  font-family: 'Averia Gruesa Libre', sans-serif;
 }
 
 * {
@@ -18,6 +18,15 @@ body {
   -webkit-user-select: none; 
   -o-user-select: none; 
   user-select: none; 
+}
+
+#shareyourscene {
+  height: 40px;
+  position: relative;
+}
+#shareyourscene img {
+  position: absolute;
+  left: -45px;
 }
 
 #progressContainer {
@@ -153,10 +162,10 @@ body {
   width: 100%;
 }
 
-header {
+header h1 {
+  font-size: 3em;
 } 
 h1, h2, h3 {
-  font-family: monospace; 
   text-shadow: 1px 1px 0px #FFF;
 }
 
@@ -176,19 +185,18 @@ hr {
   border-bottom: solid 2px #ddd;
 }
 footer a {
-  color: #593;
-  border-color: #593;
+  color: #444;
+  border-color: #444;
   text-shadow: 1px 1px 0px #FFF;
   font-size: 1.5em;
   text-decoration: none;
   letter-spacing: 0.2em;
   padding-left: 0.2em;
-  border-top: solid 2px;
   border-bottom: solid 2px;
 }
 footer a:hover {
-  color: #993;
-  border-color: #993;
+  color: #666;
+  border-color: #666;
 }
 
 .sp-replacer {

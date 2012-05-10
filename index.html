@@ -3,6 +3,7 @@
   <head>
     <meta charset="UTF-8">
     <title>Illuminated.js - 2D lights and shadows rendering engine with HTML5 Canvas</title>
+    <link href='http://fonts.googleapis.com/css?family=Averia+Gruesa+Libre' rel='stylesheet' type='text/css'>
     <link rel="stylesheet" href="demo-style.css" />
     <link rel="stylesheet" href="spectrum.css" />
     <script type="text/javascript" src="requestAnimFrame.js"></script>
@@ -33,6 +34,10 @@
       <hr />
       <h3>The editor*: create your scene and discover Illuminated.js features</h3>
 
+      <div id="shareyourscene">
+          <img src="shareyourscene.png" alt="Share your scene" />
+      </div>
+
       <section id="demo">
         <div id="share">
           <!-- AddThis Button BEGIN -->
@@ -46,7 +51,6 @@
           </div> 
           <script type="text/javascript" src="http://s7.addthis.com/js/250/addthis_widget.js#pubid=ra-4dc65c23519c9300"></script>
           <!-- AddThis Button END -->
-        <div class="help" style="float:left;padding: 1px 3px" data-hoverText="Share your scene with social networks or simply bookmark the current URL.">?</div>
         </div>
         <canvas id="viewport" width="600" height="400"></canvas>
       </section>
@@ -203,13 +207,13 @@
       <p style="text-align: right; font-style: italic">* a recent browser like Chrome is recommended.</p>
 
       <section>
-        <h2>Contributions and donations</h2>
+        <h2>Contribute</h2>
         <p>This is completely free and open-source but you can encourage and contribute to this work.</p>
         <p>You found a bug, you want to improve the library, or you simply want to give feedbacks?</p>
         <p><a href="http://github.com/gre/illuminated.js">the github project</a> / <a href="mailto:renaudeau.gaetan@gmail.com">my mail</a></p>
-        <a class="FlattrButton" style="display:none;" href="http://demo.greweb.fr/illuminated.js/"></a>
 
-        <h3>Give me a beer</h3>
+        <h2>Give me a beer!</h2>
+
 <form action="https://www.paypal.com/cgi-bin/webscr" method="post">
 <input type="hidden" name="cmd" value="_s-xclick">
 <input type="hidden" name="encrypted" value="-----BEGIN PKCS7-----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-----END PKCS7-----
@@ -217,13 +221,14 @@
 <input type="image" src="https://www.paypalobjects.com/en_US/i/btn/btn_donate_LG.gif" border="0" name="submit" alt="PayPal - The safer, easier way to pay online!">
 <img alt="" border="0" src="https://www.paypalobjects.com/fr_FR/i/scr/pixel.gif" width="1" height="1">
 </form>
+        <a class="FlattrButton" style="display:none;" href="http://demo.greweb.fr/illuminated.js/"></a>
           
       </section>
 
       <footer>
         <p><strong>For more infos please</strong></p>
         <p><a href="http://blog.greweb.fr/?p=1589">Read this article</a></p>
-        <p>containing tutorials, documentations and code review</p>
+        <p>containing tutorials and documentations</p>
         <hr />
         <p>2012 - greweb.fr</p>
       </footer>
