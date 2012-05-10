@@ -183,19 +183,23 @@ hr {
   border: none;
   border-bottom: solid 2px #ddd;
 }
-footer a {
+
+a {
   color: #444;
   border-color: #444;
+  text-decoration: none;
+}
+a:hover {
+  color: #666;
+  border-color: #666;
+}
+
+footer a {
   text-shadow: 1px 1px 0px #FFF;
   font-size: 1.5em;
-  text-decoration: none;
   letter-spacing: 0.2em;
   padding-left: 0.2em;
   border-bottom: solid 2px;
-}
-footer a:hover {
-  color: #666;
-  border-color: #666;
 }
 
 .sp-replacer {
