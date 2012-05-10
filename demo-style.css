@@ -227,7 +227,7 @@ div.help {
   opacity: 0.9;
   border-radius: 3px;
   max-width: 200px;
-  font-size: 10px;
+  font-size: 12px;
   z-index: 1000;
 }
 .hoverPopup em {
