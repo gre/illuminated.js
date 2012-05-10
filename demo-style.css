@@ -20,15 +20,6 @@ body {
   user-select: none; 
 }
 
-#shareyourscene {
-  height: 40px;
-  position: relative;
-}
-#shareyourscene img {
-  position: absolute;
-  left: -45px;
-}
-
 #progressContainer {
   text-align: center; 
 } 
@@ -46,6 +37,14 @@ body {
   width: 600px;
   margin: 0;
   padding: 0;
+  position: relative;
+}
+
+#shareyourscene {
+  position: absolute;
+  left: -45px;
+  top: -35px;
+  z-index: -1;
 }
 
 #toolbox {
@@ -224,7 +223,8 @@ div.help {
   opacity: 0.9;
   border-radius: 3px;
   max-width: 200px;
-  font-size: 12px;
+  font-size: 10px;
+  z-index: 1000;
 }
 .hoverPopup em {
   color: #fff;
