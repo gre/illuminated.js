@@ -25,10 +25,6 @@
     this.y = y||0;
   }
 
-  cp.Vec2.prototype.toJson = function () {
-    return { x: this.x, y: this.y };
-  }
-
   cp.Vec2.prototype.copy = function () {
     return new cp.Vec2(this.x, this.y);
   }
