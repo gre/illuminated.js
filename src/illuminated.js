@@ -1,6 +1,8 @@
 /**!
  * Illuminated.js - A 2D lights and shadows rendering engine for HTML5 applications and games.
+ *
  * Copyright (C) 2012 Gaëtan Renaudeau <renaudeau.gaetan@gmail.com>
+ * http://greweb.fr/illuminated.js/
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
