@@ -174,6 +174,10 @@ function bind () {
     canvasHashFocus = true;
   });
 
+  $("#toolbox a").click(function(e){
+    e.preventDefault();
+  });
+
   $(window).bind("mousedown", function (e) {
     mousedownItemNew = false;
     oldmousedown = mousedown;
