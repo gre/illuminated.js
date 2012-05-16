@@ -1,0 +1,172 @@
+<!DOCTYPE HTML>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Illuminated.js + Parcycle = Flame and Shadows real-time effects</title>
+    <link href='http://fonts.googleapis.com/css?family=Averia+Gruesa+Libre' rel='stylesheet' type='text/css'>
+  <link rel="stylesheet" href="../demo-style.css" />
+  <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js" type="text/javascript"></script>
+  <script type="text/javascript" src="../src/illuminated.js"></script>
+  <script type="text/javascript" src="../requestAnimFrame.js"></script>
+  <script src="parcycle.js" type="text/javascript"></script>
+</head>
+<body>
+  <div id="wrapper">
+    <header>
+      <h1>Illuminated.js + Parcycle</h1>
+      <h2>Flame and Shadows real-time effects</h2>
+    </header>
+    <hr />
+
+    <section id="demo">
+    <canvas width="680" height="400" id="viewport"></canvas>
+    </section>
+  </div>
+
+  <script type="text/javascript">(function(){
+    var Lamp = illuminated.Lamp
+    , RectangleObject = illuminated.RectangleObject
+    , DiscObject = illuminated.DiscObject
+    , PolygonObject = illuminated.PolygonObject
+    , Vec2 = illuminated.Vec2
+    , Lighting = illuminated.Lighting
+    , DarkMask = illuminated.DarkMask
+    ;
+
+    var canvas = $('#viewport')[0];
+    var ctx = canvas.getContext("2d");
+
+    var x, y;
+
+    var pe;
+
+    var PARTICLE_SIZE = 1.1;
+    var PARTICLE_LIFESPAN = 14;
+    var camerascale = 40;
+
+    var startTime = +new Date();
+
+    var light = new Lamp({
+      color: 'rgba(255, 220, 150, 0.6)',
+      distance: 300
+    });
+
+    var objects = [
+      new RectangleObject({ topleft: new Vec2(60, 150), bottomright: new Vec2(140, 230) }),
+      new DiscObject({ center: new Vec2(550, 200), radius: 50 }),
+      new DiscObject({ center: new Vec2(440, 130), radius: 20 }),
+      P=new PolygonObject({ "points": $.map([{"x":287,"y":132},{"x":245,"y":90},{"x":269,"y":146},{"x":218,"y":159},{"x":270,"y":171},{"x":252,"y":214},{"x":286,"y":181},{"x":319,"y":224},{"x":310,"y":177},{"x":367,"y":183},{"x":309,"y":157},{"x":342,"y":86}], function(p){ return new Vec2(p.x, p.y) }) })
+    ];
+
+    var lighting = new Lighting({
+      light: light,
+      objects: objects
+    });
+
+    var darkmask = new DarkMask({ lights: [light], color: 'rgba(0,0,0,0.6)' });
+
+    function updatePosition () {
+      y = 300;
+      x = (canvas.width-camerascale*1.2)*0.5*(1+Math.sin((+new Date() - startTime)/1500));
+      light.position.x = x + 0.65*camerascale;
+      light.position.y = y + 0.55*camerascale;
+    }
+
+    function initParticles () {
+      pe && pe.stopParticleEmitter();
+      pe = new cParticleEmitter();
+      pe.maxParticles = 60;
+      pe.lifeSpan = PARTICLE_LIFESPAN;
+      pe.lifeSpanRandom = 1;
+      pe.position.x = -1000;
+      pe.position.y = -1000;
+      pe.startColour = [ 240, 208, 68, 1 ];
+      pe.startColourRandom = [ 40, 40, 60, 0 ];
+      pe.finishColour = [ 245, 35, 0, 0 ];  
+      pe.finishColourRandom = [ 20, 20, 20, 0 ];
+      pe.gravity = { x: 0, y: -0.02*camerascale };
+      pe.size = PARTICLE_SIZE * camerascale;
+      pe.sizeRandom = 0.4*camerascale;
+      pe.speed = 0.01*camerascale;
+      pe.speedRandom = 0.005*camerascale;
+      pe.sharpness = .3*camerascale;
+      pe.sharpnessRandom = .1*camerascale;
+      pe.positionRandom = { x: 0.1*camerascale, y: 0.1*camerascale };
+      pe.init();
+
+      // OVERRIDE the light forEachSample to use the particles
+      light.forEachSample = function (f) {
+        this.samples = pe.particles.length;
+        (pe.particles||[]).forEach(function(particule) {
+          f(new Vec2(particule.position.x, particule.position.y));
+        });
+      }
+    }
+
+    var lastUpdate = 0;
+    var UPDATE_FREQ = 25;
+
+    function update () {
+      updatePosition();
+      pe.position.x = x;
+      pe.position.y = y;
+      pe.update(1);
+      lighting.compute(canvas.width, canvas.height);
+      darkmask.compute(canvas.width, canvas.height);
+    }
+
+    function setup () {
+      initParticles();
+      update();
+    }
+
+    var metal = new Image();
+    metal.onload = function(){ dirty = true }
+    metal.src = "../galvanized-plate.jpg";
+    function render () {
+      var w = canvas.width, h = canvas.height;
+      ctx.fillStyle = "#000";
+      ctx.fillRect(0, 0, w, h);
+      ctx.save();
+      ctx.fillStyle = "white";
+      objects.forEach(function(obj){
+        ctx.save();
+        ctx.beginPath();
+        obj.path(ctx);
+        ctx.clip();
+        var bounds = obj.bounds();
+        var topleft = bounds.topleft;
+        ctx.drawImage(metal, topleft.x, topleft.y);
+        ctx.restore();
+        ctx.save();
+        ctx.lineWidth = 1;
+        ctx.strokeStyle = '#778';
+
+        ctx.beginPath();
+        obj.path(ctx);
+        ctx.stroke();
+        ctx.restore();
+      });
+
+      ctx.globalCompositeOperation = "lighter";
+      lighting.render(ctx);
+      pe.renderParticles(ctx);
+      ctx.restore();
+      ctx.globalCompositeOperation = "source-over";
+      darkmask.render(ctx);
+    }
+
+    setup();
+    requestAnimFrame(function loop () {
+      requestAnimFrame(loop, canvas);
+      var now = +new Date();
+      if (now >= lastUpdate + UPDATE_FREQ) {
+        lastUpdate = now;
+        update();
+      }
+      render();
+    }, canvas);
+
+  }());</script>
+</body>
+</html>
