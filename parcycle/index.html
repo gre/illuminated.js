@@ -80,7 +80,7 @@
 
     var darkmask = new DarkMask({ lights: [light], color: 'rgba(0,0,0,0.8)' });
 
-    var randBaseTime = Math.round(1200 + 600*Math.random());
+    var randBaseTime = Math.round(2000 + 600*Math.random());
     function updatePosition () {
       var t = (+new Date()-startTime);
       var s = randBaseTime+500*Math.cos(t/3000);
