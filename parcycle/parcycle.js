@@ -1,10 +1,15 @@
 /* 
 	Parcycle: by Mr Speaker - www.mrspeaker.net
 	v: 1.0
+	license: MIT
 	
 	Particle Emitter classes based on the code from 71squared.com iPhone tutorials
+	
+	includes:
+		cParticle : class for individual particles
+		cParticleSystem : the controller for the particles
+		Vector : a vector helper object
 */
-(function(){
 
 // Individual particle
 function cParticle(){
@@ -20,13 +25,13 @@ function cParticle(){
 }
 
 // The particle emitter.
-function cParticleEmitter(){
-	this.maxParticles = 300;
+function cParticleSystem(){
+	this.maxParticles = 150;
 	this.particles = [];
 	this.active = true;
 
 	// Properties
-	this.position = Vector.create( 320, 340 );
+	this.position = Vector.create( 100, 100 );
 	this.positionRandom = Vector.create( 10, 10 );
 	this.size = 45;
 	this.sizeRandom = 15;
@@ -39,8 +44,8 @@ function cParticleEmitter(){
 	this.gravity = Vector.create( 0.4, 0.2 );
 	this.startColour = [ 250, 218, 68, 1 ];
 	this.startColourRandom = [ 62, 60, 60, 0 ];
-	this.finishColour = [ 245, 35, 0, 0 ];  
-	this.finishColourRandom = [ 60, 60, 60, 0 ];
+	this.endColour = [ 245, 35, 0, 0 ];  
+	this.endColourRandom = [ 60, 60, 60, 0 ];
 	this.sharpness = 40;
 	this.sharpnessRandom = 10;
 
@@ -99,10 +104,10 @@ function cParticleEmitter(){
 		];
 
 		var end = [
-			this.finishColour[ 0 ] + this.finishColourRandom[ 0 ] * RANDM1TO1(),
-			this.finishColour[ 1 ] + this.finishColourRandom[ 1 ] * RANDM1TO1(),
-			this.finishColour[ 2 ] + this.finishColourRandom[ 2 ] * RANDM1TO1(),
-			this.finishColour[ 3 ] + this.finishColourRandom[ 3 ] * RANDM1TO1()
+			this.endColour[ 0 ] + this.endColourRandom[ 0 ] * RANDM1TO1(),
+			this.endColour[ 1 ] + this.endColourRandom[ 1 ] * RANDM1TO1(),
+			this.endColour[ 2 ] + this.endColourRandom[ 2 ] * RANDM1TO1(),
+			this.endColour[ 3 ] + this.endColourRandom[ 3 ] * RANDM1TO1()
 		];
 
 	    particle.colour = start;
@@ -122,7 +127,7 @@ function cParticleEmitter(){
 			}
 			this.elapsedTime += delta;
 			if( this.duration != -1 && this.duration < this.elapsedTime ){
-				this.stopParticleEmitter();
+				this.stop();
 			}
 		}
 
@@ -146,12 +151,12 @@ function cParticleEmitter(){
 				var a = currentParticle.colour[ 3 ] += ( currentParticle.deltaColour[ 3 ] * delta );
 				
 				// Calculate the rgba string to draw.
-				var draw = [];
-				draw.push("rgba(" + ( r > 255 ? 255 : r < 0 ? 0 : ~~r ) );
-				draw.push( g > 255 ? 255 : g < 0 ? 0 : ~~g );
-				draw.push( b > 255 ? 255 : b < 0 ? 0 : ~~b );
-				draw.push( (a > 1 ? 1 : a < 0 ? 0 : a.toFixed( 2 ) ) + ")");
-				currentParticle.drawColour = draw.join( "," );
+				var r = ( r > 255 ? 255 : r < 0 ? 0 : ~~r ),
+				g = ( g > 255 ? 255 : g < 0 ? 0 : ~~g ),
+				b = ( b > 255 ? 255 : b < 0 ? 0 : ~~b ),
+				a = (a > 1 ? 1 : a < 0 ? 0 : a.toFixed( 2 ) );
+				currentParticle.drawColour = 'rgba('+r+','+g+','+b+','+a+')';
+				currentParticle.drawColourTransparent = 'rgba('+r+','+g+','+b+',0)';
 				
 				this.particleIndex++;
 			} else {
@@ -164,34 +169,25 @@ function cParticleEmitter(){
 		}
 	};
 	
-	this.stopParticleEmitter = function(){
+	this.stop = function(){
 		this.active = false;
 		this.elapsedTime = 0;
 		this.emitCounter = 0;
 	};
 	
-	this.renderParticles = function( context ){
+	this.render = function( context ){
 		for( var i = 0, j = this.particleCount; i < j; i++ ){
 			var particle = this.particles[ i ];
 			var size = particle.size;
 			var halfSize = size >> 1;
 			var x = ~~particle.position.x;
 			var y = ~~particle.position.y;
-		  
-      var radgrad;
-      if (particle.radgrad && particle.radgradColor == particle.drawColour) {
-        radgrad = particle.radgrad;
-      }
-      else {
-			radgrad = context.createRadialGradient( x + halfSize, y + halfSize, particle.sizeSmall, x + halfSize, y + halfSize, halfSize);  
+					
+			var radgrad = context.createRadialGradient( x + halfSize, y + halfSize, particle.sizeSmall, x + halfSize, y + halfSize, halfSize);  
 			radgrad.addColorStop( 0, particle.drawColour );   
-			radgrad.addColorStop( 1, 'rgba(0,0,0,0)' ); //Super cool if you change these values (and add more colour stops)
-      particle.radgrad = radgrad;
-       particle.radgradColor = particle.drawColour;
-      }
+			radgrad.addColorStop( 1, particle.drawColourTransparent ); //Super cool if you change these values (and add more colour stops)
 			context.fillStyle = radgrad;
-      //context.fillStyle='red'
-      context.fillRect( x, y, size, size );
+		  	context.fillRect( x, y, size, size );
 		}
 	};	
 }
@@ -216,7 +212,3 @@ var Vector = {
 	}
 };
 
-window.cParticle = cParticle;
-window.cParticleEmitter = cParticleEmitter;
-window.cParticleVector = Vector;
-}());

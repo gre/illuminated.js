@@ -52,9 +52,10 @@
     });
 
     var objects = [
-      new RectangleObject({ topleft: new Vec2(60, 150), bottomright: new Vec2(140, 230) }),
-      new DiscObject({ center: new Vec2(550, 200), radius: 50 }),
-      new DiscObject({ center: new Vec2(440, 130), radius: 20 }),
+      new RectangleObject({ topleft: new Vec2(60, 250), bottomright: new Vec2(140, 330) }),
+      new RectangleObject({ topleft: new Vec2(50, 50), bottomright: new Vec2(100, 100) }),
+      new DiscObject({ center: new Vec2(550, 300), radius: 50 }),
+      new DiscObject({ center: new Vec2(550, 130), radius: 20 }),
       P=new PolygonObject({ "points": $.map([{"x":287,"y":132},{"x":245,"y":90},{"x":269,"y":146},{"x":218,"y":159},{"x":270,"y":171},{"x":252,"y":214},{"x":286,"y":181},{"x":319,"y":224},{"x":310,"y":177},{"x":367,"y":183},{"x":309,"y":157},{"x":342,"y":86}], function(p){ return new Vec2(p.x, p.y) }) })
     ];
 
@@ -65,16 +66,30 @@
 
     var darkmask = new DarkMask({ lights: [light], color: 'rgba(0,0,0,0.8)' });
 
+    var randBaseTime = Math.round(1200 + 600*Math.random());
     function updatePosition () {
-      y = 300;
-      x = (canvas.width-camerascale*1.2)*0.5*(1+Math.sin((+new Date() - startTime)/1500));
+      var t = (+new Date()-startTime);
+      var s = randBaseTime+500*Math.cos(t/3000);
+      var ts = t/s;
+      x = 140+150*(1+Math.cos(ts));
+      y = 160*(1+Math.sin(ts));
       light.position.x = x + 0.65*camerascale;
       light.position.y = y + 0.55*camerascale;
     }
 
+    var samples;
+    function computeSamplesPosition () {
+      samples = [];
+      (pe.particles||[]).forEach(function (p) {
+        if(p.timeToLive>4)
+          samples.push(new Vec2(p.position.x, p.position.y));
+      });
+      light.samples = samples.length;
+    }
+
     function initParticles () {
-      pe && pe.stopParticleEmitter();
-      pe = new cParticleEmitter();
+      pe && pe.stop();
+      pe = new cParticleSystem();
       pe.maxParticles = 60;
       pe.lifeSpan = PARTICLE_LIFESPAN;
       pe.lifeSpanRandom = 1;
@@ -95,11 +110,9 @@
       pe.init();
 
       // OVERRIDE the light forEachSample to use the particles
+      computeSamplesPosition();
       light.forEachSample = function (f) {
-        this.samples = pe.particles.length;
-        (pe.particles||[]).forEach(function(particule) {
-          f(new Vec2(particule.position.x, particule.position.y));
-        });
+        samples.forEach(f);
       }
     }
 
@@ -107,6 +120,7 @@
     var UPDATE_FREQ = 25;
 
     function update () {
+      computeSamplesPosition();
       updatePosition();
       pe.position.x = x;
       pe.position.y = y;
@@ -150,7 +164,7 @@
 
       ctx.globalCompositeOperation = "lighter";
       lighting.render(ctx);
-      pe.renderParticles(ctx);
+      pe.render(ctx);
       ctx.restore();
       ctx.globalCompositeOperation = "source-over";
       darkmask.render(ctx);
