@@ -54,6 +54,9 @@
     var length = Math.sqrt(this.length2());
     return new cp.Vec2(this.x/length, this.y/length);
   }
+  cp.Vec2.prototype.round = function () {
+    return new cp.Vec2(Math.round(this.x), Math.round(this.y));
+  }
   cp.Vec2.prototype.length2 = function (v) {
     return this.x*this.x + this.y*this.y;
   }
@@ -403,7 +406,14 @@
       var ap = a.add(originToA);
       var bp = b.add(originToB);
       ctx.beginPath();
-      path(ctx, [a, b, bp, obm, oam, ap]);
+      path(ctx, [
+        a.round(), 
+        b.round(), 
+        bp.round(), 
+        obm.round(), 
+        oam.round(), 
+        ap.round()
+      ]);
       ctx.fill();
     });
   }
