@@ -487,6 +487,13 @@
     var bounds = light.bounds();
     var objects = this.objects;
     light.forEachSample(function (position) {
+      var sampleInObject = false;
+      for (var o=0; o<objects.length; ++o) {
+        if (objects[o].contains(position)) {
+          ctx.fillRect(bounds.topleft.x, bounds.topleft.y, bounds.bottomright.x-bounds.topleft.x, bounds.bottomright.y-bounds.topleft.y);
+          return;
+        }
+      }
       objects.forEach(function(object) {
         object.cast(ctx, position, bounds);
       });
@@ -503,14 +510,6 @@
     ctxoutput.drawImage(c.canvas, 0, 0);
   }
 
-  cp.Lighting.prototype.lightInObject = function () {
-    for (var o=0; o<this.objects.length; ++o) {
-      if (this.objects[o].contains(this.light.position))
-        return true;
-    }
-    return false;
-  }
-
   cp.Lighting.prototype.compute = function (w,h) {
     if (!this._cache || this._cache.w != w || this._cache.h != h)
       this.createCache(w, h);
@@ -519,11 +518,9 @@
     ctx.save();
     ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height);
     
-    if (!this.lightInObject()) {
-      light.render(ctx);
-      ctx.globalCompositeOperation = "destination-out";
-      this.cast(ctx);
-    }
+    light.render(ctx);
+    ctx.globalCompositeOperation = "destination-out";
+    this.cast(ctx);
     ctx.restore();
   }
   cp.Lighting.prototype.render = function (ctx) {
