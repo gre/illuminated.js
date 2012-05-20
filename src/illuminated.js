@@ -280,15 +280,45 @@
     radius: 20
   };
 
+  /**
+   * Compute the line tangent to a circle with a radius and a center through a point p
+   * @see http://mathworld.wolfram.com/CircleTangentLine.html
+   */
+  function circleTangentLine (center, radius, p) {
+    rcenter = center.sub(p); // relative center
+    var d2 = rcenter.x*rcenter.x+rcenter.y*rcenter.y;
+    var _1 = radius*rcenter.x, _2 = rcenter.y*Math.sqrt(d2-radius*radius);
+    var a1 = Math.acos((_1+_2)/d2), a2 = Math.acos((_1-_2)/d2);
+    var angles = [ a1, a2, -a1, -a2 ];
+    var points = [];
+    var dists = [];
+    console.log(angles);
+    for (var i=0; i<angles.length; ++i) {
+      var t = angles[i];
+      var point = points[i] = new cp.Vec2(
+        center.x-radius*Math.cos(t), 
+        center.y-radius*Math.sin(t)
+      );
+      dists[i] = Math.round(point.dist2(p));
+      for (var j=0; j<i; ++j) {
+        if (dists[j]==dists[i])
+          return {
+            points: [ points[i], points[j] ],
+            angles: [ angles[i], angles[j] ]
+          }
+      }
+    }
+  }
+
   cp.DiscObject.prototype.cast = function (ctx, origin, bounds) {
-    // FIXME: the current method is wrong... TODO must see http://en.wikipedia.org/wiki/Tangent_lines_to_circles
     var m = this.center;
     var originToM = m.sub(origin);
 
-    var d = new cp.Vec2(originToM.y, -originToM.x).normalize().mul(this.radius);
-    
-    var a = this.center.add(d);
-    var b = this.center.add(d.inv());
+    var compute = circleTangentLine(m, this.radius, origin);
+    console.log(compute)
+
+    var a = compute.points[0];
+    var b = compute.points[1];
 
     var originToA = a.sub(origin);
     var originToB = b.sub(origin);
@@ -305,10 +335,15 @@
     var ap = a.add(originToA);
     var bp = b.add(originToB);
 
-    var start = Math.atan2(originToM.x, -originToM.y);
+    var aToM = m.sub(a);
+    var bToM = m.sub(b);
+
+    var start = Math.PI+compute.angles[1]; //Math.atan2(originToA.x, -originToA.y);
+    var stop = Math.PI+compute.angles[0];
+
     ctx.beginPath();
     path(ctx, [b, bp, obm, oam, ap, a], true);
-    ctx.arc(m.x, m.y, this.radius, start, start+Math.PI);
+    ctx.arc(m.x, m.y, this.radius, start, stop);
     ctx.fill();
   }
 
