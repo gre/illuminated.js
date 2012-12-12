@@ -270,6 +270,64 @@
   inherit(cp.OrientedNeon, cp.Light);
   */
 
+  /** Get tangents from (0,0) to circle of radius with given center, for cp.DiscObject.prototype.cast. */
+  function getTan2(radius, center) {
+    var epsilon = getTan2.epsilon || 1e-6, // constant
+        x0, y0, len2, soln, 
+        solutions=[], a=radius;
+    if (typeof a === "object" && typeof center === "number") { 
+      var tmp=a; center = a; center = tmp; // swap
+    }
+    if (typeof center === "number") {
+        // getTan2(radius:number, x0:number, y0:number)
+        x0 = center;
+        y0 = arguments[2];
+        len2 = x0*x0 + y0*y0;
+    } else {
+        // getTans2(radius:number, center:object={x:x0,y:y0})
+        x0 = center.x;
+        y0 = center.y;
+        len2 = center.length2();
+    }
+    // t = +/- Math.acos( (-a*x0 +/- y0 * Math.sqrt(x0*x0 + y0*y0 - a*a))/(x0*x0 + y0*y) );
+    var len2a = y0 * Math.sqrt(len2 - a*a), 
+        tt = Math.acos( (-a*x0 + len2a) / len2 ),
+        nt = Math.acos( (-a*x0 - len2a) / len2 ),
+        tt_cos = a*Math.cos(tt),
+        tt_sin = a*Math.sin(tt),
+        nt_cos = a*Math.cos(nt),
+        nt_sin = a*Math.sin(nt);
+    
+    // Note: cos(-t) == cos(t) and sin(-t) == -sin(t) for all t, so find
+    // x0 + a*cos(t), y0 +/- a*sin(t)
+    // Solutions have equal lengths
+    soln = new cp.Vec2(x0 + nt_cos, y0 + nt_sin);
+    solutions.push(soln);
+    var dist0 = soln.length2();
+    
+    soln = new cp.Vec2(x0 + tt_cos, y0 - tt_sin);
+    solutions.push(soln);
+    var dist1 = soln.length2();
+    if ( Math.abs(dist0 - dist1) < epsilon ) return solutions;
+    
+    soln = new cp.Vec2(x0 + nt_cos, y0 - nt_sin);
+    solutions.push(soln);
+    var dist2 = soln.length2();
+    // Changed order so no strange X of light inside the circle. Could also sort results.
+    if ( Math.abs(dist1 - dist2) < epsilon ) return [soln, solutions[1]]; 
+    if ( Math.abs(dist0 - dist2) < epsilon ) return [solutions[0], soln];
+    
+    soln = new cp.Vec2(x0 + tt_cos, y0 + tt_sin);
+    solutions.push(soln);
+    var dist3 = soln.length2();
+    if ( Math.abs(dist2 - dist3) < epsilon ) return [solutions[2], soln];
+    if ( Math.abs(dist1 - dist3) < epsilon ) return [solutions[1], soln];
+    if ( Math.abs(dist0 - dist3) < epsilon ) return [solutions[0], soln];
+    
+    // return all 4 solutions if no matching vector lengths found.
+    return solutions;
+  }
+  
   // OBJECTS
 
   cp.DiscObject = function (options) { extend(this, cp.OpaqueObject.defaults, cp.DiscObject.defaults, options); }
@@ -281,17 +339,23 @@
   };
 
   cp.DiscObject.prototype.cast = function (ctx, origin, bounds) {
-    // FIXME: the current method is wrong... TODO must see http://en.wikipedia.org/wiki/Tangent_lines_to_circles
     var m = this.center;
     var originToM = m.sub(origin);
 
-    var d = new cp.Vec2(originToM.y, -originToM.x).normalize().mul(this.radius);
+    // FIXED: this method was wrong... TODO must see http://en.wikipedia.org/wiki/Tangent_lines_to_circles
+    // var d = new cp.Vec2(originToM.y, -originToM.x).normalize().mul(this.radius);
     
-    var a = this.center.add(d);
-    var b = this.center.add(d.inv());
+    // var a = this.center.add(d);
+    // var b = this.center.add(d.inv());
 
-    var originToA = a.sub(origin);
-    var originToB = b.sub(origin);
+    // var originToA = a.sub(origin);
+    // var originToB = b.sub(origin);
+    
+    var tangentLines = getTan2(this.radius, originToM);
+    var originToA = tangentLines[0];
+    var originToB = tangentLines[1];
+    var a = originToA.add(origin);
+    var b = originToB.add(origin);
 
     // normalize to distance
     var distance = ((bounds.bottomright.x-bounds.topleft.x)+(bounds.bottomright.y-bounds.topleft.y))/2;
