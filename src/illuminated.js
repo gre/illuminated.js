@@ -168,6 +168,16 @@
     return new cp.Vec2( (1-Math.cos(this.angle)*this.roughness)*this.distance, (1+Math.sin(this.angle)*this.roughness)*this.distance );
   }
 
+    /**
+   * Render a mask representing the visibility
+   * used by DarkMask
+   */
+  cp.Lamp.prototype.mask = function (ctx) {
+    var c = this._getVisibleMaskCache();
+    var orientationCenter = new cp.Vec2(Math.cos(this.angle), -Math.sin(this.angle)).mul(this.roughness*this.distance);
+    ctx.drawImage(c.canvas, Math.round(this.position.x+orientationCenter.x-c.w/2), Math.round(this.position.y+orientationCenter.y-c.h/2));
+  }
+
   cp.Lamp.prototype._getGradientCache = function (center) {
     var hashcode = this._getHashCache();
     if (this._cacheHashcode == hashcode) {
