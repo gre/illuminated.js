@@ -169,6 +169,18 @@
   }
 
     /**
+   * Return a { topleft, bottomright } (outside are not impacted by the light)
+   * By default use the distance
+   */
+  cp.Light.prototype.bounds = function () {
+    var orientationCenter = new cp.Vec2(Math.cos(this.angle), -Math.sin(this.angle)).mul(this.roughness*this.distance);
+    return {
+      topleft: new cp.Vec2(this.position.x+orientationCenter.x-this.distance, this.position.y+orientationCenter.y-this.distance),
+      bottomright: new cp.Vec2(this.position.x+orientationCenter.x+this.distance, this.position.y+orientationCenter.y+this.distance)
+    }
+  }
+
+    /**
    * Render a mask representing the visibility
    * used by DarkMask
    */
