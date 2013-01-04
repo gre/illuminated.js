@@ -1,20 +1,124 @@
-/**
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>src&#x2F;illuminated.js - Illuminated.js Docs</title>
+    <link rel="stylesheet" href="http:&#x2F;&#x2F;yui.yahooapis.com&#x2F;3.8.0&#x2F;build&#x2F;cssgrids&#x2F;cssgrids-min.css">
+    <link rel="stylesheet" href="..&#x2F;assets/vendor/prettify/prettify-min.css">
+    <script src="http:&#x2F;&#x2F;yui.yahooapis.com&#x2F;combo?3.8.0&#x2F;build&#x2F;yui&#x2F;yui-min.js"></script>
+</head>
+<body class="yui3-skin-sam illuminated-skin">
+
+<div id="doc">
+    <div id="hd" class="yui3-g header">
+        <div class="yui3-u-3-4">
+            <a href="http:&#x2F;&#x2F;demo.greweb.fr&#x2F;illuminated.js"><h1>Illuminated.js Docs <em>(v0.1)</em></h1></a>
+            <span>A 2D lights and shadows rendering engine for your HTML5 web applications and games.</span>
+        </div>
+    </div>
+    <div id="bd" class="yui3-g">
+
+        <div class="yui3-u-1-4">
+            <div id="docs-sidebar" class="sidebar apidocs">
+                <div id="api-list">
+    <h2 class="off-left">APIs</h2>
+    <div id="api-tabview" class="tabview">
+        <ul class="tabs">
+            <li><a href="#api-classes">Classes</a></li>
+            <li><a href="#api-modules">Modules</a></li>
+        </ul>
+
+        <div id="api-tabview-filter">
+            <input type="search" id="api-filter" placeholder="Type to filter APIs">
+        </div>
+
+        <div id="api-tabview-panel">
+            <ul id="api-classes" class="apis classes">
+            
+                <li><a href="..&#x2F;classes/illuminated.html">illuminated</a></li>
+            
+                <li><a href="..&#x2F;classes/illuminated.DarkMask.html">illuminated.DarkMask</a></li>
+            
+                <li><a href="..&#x2F;classes/illuminated.DiscObject.html">illuminated.DiscObject</a></li>
+            
+                <li><a href="..&#x2F;classes/illuminated.Lamp.html">illuminated.Lamp</a></li>
+            
+                <li><a href="..&#x2F;classes/illuminated.Light.html">illuminated.Light</a></li>
+            
+                <li><a href="..&#x2F;classes/illuminated.Lighting.html">illuminated.Lighting</a></li>
+            
+                <li><a href="..&#x2F;classes/illuminated.LineObject.html">illuminated.LineObject</a></li>
+            
+                <li><a href="..&#x2F;classes/illuminated.OpaqueObject.html">illuminated.OpaqueObject</a></li>
+            
+                <li><a href="..&#x2F;classes/illuminated.PolygonObject.html">illuminated.PolygonObject</a></li>
+            
+                <li><a href="..&#x2F;classes/illuminated.RectangleObject.html">illuminated.RectangleObject</a></li>
+            
+                <li><a href="..&#x2F;classes/illuminated.Vec2.html">illuminated.Vec2</a></li>
+            
+            </ul>
+
+            <ul id="api-modules" class="apis modules">
+            
+                <li><a href="..&#x2F;modules/illuminated.html">illuminated</a></li>
+            
+            </ul>
+        </div>
+    </div>
+</div>
+
+            </div>
+        </div>
+        <div class="yui3-u-3-4">
+                <div id="api-options">
+        Show:
+        <label for="api-show-inherited">
+            <input type="checkbox" id="api-show-inherited" checked>
+            Inherited
+        </label>
+
+        <label for="api-show-protected">
+            <input type="checkbox" id="api-show-protected">
+            Protected
+        </label>
+
+        <label for="api-show-private">
+            <input type="checkbox" id="api-show-private">
+            Private
+        </label>
+        <label for="api-show-deprecated">
+            <input type="checkbox" id="api-show-deprecated">
+            Deprecated
+        </label>
+
+    </div>
+
+
+            <div class="apidocs">
+                <div id="docs-main">
+                    <div class="content">
+                        <h1 class="file-heading">File: src&#x2F;illuminated.js</h1>
+
+<div class="file">
+    <pre class="code prettyprint linenums">
+&#x2F;**
 Illuminated.js - A 2D lights and shadows rendering engine for HTML5
 applications and games.
 
 @module illuminated
-**/
+**&#x2F;
 
-// Declare a root "class" for the static methods on the main namespace.
-/**
+&#x2F;&#x2F; Declare a root &quot;class&quot; for the static methods on the main namespace.
+&#x2F;**
 @class illuminated
-**/
+**&#x2F;
 
-/*
-Copyright (C) 2012 Gaëtan Renaudeau <renaudeau.gaetan@gmail.com>
-http://greweb.fr/illuminated.js/
+&#x2F;*
+Copyright (C) 2012 Gaëtan Renaudeau &lt;renaudeau.gaetan@gmail.com&gt;
+http:&#x2F;&#x2F;greweb.fr&#x2F;illuminated.js&#x2F;
 
-This program is free software: you can redistribute it and/or modify
+This program is free software: you can redistribute it and&#x2F;or modify
 it under the terms of the GNU General Public License as published by
 the Free Software Foundation, either version 3 of the License, or
 (at your option) any later version.
@@ -25,11 +129,11 @@ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 GNU General Public License for more details.
 
 You should have received a copy of the GNU General Public License
-along with this program.  If not, see <http://www.gnu.org/licenses/>.
-*/
+along with this program.  If not, see &lt;http:&#x2F;&#x2F;www.gnu.org&#x2F;licenses&#x2F;&gt;.
+*&#x2F;
 
 (function(cp){
-  /**
+  &#x2F;**
   Vec2 represents a 2d position or a 2d vector.
   It is used everywhere in Illuminated.js.
 
@@ -43,138 +147,138 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
   @constructor
   @param {Number} [x=0] X coordinate for the vector.
   @param {Number} [y=0] Y coordinate for the vector.
-  **/
+  **&#x2F;
   cp.Vec2 = function (x, y) {
-    /**
+    &#x2F;**
     X coordinate for the vector.
     @property x
     @type Number
     @default 0
-    **/
+    **&#x2F;
     this.x = x||0;
 
-    /**
+    &#x2F;**
     Y coordinate for the vector.
     @property y
     @type Number
     @default 0
-    **/
+    **&#x2F;
     this.y = y||0;
   }
 
-  /**
+  &#x2F;**
   Returns a copy of this vector.
   @method copy
   @return {illuminated.Vec2} A new vector that is a copy of this vector.
-  **/
+  **&#x2F;
   cp.Vec2.prototype.copy = function () {
     return new cp.Vec2(this.x, this.y);
   }
 
-  /**
+  &#x2F;**
   Calculates the dot product of this vector and the given vector.
   @method dot
   @param {illuminated.Vec2} v A vector with which to calculate the dot product.
   @return {Number} The result of the dot product.
-  **/
+  **&#x2F;
   cp.Vec2.prototype.dot = function (v) {
     return v.x*this.x + v.y*this.y;
   }
 
-  /**
+  &#x2F;**
   Subtracts the given vector from this vector.
   @method sub
   @param {illuminated.Vec2} v A vector to subtract from this vector.
   @return {illuminated.Vec2} A new vector that is the result of the subtraction.
-  **/
+  **&#x2F;
   cp.Vec2.prototype.sub = function (v) {
     return new cp.Vec2(this.x-v.x, this.y-v.y);
   }
 
-  /**
+  &#x2F;**
   Adds the given vector to this vector.
   @method add
   @param {illuminated.Vec2} v A vector to add to this vector.
   @return {illuminated.Vec2} A new vector that is the result of the addition.
-  **/
+  **&#x2F;
   cp.Vec2.prototype.add = function (v) {
     return new cp.Vec2(this.x+v.x, this.y+v.y);
   }
 
-  /**
+  &#x2F;**
   Multiplies the given vector with this vector.
   @method mul
   @param {illuminated.Vec2} v A vector to multiply with this vector.
   @return {illuminated.Vec2} A new vector that is the result of the multiplication.
-  **/
+  **&#x2F;
   cp.Vec2.prototype.mul = function (n) {
     return new cp.Vec2(this.x*n, this.y*n);
   }
 
-  /**
+  &#x2F;**
   Returns the inverse of this vector.
   @method inv
   @return {illuminated.Vec2} A new vector that is the inverse of this vector.
-  **/
+  **&#x2F;
   cp.Vec2.prototype.inv = function () {
     return this.mul(-1);
   }
 
-  /**
+  &#x2F;**
   Calculates the squared distance between this vector and the given vector.
   @method dist2
   @param {illuminated.Vec2} v A vector with which the squared distance is calculated.
   @return {Number} The squared distance.
-  **/
+  **&#x2F;
   cp.Vec2.prototype.dist2 = function (v) {
     var dx = this.x - v.x;
     var dy = this.y - v.y;
     return dx*dx + dy*dy;
   }
 
-  /**
+  &#x2F;**
   Calculates the normalized form of this vector.
   @method normalize
   @return {illuminated.Vec2} A new vector in normalized form.
-  **/
+  **&#x2F;
   cp.Vec2.prototype.normalize = function () {
     var length = Math.sqrt(this.length2());
-    return new cp.Vec2(this.x/length, this.y/length);
+    return new cp.Vec2(this.x&#x2F;length, this.y&#x2F;length);
   }
 
-  /**
+  &#x2F;**
   Calculates the squared length of this vector.
   @method length2
   @return {Number} The squared length.
-  **/
+  **&#x2F;
   cp.Vec2.prototype.length2 = function (v) {
     return this.x*this.x + this.y*this.y;
   }
 
-  /**
+  &#x2F;**
   Returns a string representing this vector.
   @method toString
   @return {String} A string representing this vector.
-  **/
+  **&#x2F;
   cp.Vec2.prototype.toString = function () {
-    return this.x+","+this.y;
+    return this.x+&quot;,&quot;+this.y;
   }
 
 
-  /**
+  &#x2F;**
   Determines if this vector is within the bounds defined by the given vectors.
   @method inBound
   @param {illuminated.Vec2} topleft A vector that is the top-left of the bounds.
   @param {illuminated.Vec2} bottomright A vector that is the bottom-right of the bounds.
   @return {Boolean} True if this vector is within the given bounds.
-  **/
+  **&#x2F;
   cp.Vec2.prototype.inBound = function (topleft, bottomright) {
-    return (topleft.x < this.x && this.x < bottomright.x
-         && topleft.y < this.y && this.y < bottomright.y);
+    return (topleft.x &lt; this.x &amp;&amp; this.x &lt; bottomright.x
+         &amp;&amp; topleft.y &lt; this.y &amp;&amp; this.y &lt; bottomright.y);
   }
 
 
-  /**
+  &#x2F;**
   Abstract class for light objects.
   @class Light
   @constructor
@@ -182,65 +286,65 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
   @param {illuminated.Vec2} [options.position] Position of this light. (0,0) by default.
   @param {Number} [options.distance=100] Intensity of this light.
   @param {Number} [options.diffuse=0.8] How diffuse this light is.
-  **/
+  **&#x2F;
   cp.Light = function (options) { extend(this, cp.Light.defaults, options); }
 
   cp.Light.defaults = {
-    /**
+    &#x2F;**
     Position of this light. (0,0) by default.
     @property position
     @type Vec2
     @default new Vec2(0, 0)
-    **/
+    **&#x2F;
     position: new cp.Vec2(),
 
-    /**
+    &#x2F;**
     Intensity of this light.
     @property distance
     @type Number
     @default 100
-    **/
+    **&#x2F;
     distance: 100,
 
-    /**
+    &#x2F;**
     How diffuse this light is.
     @property diffuse
     @type Number
     @default 0.8
-    **/
+    **&#x2F;
     diffuse: 0.8
   };
   
-  /**
+  &#x2F;**
   Render the light onto the given context.
   @method render
   @param {CanvasRenderingContext2D} ctx The canvas context onto which the
   light will be rendered.
-  **/
+  **&#x2F;
   cp.Light.prototype.render = function (ctx) { }
 
-  /**
+  &#x2F;**
   Render a mask representing the visibility. (Used by DarkMask.)
   @method mask
   @param {CanvasRenderingContext2D} ctx The canvas context onto which the mask
   will be rendered.
-  **/
+  **&#x2F;
   cp.Light.prototype.mask = function (ctx) {
     var c = this._getVisibleMaskCache();
     ctx.drawImage(
       c.canvas,
-      Math.round(this.position.x-c.w/2),
-      Math.round(this.position.y-c.h/2)
+      Math.round(this.position.x-c.w&#x2F;2),
+      Math.round(this.position.y-c.h&#x2F;2)
     );
   }
 
-  /**
-  Calculate the boundaries of this light using the light's distance.
+  &#x2F;**
+  Calculate the boundaries of this light using the light&#x27;s distance.
   @method bounds
   @return {Object} An anonymous object with the properties topleft and
-  bottomright. The property values are {{#crossLink "illuminated.Vec2"}}{{/crossLink}} objects representing the corners
+  bottomright. The property values are {{#crossLink &quot;illuminated.Vec2&quot;}}{{&#x2F;crossLink}} objects representing the corners
   of the boundary.
-  **/
+  **&#x2F;
   cp.Light.prototype.bounds = function () {
     return {
       topleft: new cp.Vec2(this.position.x-this.distance, this.position.y-this.distance),
@@ -248,42 +352,42 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
     }
   }
   
-  /**
+  &#x2F;**
   Return the center of this light.
   i.e. The position where the light intensity is the highest
   @method center
   @return {illuminated.Vec2} A new vector that represents the center of this light.
-  **/
+  **&#x2F;
   cp.Light.prototype.center = function () {
     return new cp.Vec2( this.distance, this.distance );
   }
 
-  /**
+  &#x2F;**
   Invoke a function for every sample generated by this light.
   @method forEachSample
   @param {Function} f Function to be called for every sample. The function will
   be passed a vector representing the position of the sample.
-  **/
-  // Implement it by spreading samples and calling f at each time
+  **&#x2F;
+  &#x2F;&#x2F; Implement it by spreading samples and calling f at each time
   cp.Light.prototype.forEachSample = function (f) { f(this.position); }
 
-  /**
+  &#x2F;**
   Creates a canvas context with the visible mask rendered onto it.
   @private
   @method _getVisibleMaskCache
   @return {CanvasRenderingContext2D} A canvas context with the visible mask
   rendered onto it.
-  **/
+  **&#x2F;
   cp.Light.prototype._getVisibleMaskCache = function () {
-    // By default use a radial gradient based on the distance
+    &#x2F;&#x2F; By default use a radial gradient based on the distance
     var d = Math.floor(this.distance*1.4);
-    var hash = ""+d;
+    var hash = &quot;&quot;+d;
     if (this.vismaskhash != hash) {
       this.vismaskhash = hash;
       var c = this._vismaskcache = createCanvasAnd2dContext(2*d, 2*d);
       var g = c.ctx.createRadialGradient(d, d, 0, d, d, d);
-      g.addColorStop( 0, 'rgba(0,0,0,1)' );
-      g.addColorStop( 1, 'rgba(0,0,0,0)' );
+      g.addColorStop( 0, &#x27;rgba(0,0,0,1)&#x27; );
+      g.addColorStop( 1, &#x27;rgba(0,0,0,0)&#x27; );
       c.ctx.fillStyle = g;
       c.ctx.fillRect(0, 0, c.w, c.h);
     }
@@ -291,26 +395,26 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
   }
 
 
-  /**
+  &#x2F;**
   Abstract class for opaque objects.
   @class OpaqueObject
   @constructor
   @param {Object} [options] Options to be applied to this opaque object.
   @param {Number} [options.diffuse] How diffuse this opaque object should be.
-  **/
+  **&#x2F;
   cp.OpaqueObject = function (options) { extend(this, cp.OpaqueObject.defaults, options); }
 
   cp.OpaqueObject.defaults = {
-    /**
+    &#x2F;**
     How diffuse this opaque object should be.
     @property diffuse
     @type Number
     @default 0.8
-    **/
+    **&#x2F;
     diffuse: 0.8
   };
 
-  /**
+  &#x2F;**
   Fill ctx with the shadows projected by this opaque object at the origin
   point, constrained by the given bounds.
   @method cast
@@ -318,41 +422,41 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
   shadows will be cast.
   @param {illuminated.Vec2} origin A vector that represents the origin for the casted shadows.
   @param {Object} bounds An anonymous object with the properties topleft and
-  bottomright. The property values are {{#crossLink "illuminated.Vec2"}}{{/crossLink}} objects representing the corners
+  bottomright. The property values are {{#crossLink &quot;illuminated.Vec2&quot;}}{{&#x2F;crossLink}} objects representing the corners
   of the boundary.
-  **/
+  **&#x2F;
   cp.OpaqueObject.prototype.cast = function (ctx, origin, bounds) { }
 
-  /**
+  &#x2F;**
   Draw the path of the opaque object shape onto the ctx.
   @method path
   @param {CanvasRenderingContext2D} ctx The context onto which the path will be
   drawn.
-  **/
+  **&#x2F;
   cp.OpaqueObject.prototype.path = function (ctx) { }
 
-  /**
+  &#x2F;**
   Calculate the boundaries of this opaque object.
   @method bounds
   @return {Object} An anonymous object with the properties topleft and
-  bottomright. The property values are {{#crossLink "illuminated.Vec2"}}{{/crossLink}} objects representing the corners
+  bottomright. The property values are {{#crossLink &quot;illuminated.Vec2&quot;}}{{&#x2F;crossLink}} objects representing the corners
   of the boundary.
-  **/
+  **&#x2F;
   cp.OpaqueObject.prototype.bounds = function () { return { topleft: new cp.Vec2(), bottomright: new cp.Vec2() } }
 
-  /**
+  &#x2F;**
   Determine if the given point is inside the object.
   @method contains
   @param {illuminated.Vec2} point The point to be checked.
   @return {Boolean} True if the opaque object contains the given point.
-  **/
+  **&#x2F;
   cp.OpaqueObject.prototype.contains = function (point) { return false }
 
 
-  // LIGHTS
+  &#x2F;&#x2F; LIGHTS
 
-  /**
-  A circular light rendered as a radial gradient. Lamps can also be "oriented"
+  &#x2F;**
+  A circular light rendered as a radial gradient. Lamps can also be &quot;oriented&quot;
   in a specific direction.
   @class Lamp
   @extends illuminated.Light
@@ -362,7 +466,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
         position: new Vec2(12, 34),
         distance: 100,
         diffuse: 0.8,
-        color: 'rgba(250,220,150,0.8)',
+        color: &#x27;rgba(250,220,150,0.8)&#x27;,
         radius: 0,
         samples: 1,
         angle: 0,
@@ -372,7 +476,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
   @param {illuminated.Vec2} [options.position] Position of this lamp. (0,0) by default.
   @param {Number} [options.distance=100] Intensity of this lamp.
   @param {Number} [options.diffuse=0.8] How diffuse this lamp is.
-  @param {String} [options.color='rgba(250,220,150,0.8)'] The color emitted by
+  @param {String} [options.color=&#x27;rgba(250,220,150,0.8)&#x27;] The color emitted by
   the lamp. The color can be specified in any CSS format.
   @param {Number} [options.radius=0] The size of the lamp. Bigger lamps cast
   smoother shadows.
@@ -380,80 +484,80 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
   for shadow projection. It defines the quality of the rendering.
   @param {Number} [options.angle=0] The angle of the orientation of the lamp.
   @param {Number} [options.roughness=0] The roughness of the oriented effect.
-  **/
+  **&#x2F;
   cp.Lamp = function (options) { extend(this, cp.Light.defaults, cp.Lamp.defaults, options); }
   inherit(cp.Lamp, cp.Light);
 
   cp.Lamp.defaults = {
-    /**
+    &#x2F;**
     The color emitted by the lamp. The color can be specified in any CSS format.
     @property color
     @type String
-    @default 'rgba(250,220,150,0.8)'
-    **/
-    color: 'rgba(250,220,150,0.8)',
+    @default &#x27;rgba(250,220,150,0.8)&#x27;
+    **&#x2F;
+    color: &#x27;rgba(250,220,150,0.8)&#x27;,
 
-    /**
+    &#x2F;**
     The size of the lamp. Bigger lamps cast smoother shadows.
     @property radius
     @type Number
     @default 0
-    **/
+    **&#x2F;
     radius: 0,
 
-    /**
+    &#x2F;**
     The number of points which will be used for shadow projection. It defines
     the quality of the rendering.
     @property samples
     @type Number
     @default 1
-    **/
+    **&#x2F;
     samples: 1,
 
-    /**
+    &#x2F;**
     The angle of the orientation of the lamp.
     @property angle
     @type Number
     @default 0
-    **/
+    **&#x2F;
     angle: 0,
 
-    /**
+    &#x2F;**
     The roughness of the oriented effect.
     @property roughness
     @type Number
     @default 0
-    **/
+    **&#x2F;
     roughness: 0
   };
 
-  /**
+  &#x2F;**
   Return a string hash key representing this lamp.
   @private
   @method _getHashCache
   @return {String} The hash key.
-  **/
+  **&#x2F;
   cp.Lamp.prototype._getHashCache = function () {
     return [this.color, this.distance, this.diffuse, this.angle, this.roughness].toString();
   }
 
-  /**
+  &#x2F;**
   Return the center of this lamp.
   i.e. The position where the lamp intensity is the highest
   @method center
   @return {illuminated.Vec2} A new vector that represents the center of this lamp.
-  **/
+  **&#x2F;
   cp.Lamp.prototype.center = function () {
     return new cp.Vec2( (1-Math.cos(this.angle)*this.roughness)*this.distance, (1+Math.sin(this.angle)*this.roughness)*this.distance );
   }
 
-  /**
+  &#x2F;**
   Calculate the boundaries of this lamp based on its properties.
   @method bounds
   @return {Object} An anonymous object with the properties topleft and
-  bottomright. The property values are {{#crossLink "illuminated.Vec2"}}{{/crossLink}} objects representing the corners
+  bottomright. The property values are {{#crossLink &quot;illuminated.Vec2&quot;}}{{&#x2F;crossLink}} objects representing the corners
   of the boundary.
-  **/
+  **&#x2F;
   cp.Light.prototype.bounds = function () {
     var orientationCenter = new cp.Vec2(Math.cos(this.angle), -Math.sin(this.angle)).mul(this.roughness*this.distance);
     return {
@@ -462,24 +566,24 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
     }
   }
 
-  /**
+  &#x2F;**
   Render a mask representing the visibility. (Used by DarkMask.)
   @method mask
   @param {CanvasRenderingContext2D} ctx The canvas context onto which the mask
   will be rendered.
-  **/
+  **&#x2F;
   cp.Lamp.prototype.mask = function (ctx) {
     var c = this._getVisibleMaskCache();
     var orientationCenter = new cp.Vec2(Math.cos(this.angle), -Math.sin(this.angle)).mul(this.roughness*this.distance);
-    ctx.drawImage(c.canvas, Math.round(this.position.x+orientationCenter.x-c.w/2), Math.round(this.position.y+orientationCenter.y-c.h/2));
+    ctx.drawImage(c.canvas, Math.round(this.position.x+orientationCenter.x-c.w&#x2F;2), Math.round(this.position.y+orientationCenter.y-c.h&#x2F;2));
   }
 
-  /**
-  Renders this lamp's gradient onto a cached canvas at the given position.
+  &#x2F;**
+  Renders this lamp&#x27;s gradient onto a cached canvas at the given position.
   @private
   @method _getGradientCache
   @param {illuminated.Vec2} center The position of the center of the gradient to render.
-  **/
+  **&#x2F;
   cp.Lamp.prototype._getGradientCache = function (center) {
     var hashcode = this._getHashCache();
     if (this._cacheHashcode == hashcode) {
@@ -490,59 +594,59 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
     var D = d*2;
     var cache = createCanvasAnd2dContext(D, D);
     var g = cache.ctx.createRadialGradient(center.x, center.y, 0, d, d, d);
-    g.addColorStop( Math.min(1,this.radius/this.distance), this.color );
+    g.addColorStop( Math.min(1,this.radius&#x2F;this.distance), this.color );
     g.addColorStop( 1, cp.getRGBA(this.color, 0) );
     cache.ctx.fillStyle = g;
     cache.ctx.fillRect(0, 0, cache.w, cache.h);
     return this._gcache = cache;
   }
 
-  /**
+  &#x2F;**
   Render the lamp onto the given context (without any shadows).
   @method render
   @param {CanvasRenderingContext2D} ctx The canvas context onto which the
   light will be rendered.
-  **/
+  **&#x2F;
   cp.Lamp.prototype.render = function (ctx) {
     var center = this.center();
     var c = this._getGradientCache(center);
     ctx.drawImage(c.canvas, Math.round(this.position.x-center.x), Math.round(this.position.y-center.y))
   }
 
-  /**
+  &#x2F;**
   Invoke a function for every sample generated by this lamp. The samples for
-  lamps are generated using a "spiral" algorithm.
+  lamps are generated using a &quot;spiral&quot; algorithm.
   @method forEachSample
   @param {Function} f Function to be called for every sample. The function will
   be passed a vector representing the position of the sample.
-  **/
+  **&#x2F;
   cp.Lamp.prototype.forEachSample = function (f) {
-    // "spiral" algorithm for spreading emit samples
-    for (var s=0; s<this.samples; ++s) {
+    &#x2F;&#x2F; &quot;spiral&quot; algorithm for spreading emit samples
+    for (var s=0; s&lt;this.samples; ++s) {
       var a = s * GOLDEN_ANGLE;
-      var r = Math.sqrt(s/this.samples)*this.radius;
+      var r = Math.sqrt(s&#x2F;this.samples)*this.radius;
       var delta = new cp.Vec2( Math.cos(a)*r, Math.sin(a)*r );
       f( this.position.add(delta) );
     }
   }
 
-  /*
+  &#x2F;*
    * Spot
    * TODO
-   */
-  /*
+   *&#x2F;
+  &#x2F;*
   cp.Spot = function (position, distance) {
     this.position = position;
     this.distance = position;
   }
   inherit(cp.Spot, cp.Light);
-  */
+  *&#x2F;
 
-  /*
+  &#x2F;*
    * Neon
    * TODO
-   */
-  /*
+   *&#x2F;
+  &#x2F;*
   cp.Neon = function (position, distance, color, size, samples, angle) {
     this.position = position;
     this.distance = distance;
@@ -553,7 +657,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
   }
   inherit(cp.Neon, cp.Light);
 
-  // TODO .center() and .bound()
+  &#x2F;&#x2F; TODO .center() and .bound()
 
   cp.Neon.prototype.render = function (ctx) {
     var center = this.center();
@@ -576,56 +680,56 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
     var cache = createCanvasAnd2dContext(D, D);
     var g = cache.ctx.createRadialGradient(center.x, center.y, 0, d, d, d);
     g.addColorStop( 0, this.color );
-    g.addColorStop( 1, 'rgba(0,0,0,0)' );
+    g.addColorStop( 1, &#x27;rgba(0,0,0,0)&#x27; );
     cache.ctx.fillStyle = g;
     cache.ctx.fillRect(0, 0, cache.w, cache.h);
     return this.gradientCache = cache;
   }
-  */
+  *&#x2F;
 
-  /*
+  &#x2F;*
    * OrientedNeon: Neon with one side
    * TODO
-   */
-  /*
+   *&#x2F;
+  &#x2F;*
   cp.OrientedNeon = function (position, distance) {
     this.position = position;
     this.distance = position;
   }
   inherit(cp.OrientedNeon, cp.Light);
-  */
+  *&#x2F;
 
-  /* Get tangents from (0,0) to circle of radius with given center, for cp.DiscObject.prototype.cast. */
+  &#x2F;* Get tangents from (0,0) to circle of radius with given center, for cp.DiscObject.prototype.cast. *&#x2F;
   function getTan2(radius, center) {
-    var epsilon = getTan2.epsilon || 1e-6, // constant
+    var epsilon = getTan2.epsilon || 1e-6, &#x2F;&#x2F; constant
         x0, y0, len2, soln, 
         solutions=[], a=radius;
-    if (typeof a === "object" && typeof center === "number") { 
-      var tmp=a; center = a; center = tmp; // swap
+    if (typeof a === &quot;object&quot; &amp;&amp; typeof center === &quot;number&quot;) { 
+      var tmp=a; center = a; center = tmp; &#x2F;&#x2F; swap
     }
-    if (typeof center === "number") {
-        // getTan2(radius:number, x0:number, y0:number)
+    if (typeof center === &quot;number&quot;) {
+        &#x2F;&#x2F; getTan2(radius:number, x0:number, y0:number)
         x0 = center;
         y0 = arguments[2];
         len2 = x0*x0 + y0*y0;
     } else {
-        // getTans2(radius:number, center:object={x:x0,y:y0})
+        &#x2F;&#x2F; getTans2(radius:number, center:object={x:x0,y:y0})
         x0 = center.x;
         y0 = center.y;
         len2 = center.length2();
     }
-    // t = +/- Math.acos( (-a*x0 +/- y0 * Math.sqrt(x0*x0 + y0*y0 - a*a))/(x0*x0 + y0*y) );
+    &#x2F;&#x2F; t = +&#x2F;- Math.acos( (-a*x0 +&#x2F;- y0 * Math.sqrt(x0*x0 + y0*y0 - a*a))&#x2F;(x0*x0 + y0*y) );
     var len2a = y0 * Math.sqrt(len2 - a*a), 
-        tt = Math.acos( (-a*x0 + len2a) / len2 ),
-        nt = Math.acos( (-a*x0 - len2a) / len2 ),
+        tt = Math.acos( (-a*x0 + len2a) &#x2F; len2 ),
+        nt = Math.acos( (-a*x0 - len2a) &#x2F; len2 ),
         tt_cos = a*Math.cos(tt),
         tt_sin = a*Math.sin(tt),
         nt_cos = a*Math.cos(nt),
         nt_sin = a*Math.sin(nt);
     
-    // Note: cos(-t) == cos(t) and sin(-t) == -sin(t) for all t, so find
-    // x0 + a*cos(t), y0 +/- a*sin(t)
-    // Solutions have equal lengths
+    &#x2F;&#x2F; Note: cos(-t) == cos(t) and sin(-t) == -sin(t) for all t, so find
+    &#x2F;&#x2F; x0 + a*cos(t), y0 +&#x2F;- a*sin(t)
+    &#x2F;&#x2F; Solutions have equal lengths
     soln = new cp.Vec2(x0 + nt_cos, y0 + nt_sin);
     solutions.push(soln);
     var dist0 = soln.length2();
@@ -633,29 +737,29 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
     soln = new cp.Vec2(x0 + tt_cos, y0 - tt_sin);
     solutions.push(soln);
     var dist1 = soln.length2();
-    if ( Math.abs(dist0 - dist1) < epsilon ) return solutions;
+    if ( Math.abs(dist0 - dist1) &lt; epsilon ) return solutions;
     
     soln = new cp.Vec2(x0 + nt_cos, y0 - nt_sin);
     solutions.push(soln);
     var dist2 = soln.length2();
-    // Changed order so no strange X of light inside the circle. Could also sort results.
-    if ( Math.abs(dist1 - dist2) < epsilon ) return [soln, solutions[1]]; 
-    if ( Math.abs(dist0 - dist2) < epsilon ) return [solutions[0], soln];
+    &#x2F;&#x2F; Changed order so no strange X of light inside the circle. Could also sort results.
+    if ( Math.abs(dist1 - dist2) &lt; epsilon ) return [soln, solutions[1]]; 
+    if ( Math.abs(dist0 - dist2) &lt; epsilon ) return [solutions[0], soln];
     
     soln = new cp.Vec2(x0 + tt_cos, y0 + tt_sin);
     solutions.push(soln);
     var dist3 = soln.length2();
-    if ( Math.abs(dist2 - dist3) < epsilon ) return [solutions[2], soln];
-    if ( Math.abs(dist1 - dist3) < epsilon ) return [solutions[1], soln];
-    if ( Math.abs(dist0 - dist3) < epsilon ) return [solutions[0], soln];
+    if ( Math.abs(dist2 - dist3) &lt; epsilon ) return [solutions[2], soln];
+    if ( Math.abs(dist1 - dist3) &lt; epsilon ) return [solutions[1], soln];
+    if ( Math.abs(dist0 - dist3) &lt; epsilon ) return [solutions[0], soln];
     
-    // return all 4 solutions if no matching vector lengths found.
+    &#x2F;&#x2F; return all 4 solutions if no matching vector lengths found.
     return solutions;
   }
   
-  // OBJECTS
+  &#x2F;&#x2F; OBJECTS
 
-  /**
+  &#x2F;**
   A circular, opaque object.
   @class DiscObject
   @extends illuminated.OpaqueObject
@@ -664,29 +768,29 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
   @param {illuminated.Vec2} [options.center] Position of the disc object.
   @param {Number} [options.radius] Size of the disc object.
   @param {Number} [options.diffuse] How diffuse this disc object should be.
-  **/
+  **&#x2F;
   cp.DiscObject = function (options) { extend(this, cp.OpaqueObject.defaults, cp.DiscObject.defaults, options); }
   inherit(cp.DiscObject, cp.OpaqueObject);
 
   cp.DiscObject.defaults = {
-    /**
+    &#x2F;**
     Position of the disc object.
     @property center
     @type Vec2
     @default new illuminated.Vec2()
-    **/
+    **&#x2F;
     center: new cp.Vec2(),
 
-    /**
+    &#x2F;**
     Size of the disc object.
     @property radius
     @type Number
     @default 20
-    **/
+    **&#x2F;
     radius: 20
   };
 
-  /**
+  &#x2F;**
   Fill ctx with the shadows projected by this disc object from the origin
   point, constrained by the given bounds.
   @method cast
@@ -694,21 +798,21 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
   shadows will be cast.
   @param {illuminated.Vec2} origin A vector that represents the origin for the casted shadows.
   @param {Object} bounds An anonymous object with the properties topleft and
-  bottomright. The property values are {{#crossLink "illuminated.Vec2"}}{{/crossLink}} objects representing the corners
+  bottomright. The property values are {{#crossLink &quot;illuminated.Vec2&quot;}}{{&#x2F;crossLink}} objects representing the corners
   of the boundary.
-  **/
+  **&#x2F;
   cp.DiscObject.prototype.cast = function (ctx, origin, bounds) {
     var m = this.center;
     var originToM = m.sub(origin);
 
-    // FIXED: this method was wrong... TODO must see http://en.wikipedia.org/wiki/Tangent_lines_to_circles
-    // var d = new cp.Vec2(originToM.y, -originToM.x).normalize().mul(this.radius);
+    &#x2F;&#x2F; FIXED: this method was wrong... TODO must see http:&#x2F;&#x2F;en.wikipedia.org&#x2F;wiki&#x2F;Tangent_lines_to_circles
+    &#x2F;&#x2F; var d = new cp.Vec2(originToM.y, -originToM.x).normalize().mul(this.radius);
     
-    // var a = this.center.add(d);
-    // var b = this.center.add(d.inv());
+    &#x2F;&#x2F; var a = this.center.add(d);
+    &#x2F;&#x2F; var b = this.center.add(d.inv());
 
-    // var originToA = a.sub(origin);
-    // var originToB = b.sub(origin);
+    &#x2F;&#x2F; var originToA = a.sub(origin);
+    &#x2F;&#x2F; var originToB = b.sub(origin);
     
     var tangentLines = getTan2(this.radius, originToM);
     var originToA = tangentLines[0];
@@ -716,13 +820,13 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
     var a = originToA.add(origin);
     var b = originToB.add(origin);
 
-    // normalize to distance
-    var distance = ((bounds.bottomright.x-bounds.topleft.x)+(bounds.bottomright.y-bounds.topleft.y))/2;
+    &#x2F;&#x2F; normalize to distance
+    var distance = ((bounds.bottomright.x-bounds.topleft.x)+(bounds.bottomright.y-bounds.topleft.y))&#x2F;2;
     originToM = originToM.normalize().mul(distance);
     originToA = originToA.normalize().mul(distance);
     originToB = originToB.normalize().mul(distance);
     
-    // project points
+    &#x2F;&#x2F; project points
     var oam = a.add(originToM);
     var obm = b.add(originToM);
     var ap = a.add(originToA);
@@ -735,23 +839,23 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
     ctx.fill();
   }
 
-  /**
+  &#x2F;**
   Draw the path of the disc onto the ctx.
   @method path
   @param {CanvasRenderingContext2D} ctx The context onto which the path will be
   drawn.
-  **/
+  **&#x2F;
   cp.DiscObject.prototype.path = function (ctx) {
     ctx.arc(this.center.x, this.center.y, this.radius, 0, _2PI);
   }
   
-  /**
+  &#x2F;**
   Calculate the boundaries of this disc object.
   @method bounds
   @return {Object} An anonymous object with the properties topleft and
-  bottomright. The property values are {{#crossLink "illuminated.Vec2"}}{{/crossLink}} objects representing the corners
+  bottomright. The property values are {{#crossLink &quot;illuminated.Vec2&quot;}}{{&#x2F;crossLink}} objects representing the corners
   of the boundary.
-  **/
+  **&#x2F;
   cp.DiscObject.prototype.bounds = function () { 
     return { 
       topleft: new cp.Vec2(this.center.x-this.radius, this.center.y-this.radius),
@@ -759,81 +863,81 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
     } 
   }
   
-  /**
+  &#x2F;**
   Determine if the given point is inside the disc.
   @method contains
   @param {illuminated.Vec2} point The point to be checked.
   @return {Boolean} True if the disc object contains the given point.
-  **/
+  **&#x2F;
   cp.DiscObject.prototype.contains = function (point) { 
-    return point.dist2(this.center) < this.radius*this.radius;
+    return point.dist2(this.center) &lt; this.radius*this.radius;
   }
 
-  /**
+  &#x2F;**
   An opaque polygon object
   @class PolygonObject
   @extends illuminated.OpaqueObject
   @constructor
   @param {Object} [options] Options to be applied to this disc object.
   @param {Array} options.points An array of
-  {{#crossLink "illuminated.Vec2"}}{{/crossLink}} points that define the polygon.
+  {{#crossLink &quot;illuminated.Vec2&quot;}}{{&#x2F;crossLink}} points that define the polygon.
   @param {Number} [options.diffuse] How diffuse this polygon object should be.
-  **/
+  **&#x2F;
   cp.PolygonObject = function (options) { extend(this, cp.OpaqueObject.defaults, cp.PolygonObject.defaults, options); }
   inherit(cp.PolygonObject, cp.OpaqueObject);
 
   cp.PolygonObject.defaults = {
-    /**
-    An array of {{#crossLink "illuminated.Vec2"}}{{/crossLink}} points that
+    &#x2F;**
+    An array of {{#crossLink &quot;illuminated.Vec2&quot;}}{{&#x2F;crossLink}} points that
     define the polygon.
     @property points
     @type Array
     @default []
-    **/
+    **&#x2F;
     points: []
   };
 
-  /**
+  &#x2F;**
   Calculate the boundaries of this polygon object.
   @method bounds
   @return {Object} An anonymous object with the properties topleft and
-  bottomright. The property values are {{#crossLink "illuminated.Vec2"}}{{/crossLink}} objects representing the corners
+  bottomright. The property values are {{#crossLink &quot;illuminated.Vec2&quot;}}{{&#x2F;crossLink}} objects representing the corners
   of the boundary.
-  **/
+  **&#x2F;
   cp.PolygonObject.prototype.bounds = function () {
     var topleft = this.points[0].copy();
     var bottomright = topleft.copy();
-    for (var p=1; p<this.points.length; ++p) {
+    for (var p=1; p&lt;this.points.length; ++p) {
       var point = this.points[p];
-      if (point.x > bottomright.x)
+      if (point.x &gt; bottomright.x)
         bottomright.x = point.x;
-      if (point.y > bottomright.y)
+      if (point.y &gt; bottomright.y)
         bottomright.y = point.y;
-      if (point.x < topleft.x)
+      if (point.x &lt; topleft.x)
         topleft.x = point.x;
-      if (point.y < topleft.y)
+      if (point.y &lt; topleft.y)
         topleft.y = point.y;
     }
     return { topleft: topleft, bottomright: bottomright };
   }
 
-  /**
+  &#x2F;**
   Determine if the given point is inside the polygon.
   @method contains
   @param {illuminated.Vec2} point The point to be checked.
   @return {Boolean} True if the polygon object contains the given point.
-  **/
+  **&#x2F;
   cp.PolygonObject.prototype.contains = function (p) {
     var points = this.points;
     var i, j=points.length-1;
     var x = p.x, y = p.y;
     var oddNodes = false;
 
-    for (i=0; i<points.length; i++) {
-      if ((points[i].y< y && points[j].y>=y
-      ||   points[j].y< y && points[i].y>=y)
-      &&  (points[i].x<=x || points[j].x<=x)) {
-        if (points[i].x+(y-points[i].y)/(points[j].y-points[i].y)*(points[j].x-points[i].x)<x) {
+    for (i=0; i&lt;points.length; i++) {
+      if ((points[i].y&lt; y &amp;&amp; points[j].y&gt;=y
+      ||   points[j].y&lt; y &amp;&amp; points[i].y&gt;=y)
+      &amp;&amp;  (points[i].x&lt;=x || points[j].x&lt;=x)) {
+        if (points[i].x+(y-points[i].y)&#x2F;(points[j].y-points[i].y)*(points[j].x-points[i].x)&lt;x) {
           oddNodes=!oddNodes; 
         }
       }
@@ -842,17 +946,17 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
     return oddNodes;
   }
 
-  /**
+  &#x2F;**
   Draw the path of the polygon onto the ctx.
   @method path
   @param {CanvasRenderingContext2D} ctx The context onto which the path will be
   drawn.
-  **/
+  **&#x2F;
   cp.PolygonObject.prototype.path = function (ctx) {
     path(ctx, this.points);
   }
 
-  /**
+  &#x2F;**
   Fill ctx with the shadows projected by this polygon object from the origin
   point, constrained by the given bounds.
   @method cast
@@ -860,27 +964,27 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
   shadows will be cast.
   @param {illuminated.Vec2} origin A vector that represents the origin for the casted shadows.
   @param {Object} bounds An anonymous object with the properties topleft and
-  bottomright. The property values are {{#crossLink "illuminated.Vec2"}}{{/crossLink}} objects representing the corners
+  bottomright. The property values are {{#crossLink &quot;illuminated.Vec2&quot;}}{{&#x2F;crossLink}} objects representing the corners
   of the boundary.
-  **/
+  **&#x2F;
   cp.PolygonObject.prototype.cast = function (ctx, origin, bounds) {
-    // The current implementation of projection is a bit hacky... do you have a proper solution?
-    var distance = ((bounds.bottomright.x-bounds.topleft.x)+(bounds.bottomright.y-bounds.topleft.y))/2;
+    &#x2F;&#x2F; The current implementation of projection is a bit hacky... do you have a proper solution?
+    var distance = ((bounds.bottomright.x-bounds.topleft.x)+(bounds.bottomright.y-bounds.topleft.y))&#x2F;2;
     this._forEachVisibleEdges(origin, bounds, function (a, b, originToA, originToB, aToB) {
-      var m; // m is the projected point of origin to [a, b]
-      var t = originToA.inv().dot(aToB)/aToB.length2();
-      if (t<0)
+      var m; &#x2F;&#x2F; m is the projected point of origin to [a, b]
+      var t = originToA.inv().dot(aToB)&#x2F;aToB.length2();
+      if (t&lt;0)
         m = a;
-      else if(t>1)
+      else if(t&gt;1)
         m = b;
       else
         m = a.add( aToB.mul(t) );
       var originToM = m.sub(origin);
-      // normalize to distance
+      &#x2F;&#x2F; normalize to distance
       originToM = originToM.normalize().mul(distance);
       originToA = originToA.normalize().mul(distance);
       originToB = originToB.normalize().mul(distance);
-      // project points
+      &#x2F;&#x2F; project points
       var oam = a.add(originToM);
       var obm = b.add(originToM);
       var ap = a.add(originToA);
@@ -892,33 +996,33 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
   }
 
 
-  /**
+  &#x2F;**
   Invoke a function for each of the visible edges in this polygon.
   @private
   @method _forEachVisibleEdges
   @param {illuminated.Vec2} origin A vector that represents the origin for the casted shadows.
   @param {Object} bounds An anonymous object with the properties topleft and
-  bottomright. The property values are {{#crossLink "illuminated.Vec2"}}{{/crossLink}} objects representing the corners
+  bottomright. The property values are {{#crossLink &quot;illuminated.Vec2&quot;}}{{&#x2F;crossLink}} objects representing the corners
   of the boundary of this polygon.
   @param {Function} f The function to be invoked.
-  **/
+  **&#x2F;
   cp.PolygonObject.prototype._forEachVisibleEdges = function (origin, bounds, f) {
     var a = this.points[this.points.length-1], b;
-    for (var p=0; p<this.points.length; ++p, a=b) {
+    for (var p=0; p&lt;this.points.length; ++p, a=b) {
       b = this.points[p];
       if (a.inBound(bounds.topleft, bounds.bottomright)) {
          var originToA = a.sub(origin);
          var originToB = b.sub(origin);
          var aToB = b.sub(a);
          var normal = new cp.Vec2(aToB.y, -aToB.x);
-         if (normal.dot(originToA) < 0) {
+         if (normal.dot(originToA) &lt; 0) {
            f(a, b, originToA, originToB, aToB);
          }
        }
     }
   }
 
-  /**
+  &#x2F;**
   A rectangular, opqaue object.
   @class RectangleObject
   @extends illuminated.PolygonObject
@@ -926,7 +1030,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
   @param {Object} [options] Options to be applied to this rectangle object.
   @param {illuminated.Vec2} [options.topleft] A vector that is the top-left of the rectangle.
   @param {illuminated.Vec2} [options.bottomright] A vector that is the bottom-right of the rectangle.
-  **/
+  **&#x2F;
   cp.RectangleObject = function (options) {
     extend(this, cp.OpaqueObject.defaults, cp.PolygonObject.defaults, cp.RectangleObject.defaults, options);
     this.syncFromTopleftBottomright();
@@ -934,28 +1038,28 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
   inherit(cp.RectangleObject, cp.PolygonObject);
 
   cp.RectangleObject.defaults = {
-    /**
+    &#x2F;**
     A vector that is the top-left of the rectangle.
     @property topleft
     @type Vec2
     @default new illuminated.Vec2()
-    **/
+    **&#x2F;
     topleft: new cp.Vec2(),
     
-    /**
+    &#x2F;**
     A vector that is the bottom-right of the rectangle.
     @property bottomright
     @type Vec2
     @default new illuminated.Vec2()
-    **/
+    **&#x2F;
     bottomright: new cp.Vec2()
   };
 
-  /**
+  &#x2F;**
   Initializes the points defining this rectangle based on its specified bounds.
   @private
   @method syncFromTopleftBottomright
-  **/
+  **&#x2F;
   cp.RectangleObject.prototype.syncFromTopleftBottomright = function () {
     var a = this.topleft;
     var b = new cp.Vec2(this.bottomright.x, this.topleft.y);
@@ -964,18 +1068,18 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
     this.points = [a, b, c, d];
   }
 
-  /**
+  &#x2F;**
   Draws this rectangle onto the given context
   @method fill
   @param {CanvasRenderingContext2D} ctx The canvas context onto which the
   rectangle should be drawn.
-  **/
+  **&#x2F;
   cp.RectangleObject.prototype.fill = function (ctx) {
     var x = this.points[0].x, y = this.points[0].y;
     ctx.rect(x, y, this.points[2].x-x, this.points[2].y-y);
   }
 
-  /**
+  &#x2F;**
   An opaque line object
   @class LineObject
   @extends illuminated.PolygonObject
@@ -983,7 +1087,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
   @param {Object} [options] Options to be applied to this line object.
   @param {illuminated.Vec2} [options.a] A vector that is the first point of the line.
   @param {illuminated.Vec2} [options.b] A vector that is the last point of the line.
-  **/
+  **&#x2F;
   cp.LineObject = function (options) {
     extend(this, cp.OpaqueObject.defaults, cp.PolygonObject.defaults, cp.LineObject.defaults, options);
     this.syncFromAB();
@@ -991,97 +1095,97 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
   inherit(cp.LineObject, cp.PolygonObject);
 
   cp.LineObject.defaults = {
-    /**
+    &#x2F;**
     A vector that is the first point of the line.
     @property a
     @type Vec2
     @default new illuminated.Vec2()
-    **/
+    **&#x2F;
     a: new cp.Vec2(),
 
-    /**
+    &#x2F;**
     A vector that is the last point of the line.
     @property b
     @type Vec2
     @default new illuminated.Vec2()
-    **/
+    **&#x2F;
     b: new cp.Vec2()
   };
 
-  /**
+  &#x2F;**
   Initializes the points defining this line based on its options.
   @private
   @method syncFromAB
-  **/
+  **&#x2F;
   cp.LineObject.prototype.syncFromAB = function () {
     this.points = [this.a, this.b];
   }
 
-  /**
+  &#x2F;**
   Defines the lighting of one light through a set of opaque objects.
   @class Lighting 
   @constructor
   @param {Object} [options] Options to be applied to this light.
   @param {illuminated.Light} [options.light] The source of the lighting.
   @param {Array} [options.objects] An array of 
-  {{#crossLink "illuminated.OpaqueObject"}}{{/crossLink}} objects which stop the
+  {{#crossLink &quot;illuminated.OpaqueObject&quot;}}{{&#x2F;crossLink}} objects which stop the
   light and create shadows.
-  **/
+  **&#x2F;
   cp.Lighting = function (opts) {
     extend(this, cp.Lighting.defaults, opts);
   }
 
   cp.Lighting.defaults = {
-    /**
+    &#x2F;**
     The source of the lighting.
     @property light
     @type Light
     @default new illuminated.Light()
-    **/
+    **&#x2F;
     light: new cp.Light(),
 
-    /**
-    An array of {{#crossLink "illuminated.OpaqueObject"}}{{/crossLink}} objects
+    &#x2F;**
+    An array of {{#crossLink &quot;illuminated.OpaqueObject&quot;}}{{&#x2F;crossLink}} objects
     which stop the light and create shadows.
     @property objects
     @type Array
     @default []
-    **/
+    **&#x2F;
     objects: []
   }
 
-  /**
+  &#x2F;**
   Create caches for canvas contexts.
   @private
   @method createCache
   @param {Number} w Width of the contexts.
   @param {Number} h Height of the contexts.
-  **/
+  **&#x2F;
   cp.Lighting.prototype.createCache = function (w, h) {
     this._cache = createCanvasAnd2dContext(w,h);
     this._castcache = createCanvasAnd2dContext(w,h);
   }
 
-  /**
-  Draw the shadows that are cast by the objects. You usually don't have to use
+  &#x2F;**
+  Draw the shadows that are cast by the objects. You usually don&#x27;t have to use
   it if you use render().
   @method cast
   @param {CanvasRenderingContext2D} ctxoutput The canvas context onto which the
   shadows will be drawn.
-  **/
+  **&#x2F;
   cp.Lighting.prototype.cast = function (ctxoutput) {
     var light = this.light;
     var n = light.samples;
     var c = this._castcache;
     var ctx = c.ctx;
     ctx.clearRect(0, 0, c.w, c.h);
-    // Draw shadows for each light sample and objects
-    ctx.fillStyle = "rgba(0,0,0,"+Math.round(100/n)/100+")"; // Is there any better way?
+    &#x2F;&#x2F; Draw shadows for each light sample and objects
+    ctx.fillStyle = &quot;rgba(0,0,0,&quot;+Math.round(100&#x2F;n)&#x2F;100+&quot;)&quot;; &#x2F;&#x2F; Is there any better way?
     var bounds = light.bounds();
     var objects = this.objects;
     light.forEachSample(function (position) {
       var sampleInObject = false;
-      for (var o=0; o<objects.length; ++o) {
+      for (var o=0; o&lt;objects.length; ++o) {
         if (objects[o].contains(position)) {
           ctx.fillRect(bounds.topleft.x, bounds.topleft.y, bounds.bottomright.x-bounds.topleft.x, bounds.bottomright.y-bounds.topleft.y);
           return;
@@ -1091,11 +1195,11 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
         object.cast(ctx, position, bounds);
       });
     });
-    // Draw objects diffuse - the intensity of the light penetration in objects
+    &#x2F;&#x2F; Draw objects diffuse - the intensity of the light penetration in objects
     objects.forEach(function(object) {
       var diffuse = object.diffuse===undefined ? 0.8 : object.diffuse;
       diffuse *= light.diffuse;
-      ctx.fillStyle = "rgba(0,0,0,"+(1-diffuse)+")";
+      ctx.fillStyle = &quot;rgba(0,0,0,&quot;+(1-diffuse)+&quot;)&quot;;
       ctx.beginPath();
       object.path(ctx);
       ctx.fill();
@@ -1103,12 +1207,12 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
     ctxoutput.drawImage(c.canvas, 0, 0);
   }
 
-  /**
+  &#x2F;**
   Compute the shadows to cast.
   @method compute
   @param {Number} w Width of the canvas context.
   @param {Number} h Height of the canvas context.
-  **/
+  **&#x2F;
   cp.Lighting.prototype.compute = function (w,h) {
     if (!this._cache || this._cache.w != w || this._cache.h != h)
       this.createCache(w, h);
@@ -1118,60 +1222,60 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
     ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height);
     
     light.render(ctx);
-    ctx.globalCompositeOperation = "destination-out";
+    ctx.globalCompositeOperation = &quot;destination-out&quot;;
     this.cast(ctx);
     ctx.restore();
   }
 
-  /**
+  &#x2F;**
   Draws the light and shadows onto the given context.
   @method render
   @param {CanvasRenderingContext2D} ctx The canvas context on which to draw.
-  **/
+  **&#x2F;
   cp.Lighting.prototype.render = function (ctx) {
     ctx.drawImage(this._cache.canvas, 0, 0);
   }
 
-  /**
+  &#x2F;**
   Defines the dark layer which hides the dark area not illuminated by a set of
   lights.
   @class DarkMask
   @constructor
   @param {Object} [options] Options to be applied to this light.
   @param {Array} [options.lights] An array of
-  {{#crossLink "illuminated.Light"}}{{/crossLink}} objects that illuminate the
+  {{#crossLink &quot;illuminated.Light&quot;}}{{&#x2F;crossLink}} objects that illuminate the
   rest of the scene.
   @param {String} [options.color] The color of the dark area in RGBA format.
-  **/
+  **&#x2F;
   cp.DarkMask = function (options) {
     extend(this, cp.DarkMask.defaults, options);
   }
 
   cp.DarkMask.defaults = {
-    /**
-    An array of {{#crossLink "illuminated.Light"}}{{/crossLink}} objects that
+    &#x2F;**
+    An array of {{#crossLink &quot;illuminated.Light&quot;}}{{&#x2F;crossLink}} objects that
     illuminate the rest of the scene.
     @property lights
     @type Array
     @default []
-    **/
+    **&#x2F;
     lights: [],
 
-    /**
+    &#x2F;**
     The color of the dark area in RGBA format.
     @property color
     @type String
-    @default 'rgba(0,0,0,0.9)'
-    **/
-    color: 'rgba(0,0,0,0.9)'
+    @default &#x27;rgba(0,0,0,0.9)&#x27;
+    **&#x2F;
+    color: &#x27;rgba(0,0,0,0.9)&#x27;
   }
 
-  /**
+  &#x2F;**
   Compute the dark mask.
   @method compute
   @param {Number} w Width of the canvas context.
   @param {Number} h Height of the canvas context.
-  **/
+  **&#x2F;
   cp.DarkMask.prototype.compute = function (w,h) {
     if (!this._cache || this._cache.w != w || this._cache.h != h)
       this._cache = createCanvasAnd2dContext(w,h);
@@ -1180,96 +1284,96 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
     ctx.clearRect(0, 0, w, h);
     ctx.fillStyle = this.color;
     ctx.fillRect(0, 0, w, h);
-    ctx.globalCompositeOperation = "destination-out";
+    ctx.globalCompositeOperation = &quot;destination-out&quot;;
     this.lights.forEach(function(light){
       light.mask(ctx);
     });
     ctx.restore();
   }
 
-  /**
+  &#x2F;**
   Draws the dark mask onto the given context.
   @method render
   @param {CanvasRenderingContext2D} ctx The canvas context on which to draw.
-  **/
+  **&#x2F;
   cp.DarkMask.prototype.render = function (ctx) {
     ctx.drawImage(this._cache.canvas, 0, 0);
   }
 
-   // UTILS & CONSTANTS
+   &#x2F;&#x2F; UTILS &amp; CONSTANTS
 
   var GOLDEN_ANGLE = Math.PI * (3 - Math.sqrt(5));
   var _2PI = 2*Math.PI;
   
-  /**
+  &#x2F;**
   @class illuminated
-  **/
+  **&#x2F;
 
-  /**
+  &#x2F;**
   Creates a canvas and context with the given width and height.
   @static
   @method createCanvasAnd2dContext
   @for illuminated
   @param {Number} w Width of the canvas context.
   @param {Number} h Height of the canvas context.
-  @return {Object} An anonymous object with "canvas", "ctx", "w" and "h"
+  @return {Object} An anonymous object with &quot;canvas&quot;, &quot;ctx&quot;, &quot;w&quot; and &quot;h&quot;
   properties.
-  **/
+  **&#x2F;
   function createCanvasAnd2dContext (w, h) {
-    var canvas = document.createElement("canvas");
+    var canvas = document.createElement(&quot;canvas&quot;);
     canvas.width = w;
     canvas.height = h;
-    return { canvas: canvas, ctx: canvas.getContext("2d"), w: w, h: h };
+    return { canvas: canvas, ctx: canvas.getContext(&quot;2d&quot;), w: w, h: h };
   }
   cp.createCanvasAnd2dContext = createCanvasAnd2dContext;
 
-  /**
+  &#x2F;**
   Draw a path defined by the given points onto the given ctx.
   @static
   @method path
   @param {CanvasRenderingContext2D} ctx The context onto which the properties
   should be drawn.
   @param {Array} points An array of
-  {{#crossLink "illuminated.Vec2"}}{{/crossLink}} objects that define the path.
+  {{#crossLink &quot;illuminated.Vec2&quot;}}{{&#x2F;crossLink}} objects that define the path.
   @param {Boolean} dontJoinLast True if the last point should joined with the
   first point in the path.
-  **/
+  **&#x2F;
   function path (ctx, points, dontJoinLast) {
     var p = points[0];
     ctx.moveTo(p.x, p.y);
-    for (var i=1; i<points.length; ++i) {
+    for (var i=1; i&lt;points.length; ++i) {
       p = points[i];
       ctx.lineTo(p.x, p.y);
     }
-    if (!dontJoinLast && points.length>2) {
+    if (!dontJoinLast &amp;&amp; points.length&gt;2) {
       p = points[0];
       ctx.lineTo(p.x, p.y);
     }
   }
   cp.path = path;
 
-  /**
+  &#x2F;**
   Converts a CSS color string into RGBA format.
   @static 
   @method getRGBA
   @param {String} color Color in any CSS format.
   @param {Number} alpha Alpha value for produced color.
   @return {String} Color in RGBA format.
-  **/
+  **&#x2F;
   var getRGBA = cp.getRGBA = (function(){
-    var canvas = document.createElement("canvas");
+    var canvas = document.createElement(&quot;canvas&quot;);
     canvas.width = canvas.height = 1;
-    var ctx = canvas.getContext("2d");
+    var ctx = canvas.getContext(&quot;2d&quot;);
     return function (color, alpha) {
       ctx.clearRect(0,0,1,1);
       ctx.fillStyle = color;
       ctx.fillRect(0,0,1,1);
       var d = ctx.getImageData(0,0,1,1).data;
-      return 'rgba('+[ d[0], d[1], d[2], alpha ]+')';
+      return &#x27;rgba(&#x27;+[ d[0], d[1], d[2], alpha ]+&#x27;)&#x27;;
     }
   }());
 
-  /**
+  &#x2F;**
   Converts a CSS color string into an anonymous object with color and alpha
   properties.
   @static 
@@ -1278,15 +1382,15 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
   @return {Object} An anonymous object with the properties color and alpha.
   The color property is a string in hex format and the alpha property is a
   number from 0.0 to 1.0, rounded to 3 decimal places.
-  **/
+  **&#x2F;
   var extractColorAndAlpha = cp.extractColorAndAlpha = (function(){
-    var canvas = document.createElement("canvas");
+    var canvas = document.createElement(&quot;canvas&quot;);
     canvas.width = canvas.height = 1;
-    var ctx = canvas.getContext("2d");
+    var ctx = canvas.getContext(&quot;2d&quot;);
 
     function toHex (value) { 
       var s = value.toString(16); 
-      if(s.length==1) s = "0"+s;
+      if(s.length==1) s = &quot;0&quot;+s;
       return s;
     }
 
@@ -1296,21 +1400,21 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
       ctx.fillRect(0,0,1,1);
       var d = ctx.getImageData(0,0,1,1).data;
       return {
-        color: "#"+toHex(d[0])+toHex(d[1])+toHex(d[2]),
-        alpha: Math.round(1000*d[3]/255)/1000
+        color: &quot;#&quot;+toHex(d[0])+toHex(d[1])+toHex(d[2]),
+        alpha: Math.round(1000*d[3]&#x2F;255)&#x2F;1000
       };
     }
   }());
 
-  /**
+  &#x2F;**
   Merges the properties from the given parameters into the first parameter.
   @static 
   @method extend
   @param {Object} mergeInto An object to merge into.
   @param {Object} mergeFrom* Objects to merge from.
-  **/
-  function extend (extending /* , arg1, arg2, ... */) {
-    for(var a=1; a<arguments.length; ++a) {
+  **&#x2F;
+  function extend (extending &#x2F;* , arg1, arg2, ... *&#x2F;) {
+    for(var a=1; a&lt;arguments.length; ++a) {
       var source = arguments[a];
       if (source) {
         for (var prop in source)
@@ -1322,7 +1426,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
   cp.extend = extend;
 
   function emptyFn() {};
-  function inherit (cls, base) { // from Box2d
+  function inherit (cls, base) { &#x2F;&#x2F; from Box2d
     var tmpCtr = cls;
     emptyFn.prototype = base.prototype;
     cls.prototype = new emptyFn;
@@ -1332,3 +1436,24 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
   cp.inherit = inherit;
 
 }(window.illuminated={}));
+
+    </pre>
+</div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="..&#x2F;assets/vendor/prettify/prettify-min.js"></script>
+<script>prettyPrint();</script>
+<script src="..&#x2F;assets/js/yui-prettify.js"></script>
+<script src="..&#x2F;assets/../api.js"></script>
+<script src="..&#x2F;assets/js/api-filter.js"></script>
+<script src="..&#x2F;assets/js/api-list.js"></script>
+<script src="..&#x2F;assets/js/api-search.js"></script>
+<script src="..&#x2F;assets/js/apidocs.js"></script>
+<link rel="stylesheet" href="..&#x2F;assets/css/main.css" id="site_styles">
+</body>
+</html>
