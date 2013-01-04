@@ -1,0 +1,1727 @@
+{
+    "project": {
+        "name": "Illuminated.js Docs",
+        "description": "A 2D lights and shadows rendering engine for your HTML5 web applications and games.",
+        "version": "0.1",
+        "url": "http://demo.greweb.fr/illuminated.js"
+    },
+    "files": {
+        "src/illuminated.js": {
+            "name": "src/illuminated.js",
+            "modules": {
+                "illuminated": 1
+            },
+            "classes": {
+                "illuminated": 1,
+                "illuminated.Vec2": 1,
+                "illuminated.Light": 1,
+                "illuminated.OpaqueObject": 1,
+                "illuminated.Lamp": 1,
+                "illuminated.DiscObject": 1,
+                "illuminated.PolygonObject": 1,
+                "illuminated.RectangleObject": 1,
+                "illuminated.LineObject": 1,
+                "illuminated.Lighting": 1,
+                "illuminated.DarkMask": 1
+            },
+            "fors": {
+                "illuminated": 1
+            },
+            "namespaces": {
+                "illuminated": 1
+            }
+        }
+    },
+    "modules": {
+        "illuminated": {
+            "name": "illuminated",
+            "submodules": {},
+            "classes": {
+                "illuminated": 1,
+                "illuminated.Vec2": 1,
+                "illuminated.Light": 1,
+                "illuminated.OpaqueObject": 1,
+                "illuminated.Lamp": 1,
+                "illuminated.DiscObject": 1,
+                "illuminated.PolygonObject": 1,
+                "illuminated.RectangleObject": 1,
+                "illuminated.LineObject": 1,
+                "illuminated.Lighting": 1,
+                "illuminated.DarkMask": 1
+            },
+            "fors": {
+                "illuminated": 1
+            },
+            "namespaces": {
+                "illuminated": 1
+            },
+            "tag": "module",
+            "file": "src/illuminated.js",
+            "line": 1135,
+            "description": "Illuminated.js - A 2D lights and shadows rendering engine for HTML5\napplications and games."
+        }
+    },
+    "classes": {
+        "illuminated": {
+            "name": "illuminated",
+            "shortname": "illuminated",
+            "classitems": [],
+            "plugins": [],
+            "extensions": [],
+            "plugin_for": [],
+            "extension_for": [],
+            "module": "illuminated",
+            "namespace": "",
+            "file": "src/illuminated.js",
+            "line": 1204
+        },
+        "illuminated.Vec2": {
+            "name": "illuminated.Vec2",
+            "shortname": "illuminated.Vec2",
+            "classitems": [],
+            "plugins": [],
+            "extensions": [],
+            "plugin_for": [],
+            "extension_for": [],
+            "module": "illuminated",
+            "namespace": "illuminated",
+            "file": "src/illuminated.js",
+            "line": 32,
+            "description": "Vec2 represents a 2d position or a 2d vector.\nIt is used everywhere in Illuminated.js.\n\nVec2 is based on Box2d’s Vec2 except that in Illuminated.js a Vec2\nvector is immutable. It means every method creates a new Vec2 instance and\nyou can safely use a same Vec2 instance everywhere because the immutability\nguarantees that properties will not be modified.",
+            "is_constructor": 1,
+            "params": [
+                {
+                    "name": "x",
+                    "description": "X coordinate for the vector.",
+                    "type": "Number",
+                    "optional": true,
+                    "optdefault": "0"
+                },
+                {
+                    "name": "y",
+                    "description": "Y coordinate for the vector.",
+                    "type": "Number",
+                    "optional": true,
+                    "optdefault": "0"
+                }
+            ]
+        },
+        "illuminated.Light": {
+            "name": "illuminated.Light",
+            "shortname": "Light",
+            "classitems": [],
+            "plugins": [],
+            "extensions": [],
+            "plugin_for": [],
+            "extension_for": [],
+            "module": "illuminated",
+            "namespace": "illuminated",
+            "file": "src/illuminated.js",
+            "line": 177,
+            "description": "Abstract class for light objects.",
+            "is_constructor": 1,
+            "params": [
+                {
+                    "name": "options",
+                    "description": "Options to be applied to this light.",
+                    "type": "Object",
+                    "optional": true,
+                    "props": [
+                        {
+                            "name": "position",
+                            "description": "Position of this light. (0,0) by default.",
+                            "type": "illuminated.Vec2",
+                            "optional": true
+                        },
+                        {
+                            "name": "distance",
+                            "description": "Intensity of this light.",
+                            "type": "Number",
+                            "optional": true,
+                            "optdefault": "100"
+                        },
+                        {
+                            "name": "diffuse",
+                            "description": "How diffuse this light is.",
+                            "type": "Number",
+                            "optional": true,
+                            "optdefault": "0.8"
+                        }
+                    ]
+                }
+            ]
+        },
+        "illuminated.OpaqueObject": {
+            "name": "illuminated.OpaqueObject",
+            "shortname": "OpaqueObject",
+            "classitems": [],
+            "plugins": [],
+            "extensions": [],
+            "plugin_for": [],
+            "extension_for": [],
+            "module": "illuminated",
+            "namespace": "illuminated",
+            "file": "src/illuminated.js",
+            "line": 294,
+            "description": "Abstract class for opaque objects.",
+            "is_constructor": 1,
+            "params": [
+                {
+                    "name": "options",
+                    "description": "Options to be applied to this opaque object.",
+                    "type": "Object",
+                    "optional": true,
+                    "props": [
+                        {
+                            "name": "diffuse",
+                            "description": "How diffuse this opaque object should be.",
+                            "type": "Number",
+                            "optional": true
+                        }
+                    ]
+                }
+            ]
+        },
+        "illuminated.Lamp": {
+            "name": "illuminated.Lamp",
+            "shortname": "Lamp",
+            "classitems": [],
+            "plugins": [],
+            "extensions": [],
+            "plugin_for": [],
+            "extension_for": [],
+            "module": "illuminated",
+            "namespace": "illuminated",
+            "file": "src/illuminated.js",
+            "line": 354,
+            "description": "A circular light rendered as a radial gradient. Lamps can also be \"oriented\"\nin a specific direction.",
+            "extends": "illuminated.Light",
+            "is_constructor": 1,
+            "example": [
+                "\n    new Lamp({\n      position: new Vec2(12, 34),\n      distance: 100,\n      diffuse: 0.8,\n      color: 'rgba(250,220,150,0.8)',\n      radius: 0,\n      samples: 1,\n      angle: 0,\n      roughness: 0\n    })"
+            ],
+            "params": [
+                {
+                    "name": "options",
+                    "description": "Options to be applied to this lamp.",
+                    "type": "Object",
+                    "optional": true,
+                    "props": [
+                        {
+                            "name": "position",
+                            "description": "Position of this lamp. (0,0) by default.",
+                            "type": "illuminated.Vec2",
+                            "optional": true
+                        },
+                        {
+                            "name": "distance",
+                            "description": "Intensity of this lamp.",
+                            "type": "Number",
+                            "optional": true,
+                            "optdefault": "100"
+                        },
+                        {
+                            "name": "diffuse",
+                            "description": "How diffuse this lamp is.",
+                            "type": "Number",
+                            "optional": true,
+                            "optdefault": "0.8"
+                        },
+                        {
+                            "name": "color",
+                            "description": "The color emitted by\nthe lamp. The color can be specified in any CSS format.",
+                            "type": "String",
+                            "optional": true,
+                            "optdefault": "'rgba(250,220,150,0.8)'"
+                        },
+                        {
+                            "name": "radius",
+                            "description": "The size of the lamp. Bigger lamps cast\nsmoother shadows.",
+                            "type": "Number",
+                            "optional": true,
+                            "optdefault": "0"
+                        },
+                        {
+                            "name": "samples",
+                            "description": "The number of points which will be used\nfor shadow projection. It defines the quality of the rendering.",
+                            "type": "Number",
+                            "optional": true,
+                            "optdefault": "1"
+                        },
+                        {
+                            "name": "angle",
+                            "description": "The angle of the orientation of the lamp.",
+                            "type": "Number",
+                            "optional": true,
+                            "optdefault": "0"
+                        },
+                        {
+                            "name": "roughness",
+                            "description": "The roughness of the oriented effect.",
+                            "type": "Number",
+                            "optional": true,
+                            "optdefault": "0"
+                        }
+                    ]
+                }
+            ]
+        },
+        "illuminated.DiscObject": {
+            "name": "illuminated.DiscObject",
+            "shortname": "DiscObject",
+            "classitems": [],
+            "plugins": [],
+            "extensions": [],
+            "plugin_for": [],
+            "extension_for": [],
+            "module": "illuminated",
+            "namespace": "illuminated",
+            "file": "src/illuminated.js",
+            "line": 658,
+            "description": "A circular, opaque object.",
+            "extends": "illuminated.OpaqueObject",
+            "is_constructor": 1,
+            "params": [
+                {
+                    "name": "options",
+                    "description": "Options to be applied to this disc object.",
+                    "type": "Object",
+                    "optional": true,
+                    "props": [
+                        {
+                            "name": "center",
+                            "description": "Position of the disc object.",
+                            "type": "illuminated.Vec2",
+                            "optional": true
+                        },
+                        {
+                            "name": "radius",
+                            "description": "Size of the disc object.",
+                            "type": "Number",
+                            "optional": true
+                        },
+                        {
+                            "name": "diffuse",
+                            "description": "How diffuse this disc object should be.",
+                            "type": "Number",
+                            "optional": true
+                        }
+                    ]
+                }
+            ]
+        },
+        "illuminated.PolygonObject": {
+            "name": "illuminated.PolygonObject",
+            "shortname": "PolygonObject",
+            "classitems": [],
+            "plugins": [],
+            "extensions": [],
+            "plugin_for": [],
+            "extension_for": [],
+            "module": "illuminated",
+            "namespace": "illuminated",
+            "file": "src/illuminated.js",
+            "line": 772,
+            "description": "An opaque polygon object",
+            "extends": "illuminated.OpaqueObject",
+            "is_constructor": 1,
+            "params": [
+                {
+                    "name": "options",
+                    "description": "Options to be applied to this disc object.",
+                    "type": "Object",
+                    "optional": true,
+                    "props": [
+                        {
+                            "name": "points",
+                            "description": "An array of\n{{#crossLink \"illuminated.Vec2\"}}{{/crossLink}} points that define the polygon.",
+                            "type": "Array"
+                        },
+                        {
+                            "name": "diffuse",
+                            "description": "How diffuse this polygon object should be.",
+                            "type": "Number",
+                            "optional": true
+                        }
+                    ]
+                }
+            ]
+        },
+        "illuminated.RectangleObject": {
+            "name": "illuminated.RectangleObject",
+            "shortname": "RectangleObject",
+            "classitems": [],
+            "plugins": [],
+            "extensions": [],
+            "plugin_for": [],
+            "extension_for": [],
+            "module": "illuminated",
+            "namespace": "illuminated",
+            "file": "src/illuminated.js",
+            "line": 921,
+            "description": "A rectangular, opqaue object.",
+            "extends": "illuminated.PolygonObject",
+            "is_constructor": 1,
+            "params": [
+                {
+                    "name": "options",
+                    "description": "Options to be applied to this rectangle object.",
+                    "type": "Object",
+                    "optional": true,
+                    "props": [
+                        {
+                            "name": "topleft",
+                            "description": "A vector that is the top-left of the rectangle.",
+                            "type": "illuminated.Vec2",
+                            "optional": true
+                        },
+                        {
+                            "name": "bottomright",
+                            "description": "A vector that is the bottom-right of the rectangle.",
+                            "type": "illuminated.Vec2",
+                            "optional": true
+                        }
+                    ]
+                }
+            ]
+        },
+        "illuminated.LineObject": {
+            "name": "illuminated.LineObject",
+            "shortname": "LineObject",
+            "classitems": [],
+            "plugins": [],
+            "extensions": [],
+            "plugin_for": [],
+            "extension_for": [],
+            "module": "illuminated",
+            "namespace": "illuminated",
+            "file": "src/illuminated.js",
+            "line": 978,
+            "description": "An opaque line object",
+            "extends": "illuminated.PolygonObject",
+            "is_constructor": 1,
+            "params": [
+                {
+                    "name": "options",
+                    "description": "Options to be applied to this line object.",
+                    "type": "Object",
+                    "optional": true,
+                    "props": [
+                        {
+                            "name": "a",
+                            "description": "A vector that is the first point of the line.",
+                            "type": "illuminated.Vec2",
+                            "optional": true
+                        },
+                        {
+                            "name": "b",
+                            "description": "A vector that is the last point of the line.",
+                            "type": "illuminated.Vec2",
+                            "optional": true
+                        }
+                    ]
+                }
+            ]
+        },
+        "illuminated.Lighting": {
+            "name": "illuminated.Lighting",
+            "shortname": "Lighting",
+            "classitems": [],
+            "plugins": [],
+            "extensions": [],
+            "plugin_for": [],
+            "extension_for": [],
+            "module": "illuminated",
+            "namespace": "illuminated",
+            "file": "src/illuminated.js",
+            "line": 1020,
+            "description": "Defines the lighting of one light through a set of opaque objects.",
+            "is_constructor": 1,
+            "params": [
+                {
+                    "name": "options",
+                    "description": "Options to be applied to this light.",
+                    "type": "Object",
+                    "optional": true,
+                    "props": [
+                        {
+                            "name": "light",
+                            "description": "The source of the lighting.",
+                            "type": "illuminated.Light",
+                            "optional": true
+                        },
+                        {
+                            "name": "objects",
+                            "description": "An array of \n{{#crossLink \"illuminated.OpaqueObject\"}}{{/crossLink}} objects which stop the\nlight and create shadows.",
+                            "type": "Array",
+                            "optional": true
+                        }
+                    ]
+                }
+            ]
+        },
+        "illuminated.DarkMask": {
+            "name": "illuminated.DarkMask",
+            "shortname": "DarkMask",
+            "classitems": [],
+            "plugins": [],
+            "extensions": [],
+            "plugin_for": [],
+            "extension_for": [],
+            "module": "illuminated",
+            "namespace": "illuminated",
+            "file": "src/illuminated.js",
+            "line": 1135,
+            "description": "Defines the dark layer which hides the dark area not illuminated by a set of\nlights.",
+            "is_constructor": 1,
+            "params": [
+                {
+                    "name": "options",
+                    "description": "Options to be applied to this light.",
+                    "type": "Object",
+                    "optional": true,
+                    "props": [
+                        {
+                            "name": "lights",
+                            "description": "An array of\n{{#crossLink \"illuminated.Light\"}}{{/crossLink}} objects that illuminate the\nrest of the scene.",
+                            "type": "Array",
+                            "optional": true
+                        },
+                        {
+                            "name": "color",
+                            "description": "The color of the dark area in RGBA format.",
+                            "type": "String",
+                            "optional": true
+                        }
+                    ]
+                }
+            ]
+        }
+    },
+    "classitems": [
+        {
+            "file": "src/illuminated.js",
+            "line": 48,
+            "description": "X coordinate for the vector.",
+            "itemtype": "property",
+            "name": "x",
+            "type": "Number",
+            "default": "0",
+            "class": "illuminated.Vec2",
+            "module": "illuminated",
+            "namespace": "illuminated"
+        },
+        {
+            "file": "src/illuminated.js",
+            "line": 56,
+            "description": "Y coordinate for the vector.",
+            "itemtype": "property",
+            "name": "y",
+            "type": "Number",
+            "default": "0",
+            "class": "illuminated.Vec2",
+            "module": "illuminated",
+            "namespace": "illuminated"
+        },
+        {
+            "file": "src/illuminated.js",
+            "line": 65,
+            "description": "Returns a copy of this vector.",
+            "itemtype": "method",
+            "name": "copy",
+            "return": {
+                "description": "A new vector that is a copy of this vector.",
+                "type": "illuminated.Vec2"
+            },
+            "class": "illuminated.Vec2",
+            "module": "illuminated",
+            "namespace": "illuminated"
+        },
+        {
+            "file": "src/illuminated.js",
+            "line": 74,
+            "description": "Calculates the dot product of this vector and the given vector.",
+            "itemtype": "method",
+            "name": "dot",
+            "params": [
+                {
+                    "name": "v",
+                    "description": "A vector with which to calculate the dot product.",
+                    "type": "illuminated.Vec2"
+                }
+            ],
+            "return": {
+                "description": "The result of the dot product.",
+                "type": "Number"
+            },
+            "class": "illuminated.Vec2",
+            "module": "illuminated",
+            "namespace": "illuminated"
+        },
+        {
+            "file": "src/illuminated.js",
+            "line": 84,
+            "description": "Subtracts the given vector from this vector.",
+            "itemtype": "method",
+            "name": "sub",
+            "params": [
+                {
+                    "name": "v",
+                    "description": "A vector to subtract from this vector.",
+                    "type": "illuminated.Vec2"
+                }
+            ],
+            "return": {
+                "description": "A new vector that is the result of the subtraction.",
+                "type": "illuminated.Vec2"
+            },
+            "class": "illuminated.Vec2",
+            "module": "illuminated",
+            "namespace": "illuminated"
+        },
+        {
+            "file": "src/illuminated.js",
+            "line": 94,
+            "description": "Adds the given vector to this vector.",
+            "itemtype": "method",
+            "name": "add",
+            "params": [
+                {
+                    "name": "v",
+                    "description": "A vector to add to this vector.",
+                    "type": "illuminated.Vec2"
+                }
+            ],
+            "return": {
+                "description": "A new vector that is the result of the addition.",
+                "type": "illuminated.Vec2"
+            },
+            "class": "illuminated.Vec2",
+            "module": "illuminated",
+            "namespace": "illuminated"
+        },
+        {
+            "file": "src/illuminated.js",
+            "line": 104,
+            "description": "Multiplies the given vector with this vector.",
+            "itemtype": "method",
+            "name": "mul",
+            "params": [
+                {
+                    "name": "v",
+                    "description": "A vector to multiply with this vector.",
+                    "type": "illuminated.Vec2"
+                }
+            ],
+            "return": {
+                "description": "A new vector that is the result of the multiplication.",
+                "type": "illuminated.Vec2"
+            },
+            "class": "illuminated.Vec2",
+            "module": "illuminated",
+            "namespace": "illuminated"
+        },
+        {
+            "file": "src/illuminated.js",
+            "line": 114,
+            "description": "Returns the inverse of this vector.",
+            "itemtype": "method",
+            "name": "inv",
+            "return": {
+                "description": "A new vector that is the inverse of this vector.",
+                "type": "illuminated.Vec2"
+            },
+            "class": "illuminated.Vec2",
+            "module": "illuminated",
+            "namespace": "illuminated"
+        },
+        {
+            "file": "src/illuminated.js",
+            "line": 123,
+            "description": "Calculates the squared distance between this vector and the given vector.",
+            "itemtype": "method",
+            "name": "dist2",
+            "params": [
+                {
+                    "name": "v",
+                    "description": "A vector with which the squared distance is calculated.",
+                    "type": "illuminated.Vec2"
+                }
+            ],
+            "return": {
+                "description": "The squared distance.",
+                "type": "Number"
+            },
+            "class": "illuminated.Vec2",
+            "module": "illuminated",
+            "namespace": "illuminated"
+        },
+        {
+            "file": "src/illuminated.js",
+            "line": 135,
+            "description": "Calculates the normalized form of this vector.",
+            "itemtype": "method",
+            "name": "normalize",
+            "return": {
+                "description": "A new vector in normalized form.",
+                "type": "illuminated.Vec2"
+            },
+            "class": "illuminated.Vec2",
+            "module": "illuminated",
+            "namespace": "illuminated"
+        },
+        {
+            "file": "src/illuminated.js",
+            "line": 145,
+            "description": "Calculates the squared length of this vector.",
+            "itemtype": "method",
+            "name": "length2",
+            "return": {
+                "description": "The squared length.",
+                "type": "Number"
+            },
+            "class": "illuminated.Vec2",
+            "module": "illuminated",
+            "namespace": "illuminated"
+        },
+        {
+            "file": "src/illuminated.js",
+            "line": 154,
+            "description": "Returns a string representing this vector.",
+            "itemtype": "method",
+            "name": "toString",
+            "return": {
+                "description": "A string representing this vector.",
+                "type": "String"
+            },
+            "class": "illuminated.Vec2",
+            "module": "illuminated",
+            "namespace": "illuminated"
+        },
+        {
+            "file": "src/illuminated.js",
+            "line": 164,
+            "description": "Determines if this vector is within the bounds defined by the given vectors.",
+            "itemtype": "method",
+            "name": "inBound",
+            "params": [
+                {
+                    "name": "topleft",
+                    "description": "A vector that is the top-left of the bounds.",
+                    "type": "illuminated.Vec2"
+                },
+                {
+                    "name": "bottomright",
+                    "description": "A vector that is the bottom-right of the bounds.",
+                    "type": "illuminated.Vec2"
+                }
+            ],
+            "return": {
+                "description": "True if this vector is within the given bounds.",
+                "type": "Boolean"
+            },
+            "class": "illuminated.Vec2",
+            "module": "illuminated",
+            "namespace": "illuminated"
+        },
+        {
+            "file": "src/illuminated.js",
+            "line": 189,
+            "description": "Position of this light. (0,0) by default.",
+            "itemtype": "property",
+            "name": "position",
+            "type": "Vec2",
+            "default": "new Vec2(0, 0)",
+            "class": "illuminated.Light",
+            "module": "illuminated",
+            "namespace": "illuminated"
+        },
+        {
+            "file": "src/illuminated.js",
+            "line": 197,
+            "description": "Intensity of this light.",
+            "itemtype": "property",
+            "name": "distance",
+            "type": "Number",
+            "default": "100",
+            "class": "illuminated.Light",
+            "module": "illuminated",
+            "namespace": "illuminated"
+        },
+        {
+            "file": "src/illuminated.js",
+            "line": 205,
+            "description": "How diffuse this light is.",
+            "itemtype": "property",
+            "name": "diffuse",
+            "type": "Number",
+            "default": "0.8",
+            "class": "illuminated.Light",
+            "module": "illuminated",
+            "namespace": "illuminated"
+        },
+        {
+            "file": "src/illuminated.js",
+            "line": 214,
+            "description": "Render the light onto the given context.",
+            "itemtype": "method",
+            "name": "render",
+            "params": [
+                {
+                    "name": "ctx",
+                    "description": "The canvas context onto which the\nlight will be rendered.",
+                    "type": "CanvasRenderingContext2D"
+                }
+            ],
+            "class": "illuminated.Light",
+            "module": "illuminated",
+            "namespace": "illuminated"
+        },
+        {
+            "file": "src/illuminated.js",
+            "line": 222,
+            "description": "Render a mask representing the visibility. (Used by DarkMask.)",
+            "itemtype": "method",
+            "name": "mask",
+            "params": [
+                {
+                    "name": "ctx",
+                    "description": "The canvas context onto which the mask\nwill be rendered.",
+                    "type": "CanvasRenderingContext2D"
+                }
+            ],
+            "class": "illuminated.Light",
+            "module": "illuminated",
+            "namespace": "illuminated"
+        },
+        {
+            "file": "src/illuminated.js",
+            "line": 237,
+            "description": "Calculate the boundaries of this light using the light's distance.",
+            "itemtype": "method",
+            "name": "bounds",
+            "return": {
+                "description": "An anonymous object with the properties topleft and\nbottomright. The property values are {{#crossLink \"illuminated.Vec2\"}}{{/crossLink}} objects representing the corners\nof the boundary.",
+                "type": "Object"
+            },
+            "class": "illuminated.Light",
+            "module": "illuminated",
+            "namespace": "illuminated"
+        },
+        {
+            "file": "src/illuminated.js",
+            "line": 251,
+            "description": "Return the center of this light.\ni.e. The position where the light intensity is the highest",
+            "itemtype": "method",
+            "name": "center",
+            "return": {
+                "description": "A new vector that represents the center of this light.",
+                "type": "illuminated.Vec2"
+            },
+            "class": "illuminated.Light",
+            "module": "illuminated",
+            "namespace": "illuminated"
+        },
+        {
+            "file": "src/illuminated.js",
+            "line": 261,
+            "description": "Invoke a function for every sample generated by this light.",
+            "itemtype": "method",
+            "name": "forEachSample",
+            "params": [
+                {
+                    "name": "f",
+                    "description": "Function to be called for every sample. The function will\nbe passed a vector representing the position of the sample.",
+                    "type": "Function"
+                }
+            ],
+            "class": "illuminated.Light",
+            "module": "illuminated",
+            "namespace": "illuminated"
+        },
+        {
+            "file": "src/illuminated.js",
+            "line": 270,
+            "description": "Creates a canvas context with the visible mask rendered onto it.",
+            "access": "private",
+            "tagname": "",
+            "itemtype": "method",
+            "name": "_getVisibleMaskCache",
+            "return": {
+                "description": "A canvas context with the visible mask\nrendered onto it.",
+                "type": "CanvasRenderingContext2D"
+            },
+            "class": "illuminated.Light",
+            "module": "illuminated",
+            "namespace": "illuminated"
+        },
+        {
+            "file": "src/illuminated.js",
+            "line": 304,
+            "description": "How diffuse this opaque object should be.",
+            "itemtype": "property",
+            "name": "diffuse",
+            "type": "Number",
+            "default": "0.8",
+            "class": "illuminated.OpaqueObject",
+            "module": "illuminated",
+            "namespace": "illuminated"
+        },
+        {
+            "file": "src/illuminated.js",
+            "line": 313,
+            "description": "Fill ctx with the shadows projected by this opaque object at the origin\npoint, constrained by the given bounds.",
+            "itemtype": "method",
+            "name": "cast",
+            "params": [
+                {
+                    "name": "ctx",
+                    "description": "The canvas context onto which the\nshadows will be cast.",
+                    "type": "CanvasRenderingContext2D"
+                },
+                {
+                    "name": "origin",
+                    "description": "A vector that represents the origin for the casted shadows.",
+                    "type": "illuminated.Vec2"
+                },
+                {
+                    "name": "bounds",
+                    "description": "An anonymous object with the properties topleft and\nbottomright. The property values are {{#crossLink \"illuminated.Vec2\"}}{{/crossLink}} objects representing the corners\nof the boundary.",
+                    "type": "Object"
+                }
+            ],
+            "class": "illuminated.OpaqueObject",
+            "module": "illuminated",
+            "namespace": "illuminated"
+        },
+        {
+            "file": "src/illuminated.js",
+            "line": 326,
+            "description": "Draw the path of the opaque object shape onto the ctx.",
+            "itemtype": "method",
+            "name": "path",
+            "params": [
+                {
+                    "name": "ctx",
+                    "description": "The context onto which the path will be\ndrawn.",
+                    "type": "CanvasRenderingContext2D"
+                }
+            ],
+            "class": "illuminated.OpaqueObject",
+            "module": "illuminated",
+            "namespace": "illuminated"
+        },
+        {
+            "file": "src/illuminated.js",
+            "line": 334,
+            "description": "Calculate the boundaries of this opaque object.",
+            "itemtype": "method",
+            "name": "bounds",
+            "return": {
+                "description": "An anonymous object with the properties topleft and\nbottomright. The property values are {{#crossLink \"illuminated.Vec2\"}}{{/crossLink}} objects representing the corners\nof the boundary.",
+                "type": "Object"
+            },
+            "class": "illuminated.OpaqueObject",
+            "module": "illuminated",
+            "namespace": "illuminated"
+        },
+        {
+            "file": "src/illuminated.js",
+            "line": 343,
+            "description": "Determine if the given point is inside the object.",
+            "itemtype": "method",
+            "name": "contains",
+            "params": [
+                {
+                    "name": "point",
+                    "description": "The point to be checked.",
+                    "type": "illuminated.Vec2"
+                }
+            ],
+            "return": {
+                "description": "True if the opaque object contains the given point.",
+                "type": "Boolean"
+            },
+            "class": "illuminated.OpaqueObject",
+            "module": "illuminated",
+            "namespace": "illuminated"
+        },
+        {
+            "file": "src/illuminated.js",
+            "line": 388,
+            "description": "The color emitted by the lamp. The color can be specified in any CSS format.",
+            "itemtype": "property",
+            "name": "color",
+            "type": "String",
+            "default": "'rgba(250,220,150,0.8)'",
+            "class": "illuminated.Lamp",
+            "module": "illuminated",
+            "namespace": "illuminated"
+        },
+        {
+            "file": "src/illuminated.js",
+            "line": 396,
+            "description": "The size of the lamp. Bigger lamps cast smoother shadows.",
+            "itemtype": "property",
+            "name": "radius",
+            "type": "Number",
+            "default": "0",
+            "class": "illuminated.Lamp",
+            "module": "illuminated",
+            "namespace": "illuminated"
+        },
+        {
+            "file": "src/illuminated.js",
+            "line": 404,
+            "description": "The number of points which will be used for shadow projection. It defines\nthe quality of the rendering.",
+            "itemtype": "property",
+            "name": "samples",
+            "type": "Number",
+            "default": "1",
+            "class": "illuminated.Lamp",
+            "module": "illuminated",
+            "namespace": "illuminated"
+        },
+        {
+            "file": "src/illuminated.js",
+            "line": 413,
+            "description": "The angle of the orientation of the lamp.",
+            "itemtype": "property",
+            "name": "angle",
+            "type": "Number",
+            "default": "0",
+            "class": "illuminated.Lamp",
+            "module": "illuminated",
+            "namespace": "illuminated"
+        },
+        {
+            "file": "src/illuminated.js",
+            "line": 421,
+            "description": "The roughness of the oriented effect.",
+            "itemtype": "property",
+            "name": "roughness",
+            "type": "Number",
+            "default": "0",
+            "class": "illuminated.Lamp",
+            "module": "illuminated",
+            "namespace": "illuminated"
+        },
+        {
+            "file": "src/illuminated.js",
+            "line": 430,
+            "description": "Return a string hash key representing this lamp.",
+            "access": "private",
+            "tagname": "",
+            "itemtype": "method",
+            "name": "_getHashCache",
+            "return": {
+                "description": "The hash key.",
+                "type": "String"
+            },
+            "class": "illuminated.Lamp",
+            "module": "illuminated",
+            "namespace": "illuminated"
+        },
+        {
+            "file": "src/illuminated.js",
+            "line": 440,
+            "description": "Return the center of this lamp.\ni.e. The position where the lamp intensity is the highest",
+            "itemtype": "method",
+            "name": "center",
+            "return": {
+                "description": "A new vector that represents the center of this lamp.",
+                "type": "illuminated.Vec2"
+            },
+            "class": "illuminated.Lamp",
+            "module": "illuminated",
+            "namespace": "illuminated"
+        },
+        {
+            "file": "src/illuminated.js",
+            "line": 450,
+            "description": "Calculate the boundaries of this lamp based on its properties.",
+            "itemtype": "method",
+            "name": "bounds",
+            "return": {
+                "description": "An anonymous object with the properties topleft and\nbottomright. The property values are {{#crossLink \"illuminated.Vec2\"}}{{/crossLink}} objects representing the corners\nof the boundary.",
+                "type": "Object"
+            },
+            "class": "illuminated.Lamp",
+            "module": "illuminated",
+            "namespace": "illuminated"
+        },
+        {
+            "file": "src/illuminated.js",
+            "line": 465,
+            "description": "Render a mask representing the visibility. (Used by DarkMask.)",
+            "itemtype": "method",
+            "name": "mask",
+            "params": [
+                {
+                    "name": "ctx",
+                    "description": "The canvas context onto which the mask\nwill be rendered.",
+                    "type": "CanvasRenderingContext2D"
+                }
+            ],
+            "class": "illuminated.Lamp",
+            "module": "illuminated",
+            "namespace": "illuminated"
+        },
+        {
+            "file": "src/illuminated.js",
+            "line": 477,
+            "description": "Renders this lamp's gradient onto a cached canvas at the given position.",
+            "access": "private",
+            "tagname": "",
+            "itemtype": "method",
+            "name": "_getGradientCache",
+            "params": [
+                {
+                    "name": "center",
+                    "description": "The position of the center of the gradient to render.",
+                    "type": "illuminated.Vec2"
+                }
+            ],
+            "class": "illuminated.Lamp",
+            "module": "illuminated",
+            "namespace": "illuminated"
+        },
+        {
+            "file": "src/illuminated.js",
+            "line": 500,
+            "description": "Render the lamp onto the given context (without any shadows).",
+            "itemtype": "method",
+            "name": "render",
+            "params": [
+                {
+                    "name": "ctx",
+                    "description": "The canvas context onto which the\nlight will be rendered.",
+                    "type": "CanvasRenderingContext2D"
+                }
+            ],
+            "class": "illuminated.Lamp",
+            "module": "illuminated",
+            "namespace": "illuminated"
+        },
+        {
+            "file": "src/illuminated.js",
+            "line": 512,
+            "description": "Invoke a function for every sample generated by this lamp. The samples for\nlamps are generated using a \"spiral\" algorithm.",
+            "itemtype": "method",
+            "name": "forEachSample",
+            "params": [
+                {
+                    "name": "f",
+                    "description": "Function to be called for every sample. The function will\nbe passed a vector representing the position of the sample.",
+                    "type": "Function"
+                }
+            ],
+            "class": "illuminated.Lamp",
+            "module": "illuminated",
+            "namespace": "illuminated"
+        },
+        {
+            "file": "src/illuminated.js",
+            "line": 672,
+            "description": "Position of the disc object.",
+            "itemtype": "property",
+            "name": "center",
+            "type": "Vec2",
+            "default": "new illuminated.Vec2()",
+            "class": "illuminated.DiscObject",
+            "module": "illuminated",
+            "namespace": "illuminated"
+        },
+        {
+            "file": "src/illuminated.js",
+            "line": 680,
+            "description": "Size of the disc object.",
+            "itemtype": "property",
+            "name": "radius",
+            "type": "Number",
+            "default": "20",
+            "class": "illuminated.DiscObject",
+            "module": "illuminated",
+            "namespace": "illuminated"
+        },
+        {
+            "file": "src/illuminated.js",
+            "line": 689,
+            "description": "Fill ctx with the shadows projected by this disc object from the origin\npoint, constrained by the given bounds.",
+            "itemtype": "method",
+            "name": "cast",
+            "params": [
+                {
+                    "name": "ctx",
+                    "description": "The canvas context onto which the\nshadows will be cast.",
+                    "type": "CanvasRenderingContext2D"
+                },
+                {
+                    "name": "origin",
+                    "description": "A vector that represents the origin for the casted shadows.",
+                    "type": "illuminated.Vec2"
+                },
+                {
+                    "name": "bounds",
+                    "description": "An anonymous object with the properties topleft and\nbottomright. The property values are {{#crossLink \"illuminated.Vec2\"}}{{/crossLink}} objects representing the corners\nof the boundary.",
+                    "type": "Object"
+                }
+            ],
+            "class": "illuminated.DiscObject",
+            "module": "illuminated",
+            "namespace": "illuminated"
+        },
+        {
+            "file": "src/illuminated.js",
+            "line": 738,
+            "description": "Draw the path of the disc onto the ctx.",
+            "itemtype": "method",
+            "name": "path",
+            "params": [
+                {
+                    "name": "ctx",
+                    "description": "The context onto which the path will be\ndrawn.",
+                    "type": "CanvasRenderingContext2D"
+                }
+            ],
+            "class": "illuminated.DiscObject",
+            "module": "illuminated",
+            "namespace": "illuminated"
+        },
+        {
+            "file": "src/illuminated.js",
+            "line": 748,
+            "description": "Calculate the boundaries of this disc object.",
+            "itemtype": "method",
+            "name": "bounds",
+            "return": {
+                "description": "An anonymous object with the properties topleft and\nbottomright. The property values are {{#crossLink \"illuminated.Vec2\"}}{{/crossLink}} objects representing the corners\nof the boundary.",
+                "type": "Object"
+            },
+            "class": "illuminated.DiscObject",
+            "module": "illuminated",
+            "namespace": "illuminated"
+        },
+        {
+            "file": "src/illuminated.js",
+            "line": 762,
+            "description": "Determine if the given point is inside the disc.",
+            "itemtype": "method",
+            "name": "contains",
+            "params": [
+                {
+                    "name": "point",
+                    "description": "The point to be checked.",
+                    "type": "illuminated.Vec2"
+                }
+            ],
+            "return": {
+                "description": "True if the disc object contains the given point.",
+                "type": "Boolean"
+            },
+            "class": "illuminated.DiscObject",
+            "module": "illuminated",
+            "namespace": "illuminated"
+        },
+        {
+            "file": "src/illuminated.js",
+            "line": 786,
+            "description": "An array of {{#crossLink \"illuminated.Vec2\"}}{{/crossLink}} points that\ndefine the polygon.",
+            "itemtype": "property",
+            "name": "points",
+            "type": "Array",
+            "default": "[]",
+            "class": "illuminated.PolygonObject",
+            "module": "illuminated",
+            "namespace": "illuminated"
+        },
+        {
+            "file": "src/illuminated.js",
+            "line": 796,
+            "description": "Calculate the boundaries of this polygon object.",
+            "itemtype": "method",
+            "name": "bounds",
+            "return": {
+                "description": "An anonymous object with the properties topleft and\nbottomright. The property values are {{#crossLink \"illuminated.Vec2\"}}{{/crossLink}} objects representing the corners\nof the boundary.",
+                "type": "Object"
+            },
+            "class": "illuminated.PolygonObject",
+            "module": "illuminated",
+            "namespace": "illuminated"
+        },
+        {
+            "file": "src/illuminated.js",
+            "line": 820,
+            "description": "Determine if the given point is inside the polygon.",
+            "itemtype": "method",
+            "name": "contains",
+            "params": [
+                {
+                    "name": "point",
+                    "description": "The point to be checked.",
+                    "type": "illuminated.Vec2"
+                }
+            ],
+            "return": {
+                "description": "True if the polygon object contains the given point.",
+                "type": "Boolean"
+            },
+            "class": "illuminated.PolygonObject",
+            "module": "illuminated",
+            "namespace": "illuminated"
+        },
+        {
+            "file": "src/illuminated.js",
+            "line": 845,
+            "description": "Draw the path of the polygon onto the ctx.",
+            "itemtype": "method",
+            "name": "path",
+            "params": [
+                {
+                    "name": "ctx",
+                    "description": "The context onto which the path will be\ndrawn.",
+                    "type": "CanvasRenderingContext2D"
+                }
+            ],
+            "class": "illuminated.PolygonObject",
+            "module": "illuminated",
+            "namespace": "illuminated"
+        },
+        {
+            "file": "src/illuminated.js",
+            "line": 855,
+            "description": "Fill ctx with the shadows projected by this polygon object from the origin\npoint, constrained by the given bounds.",
+            "itemtype": "method",
+            "name": "cast",
+            "params": [
+                {
+                    "name": "ctx",
+                    "description": "The canvas context onto which the\nshadows will be cast.",
+                    "type": "CanvasRenderingContext2D"
+                },
+                {
+                    "name": "origin",
+                    "description": "A vector that represents the origin for the casted shadows.",
+                    "type": "illuminated.Vec2"
+                },
+                {
+                    "name": "bounds",
+                    "description": "An anonymous object with the properties topleft and\nbottomright. The property values are {{#crossLink \"illuminated.Vec2\"}}{{/crossLink}} objects representing the corners\nof the boundary.",
+                    "type": "Object"
+                }
+            ],
+            "class": "illuminated.PolygonObject",
+            "module": "illuminated",
+            "namespace": "illuminated"
+        },
+        {
+            "file": "src/illuminated.js",
+            "line": 895,
+            "description": "Invoke a function for each of the visible edges in this polygon.",
+            "access": "private",
+            "tagname": "",
+            "itemtype": "method",
+            "name": "_forEachVisibleEdges",
+            "params": [
+                {
+                    "name": "origin",
+                    "description": "A vector that represents the origin for the casted shadows.",
+                    "type": "illuminated.Vec2"
+                },
+                {
+                    "name": "bounds",
+                    "description": "An anonymous object with the properties topleft and\nbottomright. The property values are {{#crossLink \"illuminated.Vec2\"}}{{/crossLink}} objects representing the corners\nof the boundary of this polygon.",
+                    "type": "Object"
+                },
+                {
+                    "name": "f",
+                    "description": "The function to be invoked.",
+                    "type": "Function"
+                }
+            ],
+            "class": "illuminated.PolygonObject",
+            "module": "illuminated",
+            "namespace": "illuminated"
+        },
+        {
+            "file": "src/illuminated.js",
+            "line": 937,
+            "description": "A vector that is the top-left of the rectangle.",
+            "itemtype": "property",
+            "name": "topleft",
+            "type": "Vec2",
+            "default": "new illuminated.Vec2()",
+            "class": "illuminated.RectangleObject",
+            "module": "illuminated",
+            "namespace": "illuminated"
+        },
+        {
+            "file": "src/illuminated.js",
+            "line": 945,
+            "description": "A vector that is the bottom-right of the rectangle.",
+            "itemtype": "property",
+            "name": "bottomright",
+            "type": "Vec2",
+            "default": "new illuminated.Vec2()",
+            "class": "illuminated.RectangleObject",
+            "module": "illuminated",
+            "namespace": "illuminated"
+        },
+        {
+            "file": "src/illuminated.js",
+            "line": 954,
+            "description": "Initializes the points defining this rectangle based on its specified bounds.",
+            "access": "private",
+            "tagname": "",
+            "itemtype": "method",
+            "name": "syncFromTopleftBottomright",
+            "class": "illuminated.RectangleObject",
+            "module": "illuminated",
+            "namespace": "illuminated"
+        },
+        {
+            "file": "src/illuminated.js",
+            "line": 967,
+            "description": "Draws this rectangle onto the given context",
+            "itemtype": "method",
+            "name": "fill",
+            "params": [
+                {
+                    "name": "ctx",
+                    "description": "The canvas context onto which the\nrectangle should be drawn.",
+                    "type": "CanvasRenderingContext2D"
+                }
+            ],
+            "class": "illuminated.RectangleObject",
+            "module": "illuminated",
+            "namespace": "illuminated"
+        },
+        {
+            "file": "src/illuminated.js",
+            "line": 994,
+            "description": "A vector that is the first point of the line.",
+            "itemtype": "property",
+            "name": "a",
+            "type": "Vec2",
+            "default": "new illuminated.Vec2()",
+            "class": "illuminated.LineObject",
+            "module": "illuminated",
+            "namespace": "illuminated"
+        },
+        {
+            "file": "src/illuminated.js",
+            "line": 1002,
+            "description": "A vector that is the last point of the line.",
+            "itemtype": "property",
+            "name": "b",
+            "type": "Vec2",
+            "default": "new illuminated.Vec2()",
+            "class": "illuminated.LineObject",
+            "module": "illuminated",
+            "namespace": "illuminated"
+        },
+        {
+            "file": "src/illuminated.js",
+            "line": 1011,
+            "description": "Initializes the points defining this line based on its options.",
+            "access": "private",
+            "tagname": "",
+            "itemtype": "method",
+            "name": "syncFromAB",
+            "class": "illuminated.LineObject",
+            "module": "illuminated",
+            "namespace": "illuminated"
+        },
+        {
+            "file": "src/illuminated.js",
+            "line": 1035,
+            "description": "The source of the lighting.",
+            "itemtype": "property",
+            "name": "light",
+            "type": "Light",
+            "default": "new illuminated.Light()",
+            "class": "illuminated.Lighting",
+            "module": "illuminated",
+            "namespace": "illuminated"
+        },
+        {
+            "file": "src/illuminated.js",
+            "line": 1043,
+            "description": "An array of {{#crossLink \"illuminated.OpaqueObject\"}}{{/crossLink}} objects\nwhich stop the light and create shadows.",
+            "itemtype": "property",
+            "name": "objects",
+            "type": "Array",
+            "default": "[]",
+            "class": "illuminated.Lighting",
+            "module": "illuminated",
+            "namespace": "illuminated"
+        },
+        {
+            "file": "src/illuminated.js",
+            "line": 1053,
+            "description": "Create caches for canvas contexts.",
+            "access": "private",
+            "tagname": "",
+            "itemtype": "method",
+            "name": "createCache",
+            "params": [
+                {
+                    "name": "w",
+                    "description": "Width of the contexts.",
+                    "type": "Number"
+                },
+                {
+                    "name": "h",
+                    "description": "Height of the contexts.",
+                    "type": "Number"
+                }
+            ],
+            "class": "illuminated.Lighting",
+            "module": "illuminated",
+            "namespace": "illuminated"
+        },
+        {
+            "file": "src/illuminated.js",
+            "line": 1065,
+            "description": "Draw the shadows that are cast by the objects. You usually don't have to use\nit if you use render().",
+            "itemtype": "method",
+            "name": "cast",
+            "params": [
+                {
+                    "name": "ctxoutput",
+                    "description": "The canvas context onto which the\nshadows will be drawn.",
+                    "type": "CanvasRenderingContext2D"
+                }
+            ],
+            "class": "illuminated.Lighting",
+            "module": "illuminated",
+            "namespace": "illuminated"
+        },
+        {
+            "file": "src/illuminated.js",
+            "line": 1106,
+            "description": "Compute the shadows to cast.",
+            "itemtype": "method",
+            "name": "compute",
+            "params": [
+                {
+                    "name": "w",
+                    "description": "Width of the canvas context.",
+                    "type": "Number"
+                },
+                {
+                    "name": "h",
+                    "description": "Height of the canvas context.",
+                    "type": "Number"
+                }
+            ],
+            "class": "illuminated.Lighting",
+            "module": "illuminated",
+            "namespace": "illuminated"
+        },
+        {
+            "file": "src/illuminated.js",
+            "line": 1126,
+            "description": "Draws the light and shadows onto the given context.",
+            "itemtype": "method",
+            "name": "render",
+            "params": [
+                {
+                    "name": "ctx",
+                    "description": "The canvas context on which to draw.",
+                    "type": "CanvasRenderingContext2D"
+                }
+            ],
+            "class": "illuminated.Lighting",
+            "module": "illuminated",
+            "namespace": "illuminated"
+        },
+        {
+            "file": "src/illuminated.js",
+            "line": 1151,
+            "description": "An array of {{#crossLink \"illuminated.Light\"}}{{/crossLink}} objects that\nilluminate the rest of the scene.",
+            "itemtype": "property",
+            "name": "lights",
+            "type": "Array",
+            "default": "[]",
+            "class": "illuminated.DarkMask",
+            "module": "illuminated",
+            "namespace": "illuminated"
+        },
+        {
+            "file": "src/illuminated.js",
+            "line": 1160,
+            "description": "The color of the dark area in RGBA format.",
+            "itemtype": "property",
+            "name": "color",
+            "type": "String",
+            "default": "'rgba(0,0,0,0.9)'",
+            "class": "illuminated.DarkMask",
+            "module": "illuminated",
+            "namespace": "illuminated"
+        },
+        {
+            "file": "src/illuminated.js",
+            "line": 1169,
+            "description": "Compute the dark mask.",
+            "itemtype": "method",
+            "name": "compute",
+            "params": [
+                {
+                    "name": "w",
+                    "description": "Width of the canvas context.",
+                    "type": "Number"
+                },
+                {
+                    "name": "h",
+                    "description": "Height of the canvas context.",
+                    "type": "Number"
+                }
+            ],
+            "class": "illuminated.DarkMask",
+            "module": "illuminated",
+            "namespace": "illuminated"
+        },
+        {
+            "file": "src/illuminated.js",
+            "line": 1190,
+            "description": "Draws the dark mask onto the given context.",
+            "itemtype": "method",
+            "name": "render",
+            "params": [
+                {
+                    "name": "ctx",
+                    "description": "The canvas context on which to draw.",
+                    "type": "CanvasRenderingContext2D"
+                }
+            ],
+            "class": "illuminated.DarkMask",
+            "module": "illuminated",
+            "namespace": "illuminated"
+        },
+        {
+            "file": "src/illuminated.js",
+            "line": 1208,
+            "description": "Creates a canvas and context with the given width and height.",
+            "static": 1,
+            "itemtype": "method",
+            "name": "createCanvasAnd2dContext",
+            "params": [
+                {
+                    "name": "w",
+                    "description": "Width of the canvas context.",
+                    "type": "Number"
+                },
+                {
+                    "name": "h",
+                    "description": "Height of the canvas context.",
+                    "type": "Number"
+                }
+            ],
+            "return": {
+                "description": "An anonymous object with \"canvas\", \"ctx\", \"w\" and \"h\"\nproperties.",
+                "type": "Object"
+            },
+            "class": "illuminated",
+            "module": "illuminated"
+        },
+        {
+            "file": "src/illuminated.js",
+            "line": 1226,
+            "description": "Draw a path defined by the given points onto the given ctx.",
+            "static": 1,
+            "itemtype": "method",
+            "name": "path",
+            "params": [
+                {
+                    "name": "ctx",
+                    "description": "The context onto which the properties\nshould be drawn.",
+                    "type": "CanvasRenderingContext2D"
+                },
+                {
+                    "name": "points",
+                    "description": "An array of\n{{#crossLink \"illuminated.Vec2\"}}{{/crossLink}} objects that define the path.",
+                    "type": "Array"
+                },
+                {
+                    "name": "dontJoinLast",
+                    "description": "True if the last point should joined with the\nfirst point in the path.",
+                    "type": "Boolean"
+                }
+            ],
+            "class": "illuminated",
+            "module": "illuminated"
+        },
+        {
+            "file": "src/illuminated.js",
+            "line": 1251,
+            "description": "Converts a CSS color string into RGBA format.",
+            "static": 1,
+            "itemtype": "method",
+            "name": "getRGBA",
+            "params": [
+                {
+                    "name": "color",
+                    "description": "Color in any CSS format.",
+                    "type": "String"
+                },
+                {
+                    "name": "alpha",
+                    "description": "Alpha value for produced color.",
+                    "type": "Number"
+                }
+            ],
+            "return": {
+                "description": "Color in RGBA format.",
+                "type": "String"
+            },
+            "class": "illuminated",
+            "module": "illuminated"
+        },
+        {
+            "file": "src/illuminated.js",
+            "line": 1272,
+            "description": "Converts a CSS color string into an anonymous object with color and alpha\nproperties.",
+            "static": 1,
+            "itemtype": "method",
+            "name": "extractColorAndAlpha",
+            "params": [
+                {
+                    "name": "color",
+                    "description": "Color in any CSS format.",
+                    "type": "String"
+                }
+            ],
+            "return": {
+                "description": "An anonymous object with the properties color and alpha.\nThe color property is a string in hex format and the alpha property is a\nnumber from 0.0 to 1.0, rounded to 3 decimal places.",
+                "type": "Object"
+            },
+            "class": "illuminated",
+            "module": "illuminated"
+        },
+        {
+            "file": "src/illuminated.js",
+            "line": 1305,
+            "description": "Merges the properties from the given parameters into the first parameter.",
+            "static": 1,
+            "itemtype": "method",
+            "name": "extend",
+            "params": [
+                {
+                    "name": "mergeInto",
+                    "description": "An object to merge into.",
+                    "type": "Object"
+                },
+                {
+                    "name": "mergeFrom",
+                    "description": "Objects to merge from.",
+                    "type": "Object",
+                    "multiple": true
+                }
+            ],
+            "class": "illuminated",
+            "module": "illuminated"
+        }
+    ],
+    "warnings": []
+}
