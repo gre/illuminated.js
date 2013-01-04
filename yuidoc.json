@@ -1,0 +1,11 @@
+{
+  "name": "Illuminated.js Docs",
+  "description": "A 2D lights and shadows rendering engine for your HTML5 web applications and games.",
+  "version": "0.1",
+  "url": "http://demo.greweb.fr/illuminated.js",
+  "options": {
+    "paths": "src",
+    "themedir": "./docstheme",
+    "outdir": "docs"
+  }
+}
