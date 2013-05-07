@@ -1,8 +1,8 @@
 **Illuminated.js is a 2D lights and shadows rendering engine for HTML5 applications and games.**
 
-[Checkout the demo](http://demo.greweb.fr/illuminated.js/)
+[Checkout the demo](http://gre.github.io/illuminated.js)
 
-[Read the article](http://blog.greweb.fr/?p=1589)
+[Read the article](http://greweb.me/2012/05/illuminated-js-2d-lights-and-shadows-rendering-engine-for-html5-applications/)
 
 **src/illuminated.js** should be the only file you need.
 
