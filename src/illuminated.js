@@ -1131,6 +1131,15 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
   cp.Lighting.prototype.render = function (ctx) {
     ctx.drawImage(this._cache.canvas, 0, 0);
   }
+  
+  /**
+  Returns the light and shadows onto the given context as canvas.
+  @method render
+  @return {Canvas} The picture of the light and shadow.
+  **/
+  cp.Lighting.prototype.getCanvas = function () {
+    return this._cache.canvas;
+  }
 
   /**
   Defines the dark layer which hides the dark area not illuminated by a set of
