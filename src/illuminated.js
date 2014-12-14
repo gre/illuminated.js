@@ -1244,7 +1244,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
   properties.
   **/
   function createCanvasAnd2dContext (id, w, h) {
-    var iid = 'illujs_'+id;
+    var iid = 'illujs'+w+'x'+h+'_'+id;
     var canvas = document.getElementById(iid);
 
     if(canvas === null) {
