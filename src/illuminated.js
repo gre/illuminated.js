@@ -183,7 +183,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
   @param {Number} [options.distance=100] Intensity of this light.
   @param {Number} [options.diffuse=0.8] How diffuse this light is.
   **/
-  cp.Light = function (options) { extend(this, cp.Light.defaults, options); }
+  cp.Light = function (options) { extend(this, cp.Light.defaults, options);}
 
   cp.Light.defaults = {
     /**
@@ -280,7 +280,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
     var hash = ""+d;
     if (this.vismaskhash != hash) {
       this.vismaskhash = hash;
-      var c = this._vismaskcache = createCanvasAnd2dContext(this._getHashCache, 2*d, 2*d);
+      var c = this._vismaskcache = createCanvasAnd2dContext('vm'+this.id, 2*d, 2*d);
       var g = c.ctx.createRadialGradient(d, d, 0, d, d, d);
       g.addColorStop( 0, 'rgba(0,0,0,1)' );
       g.addColorStop( 1, 'rgba(0,0,0,0)' );
@@ -319,6 +319,8 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
     **/
     diffuse: 0.8
   };
+
+  cp.OpaqueObject.uniqueId = 0;
 
   /**
   Fill ctx with the shadows projected by this opaque object at the origin
@@ -391,10 +393,19 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
   @param {Number} [options.angle=0] The angle of the orientation of the lamp.
   @param {Number} [options.roughness=0] The roughness of the oriented effect.
   **/
-  cp.Lamp = function (options) { extend(this, cp.Light.defaults, cp.Lamp.defaults, options); }
+  cp.Lamp = function (options) { extend(this, cp.Light.defaults, cp.Lamp.defaults, options);
+    if(this.id===0){this.id=++cp.Lamp.uniqueId} }
   inherit(cp.Lamp, cp.Light);
 
   cp.Lamp.defaults = {
+    /**
+     * The id of this light object.
+     * @property id
+     * @type Number
+     * @default 0
+     */
+    id: 0,
+
     /**
     The color emitted by the lamp. The color can be specified in any CSS format.
     @property color
@@ -437,6 +448,8 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
     roughness: 0
   };
 
+  cp.Lamp.uniqueId = 0;
+
   /**
   Return a string hash key representing this lamp.
   @private
@@ -444,7 +457,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
   @return {String} The hash key.
   **/
   cp.Lamp.prototype._getHashCache = function () {
-    return [this.color, this.distance, this.diffuse, this.angle, this.roughness].toString();
+    return [this.color, this.distance, this.diffuse, this.angle, this.roughness, this.samples, this.radius].toString();
   }
 
   /**
@@ -498,7 +511,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
     this._cacheHashcode = hashcode;
     var d = Math.round(this.distance);
     var D = d*2;
-    var cache = createCanvasAnd2dContext(this._cacheHashcode, D, D);
+    var cache = createCanvasAnd2dContext('gc'+this.id, D, D);
     var g = cache.ctx.createRadialGradient(center.x, center.y, 0, d, d, d);
     g.addColorStop( Math.min(1,this.radius/this.distance), this.color );
     g.addColorStop( 1, cp.getRGBA(this.color, 0) );
@@ -1244,7 +1257,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
   properties.
   **/
   function createCanvasAnd2dContext (id, w, h) {
-    var iid = 'illujs'+w+'x'+h+'_'+id;
+    var iid = 'illujs_'+id;
     var canvas = document.getElementById(iid);
 
     if(canvas === null) {
@@ -1254,11 +1267,13 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
       canvas.height = h;
       canvas.style.display = 'none';
       document.body.appendChild(canvas);
-      console.log('new canvas');
     }
 
     var ctx = canvas.getContext("2d");
     ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+    canvas.width = w;
+    canvas.height = h;
 
     return { canvas: canvas, ctx: ctx, w: w, h: h };
   }
@@ -1298,9 +1313,11 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
   @return {String} Color in RGBA format.
   **/
   var getRGBA = cp.getRGBA = (function(){
+    //var ctx = createCanvasAnd2dContext('grgba', 1, 1);
     var canvas = document.createElement("canvas");
     canvas.width = canvas.height = 1;
     var ctx = canvas.getContext("2d");
+
     return function (color, alpha) {
       ctx.clearRect(0,0,1,1);
       ctx.fillStyle = color;
@@ -1321,6 +1338,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
   number from 0.0 to 1.0, rounded to 3 decimal places.
   **/
   var extractColorAndAlpha = cp.extractColorAndAlpha = (function(){
+    //var ctx = createCanvasAnd2dContext('grgba', 1, 1);
     var canvas = document.createElement("canvas");
     canvas.width = canvas.height = 1;
     var ctx = canvas.getContext("2d");
