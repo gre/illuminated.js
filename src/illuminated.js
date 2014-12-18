@@ -541,7 +541,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
   **/
   cp.Lamp.prototype.forEachSample = function (f) {
     // "spiral" algorithm for spreading emit samples
-    for (var s=0; s<this.samples; ++s) {
+    for (var s=0, l=this.samples; s<l; ++s) {
       var a = s * GOLDEN_ANGLE;
       var r = Math.sqrt(s/this.samples)*this.radius;
       var delta = new cp.Vec2( Math.cos(a)*r, Math.sin(a)*r );
@@ -826,7 +826,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
   cp.PolygonObject.prototype.bounds = function () {
     var topleft = this.points[0].copy();
     var bottomright = topleft.copy();
-    for (var p=1; p<this.points.length; ++p) {
+    for (var p=1, l=this.points.length; p<l; ++p) {
       var point = this.points[p];
       if (point.x > bottomright.x)
         bottomright.x = point.x;
@@ -848,11 +848,11 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
   **/
   cp.PolygonObject.prototype.contains = function (p) {
     var points = this.points;
-    var i, j=points.length-1;
+    var i, l=points.length, j=l-1;
     var x = p.x, y = p.y;
     var oddNodes = false;
 
-    for (i=0; i<points.length; i++) {
+    for (i=0; i<l; i++) {
       if ((points[i].y< y && points[j].y>=y
       ||   points[j].y< y && points[i].y>=y)
       &&  (points[i].x<=x || points[j].x<=x)) {
@@ -927,7 +927,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
   **/
   cp.PolygonObject.prototype._forEachVisibleEdges = function (origin, bounds, f) {
     var a = this.points[this.points.length-1], b;
-    for (var p=0; p<this.points.length; ++p, a=b) {
+    for (var p=0, l=this.points.length; p<l; ++p, a=b) {
       b = this.points[p];
       if (a.inBound(bounds.topleft, bounds.bottomright)) {
          var originToA = a.sub(origin);
@@ -1104,7 +1104,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
     var objects = this.objects;
     light.forEachSample(function (position) {
       var sampleInObject = false;
-      for (var o=0; o<objects.length; ++o) {
+      for (var o=0, l=objects.length; o<l; ++o) {
         if (objects[o].contains(position)) {
           ctx.fillRect(bounds.topleft.x, bounds.topleft.y, bounds.bottomright.x-bounds.topleft.x, bounds.bottomright.y-bounds.topleft.y);
           return;
@@ -1293,7 +1293,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
   function path (ctx, points, dontJoinLast) {
     var p = points[0];
     ctx.moveTo(p.x, p.y);
-    for (var i=1; i<points.length; ++i) {
+    for (var i=1, l=points.length; i<l; ++i) {
       p = points[i];
       ctx.lineTo(p.x, p.y);
     }
@@ -1369,7 +1369,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
   @param {Object} mergeFrom* Objects to merge from.
   **/
   function extend (extending /* , arg1, arg2, ... */) {
-    for(var a=1; a<arguments.length; ++a) {
+    for (var a=1, l=arguments.length; a<l; ++a) {
       var source = arguments[a];
       if (source) {
         for (var prop in source)
